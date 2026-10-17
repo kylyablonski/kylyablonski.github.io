@@ -202,7 +202,7 @@ details.tip summary::before{content:"💡 ";color:inherit}details.tip[open] summ
 <section id="v-roll" class="hidden">
  <h2>Roll a build 🎲</h2>
  <div class="card">
-  <label style="margin-top:0">What's the vibe? (pick one or more)</label>
+  <label style="margin-top:0">What's the vibe? (optional, pick one or more)</label>
   <div class="chips" id="moodChips"></div>
   <button class="btn primary" id="rollBtn" type="button"><span id="rollDie">🎲</span> Roll 4 perks</button>
   <p class="hint" id="poolInfo"></p>
@@ -566,42 +566,45 @@ const MOODS = [
 const OWNER = Object.fromEntries(DATA.perks.map(p=>[p[0],p[1]]));
 const perkTags = n => (PERK_TAGS[n] ? PERK_TAGS[n][0].split(",") : []);
 let roll = [null,null,null,null], locked = [false,false,false,false];
-const selMoods = () => meta.moods && meta.moods.length ? meta.moods : [];
+// No mood selected = "Totally random" (any owned perk). Old saved states may hold unknown ids; ignore them.
+const selMoods = () => Array.isArray(meta.moods) ? meta.moods.filter(id=>MOODS.some(x=>x.id===id)) : [];
 const unowned = () => new Set(meta.unowned || []);
 function rollPool(){
  const moods=selMoods(), no=unowned();
- return Object.keys(PERK_TAGS).filter(n=>!no.has(n) && perkTags(n).some(t=>moods.includes(t)));
+ return Object.keys(PERK_TAGS).filter(n=>!no.has(n) && (!moods.length || perkTags(n).some(t=>moods.includes(t))));
 }
 function renderMoods(){
  const m=selMoods();
- $("#moodChips").innerHTML=MOODS.map(x=>`<button type="button" class="chip ${m.includes(x.id)?"on":""}" data-m="${x.id}">${x.label} <span class="meta">${Object.keys(PERK_TAGS).filter(n=>perkTags(n).includes(x.id)).length}</span></button>`).join("");
+ const total=Object.keys(PERK_TAGS).length;
+ $("#moodChips").innerHTML=`<button type="button" class="chip ${m.length?"":"on"}" data-m="__random">🎲 Totally random <span class="meta">${total}</span></button>`+MOODS.map(x=>`<button type="button" class="chip ${m.includes(x.id)?"on":""}" data-m="${x.id}">${x.label} <span class="meta">${Object.keys(PERK_TAGS).filter(n=>perkTags(n).includes(x.id)).length}</span></button>`).join("");
  const pool=rollPool(), need=4-locked.filter(Boolean).length;
- $("#poolInfo").textContent = !m.length ? "Pick at least one vibe, then roll." :
-  `${pool.length} perk${pool.length===1?"":"s"} in the hat${(meta.unowned||[]).length?` (skipping ${(meta.unowned||[]).length} you don't own)`:""}.` + (pool.length<need?" Not enough to fill 4 slots, so add another vibe or tick more owned perks.":"");
+ $("#poolInfo").textContent =
+  `${pool.length} perk${pool.length===1?"":"s"} in the hat${m.length?"":" (any vibe)"}${(meta.unowned||[]).length?` (skipping ${(meta.unowned||[]).length} you don't own)`:""}.` + (pool.length<need? (m.length?" Not enough to fill 4 slots, so add another vibe or tick more owned perks.":" Not enough to fill 4 slots, so tick more owned perks."):"");
 }
 $("#moodChips").addEventListener("click",e=>{
  const b=e.target.closest("[data-m]"); if(!b) return;
- const m=new Set(selMoods()); m.has(b.dataset.m)?m.delete(b.dataset.m):m.add(b.dataset.m);
+ const m=new Set(selMoods());
+ if(b.dataset.m==="__random") m.clear(); else m.has(b.dataset.m)?m.delete(b.dataset.m):m.add(b.dataset.m);
  meta.moods=MOODS.map(x=>x.id).filter(id=>m.has(id)); save(); renderMoods();
 });
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function doRoll(){ showPlan=false;
- if(!selMoods().length) return toast("Pick a vibe first 😈🫥🤡");
  const no=unowned(); locked=locked.map((l,i)=>l&&!!roll[i]&&!no.has(roll[i])); // unowned perks can't stay locked
  const keep=roll.filter((p,i)=>locked[i]);
  const pool=shuffle(rollPool().filter(n=>!keep.includes(n)));
  const need=locked.filter(l=>!l).length;
- if(pool.length<need) return toast("Not enough perks for that vibe. Add another mood!");
+ if(pool.length<need) return toast(selMoods().length?"Not enough perks for that vibe. Add another mood!":"Not enough owned perks. Tick more in Perks I own!");
  roll=roll.map((p,i)=> locked[i] ? p : pool.pop());
  const d=$("#rollDie"); d.classList.remove("rolling"); void d.offsetWidth; d.classList.add("rolling");
  meta.lastRoll={roll,locked}; save(); renderRoll(); renderMoods();
 }
 function rollBuildName(){
  const names=MOODS.filter(x=>selMoods().includes(x.id)).map(x=>x.name);
+ if(!names.length) return "Totally random roll";
  return (names.length>2 ? names.slice(0,2).join(" + ")+" + more" : names.join(" + ")) + " roll";
 }
 function renderRoll(){
- if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Pick a vibe and hit <b>Roll</b>. Lock (🔒) any perk you like, then reroll the rest. Every perk has a 💡 tip, and <b>Game plan</b> shows all 4 at once for the lobby. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
+ if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Hit <b>Roll</b> for a totally random build (Chaos Shuffle style), or pick a vibe first. Lock (🔒) any perk you like, then reroll the rest. Every perk has a 💡 tip, and <b>Game plan</b> shows all 4 at once for the lobby. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
  $("#rollOut").innerHTML=`<div class="card">`+roll.map((p,i)=>{
   if(!p) return "";
   const info=PERK_TAGS[p]||["",""];
