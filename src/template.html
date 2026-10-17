@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>Fog Log · my DbD matches</title>
+<style>
+:root{--bg:#0b0d10;--panel:#14171c;--panel2:#1b1f26;--line:#2a2f38;--txt:#e6e3dc;--dim:#9a978f;--red:#c3242f;--red2:#ff4d5a;--good:#4fbf7a;--warn:#e0a83a;--r:14px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+.fog{position:fixed;inset:-20%;pointer-events:none;z-index:0;opacity:.55;
+ background:radial-gradient(40% 30% at 20% 30%,rgba(140,150,165,.14),transparent 70%),radial-gradient(35% 25% at 80% 60%,rgba(120,130,145,.12),transparent 70%),radial-gradient(50% 30% at 50% 100%,rgba(195,36,47,.10),transparent 70%);
+ animation:drift 28s ease-in-out infinite alternate}
+.fog.b{animation-duration:41s;animation-direction:alternate-reverse;opacity:.35;transform:scale(1.2)}
+@keyframes drift{from{transform:translate(-4%,-2%)}to{transform:translate(4%,3%)}}
+@media (prefers-reduced-motion:reduce){.fog{animation:none}}
+header,main,nav{position:relative;z-index:1}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px;max-width:720px;margin:0 auto}
+h1{font-size:22px;margin:0;letter-spacing:.5px;font-family:Georgia,"Times New Roman",serif}
+h1 span{color:var(--red2)}
+.sub{color:var(--dim);font-size:13px;margin:0}
+main{max-width:720px;margin:0 auto;padding:8px 14px 20px}
+h2{font-family:Georgia,serif;font-size:19px;margin:18px 0 8px}
+h3{font-size:15px;margin:16px 0 6px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.card{background:linear-gradient(180deg,rgba(27,31,38,.92),rgba(20,23,28,.92));border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:10px 0;backdrop-filter:blur(3px)}
+label{display:block;font-size:13px;color:var(--dim);margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;color:var(--txt);background:#0f1216;border:1px solid var(--line);border-radius:10px;padding:11px 12px;min-height:44px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--red);border-color:transparent}
+textarea{min-height:64px;resize:vertical}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:6px 11px;font-size:13px;cursor:pointer}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seg.n4{grid-template-columns:repeat(4,1fr)}.seg.n5{grid-template-columns:repeat(5,1fr)}
+.seg button{min-height:52px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font:inherit;font-size:14px;cursor:pointer;padding:4px}
+.seg button .e{display:block;font-size:20px}
+.seg button.on{border-color:var(--red2);background:rgba(195,36,47,.25);box-shadow:0 0 0 1px var(--red2) inset}
+.seg.fun button{font-size:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font:inherit;cursor:pointer;text-decoration:none}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:600;width:100%;font-size:17px;margin-top:14px}
+.btn.small{min-height:34px;padding:6px 10px;font-size:13px}
+.btn.danger{color:var(--red2)}
+details{margin-top:12px;border-top:1px dashed var(--line);padding-top:6px}
+summary{cursor:pointer;color:var(--dim);padding:8px 0;list-style:none;font-size:15px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--red2)}details[open] summary::before{content:"▾ "}
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(11,13,16,.96);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{background:none;border:0;color:var(--dim);font:inherit;font-size:11px;padding:8px 0 10px;cursor:pointer}
+nav button .e{display:block;font-size:20px;margin-bottom:2px}
+nav button.on{color:var(--txt)}nav button.on .e{filter:drop-shadow(0 0 6px var(--red2))}
+.hidden{display:none!important}
+.empty{text-align:center;color:var(--dim);padding:26px 10px}
+.empty .big{font-size:42px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.low td{opacity:.45}
+.tablewrap{overflow-x:auto}
+.bar{height:6px;background:#262a31;border-radius:3px;overflow:hidden;margin-top:4px;min-width:50px}.bar i{display:block;height:100%;background:var(--good)}
+.match{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.match:last-child{border-bottom:0}
+.badge{font-size:12px;border-radius:999px;padding:2px 8px;border:1px solid var(--line);white-space:nowrap}
+.badge.esc{color:var(--good);border-color:rgba(79,191,122,.5)}.badge.die{color:var(--red2);border-color:rgba(255,77,90,.5)}
+.meta{color:var(--dim);font-size:13px}
+.grow{flex:1;min-width:0}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#22262e;border:1px solid var(--line);padding:10px 16px;border-radius:12px;z-index:9;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stat div{background:var(--panel2);border-radius:12px;padding:10px 4px}
+.stat b{display:block;font-size:22px}
+.stat span{font-size:12px;color:var(--dim)}
+.up{color:var(--good)}.down{color:var(--red2)}
+.hint{font-size:13px;color:var(--dim);margin:6px 0}
+.gear{background:none;border:1px solid var(--line);color:var(--txt);border-radius:10px;min-height:40px;padding:0 12px;font-size:14px;cursor:pointer}
+.chip.on{border-color:var(--red2);background:rgba(195,36,47,.25);box-shadow:0 0 0 1px var(--red2) inset}
+.perkcard{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.perkcard:last-child{border-bottom:0}
+.perkcard .num{font-family:Georgia,serif;font-size:22px;color:var(--red2);width:22px;text-align:center}
+.perkcard.locked .num{color:var(--warn)}
+.perkcard b{font-size:17px}
+.lockbtn{min-width:44px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);font-size:20px;cursor:pointer;color:var(--txt)}
+.perkcard.locked .lockbtn{border-color:var(--warn);background:rgba(224,168,58,.18)}
+.tag{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:1px 6px;margin-right:4px;white-space:nowrap}
+.ownlist{max-height:320px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
+.ownlist label{display:flex;align-items:center;gap:10px;margin:0;padding:8px 10px;border-bottom:1px solid var(--line);color:var(--txt);font-size:14px}
+.ownlist input{width:20px;height:20px;min-height:0;accent-color:var(--red)}
+@keyframes shake{0%,100%{transform:none}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.rolling{animation:shake .3s}
+</style>
+</head>
+<body>
+<div class="fog"></div><div class="fog b"></div>
+<header>
+ <div><h1>Fog <span>Log</span></h1><p class="sub">my survivor match diary 🔦</p></div>
+ <button class="gear" id="gearBtn" aria-label="Backup and data">💾 Data</button>
+</header>
+<main>
+
+<!-- LOG -->
+<section id="v-log">
+ <form id="logForm" class="card" autocomplete="off">
+  <h2 id="formTitle" style="margin-top:0">How'd the trial go?</h2>
+  <label for="f-killer">Who was chasing you?</label>
+  <input id="f-killer" list="dl-killers" placeholder="Start typing… e.g. Trapper" required>
+  <div class="chips" id="recentKillers"></div>
+
+  <label>What happened?</label>
+  <div class="seg n4" id="f-result">
+   <button type="button" data-v="gates"><span class="e">🚪</span>Gates</button>
+   <button type="button" data-v="hatch"><span class="e">🕳️</span>Hatch</button>
+   <button type="button" data-v="escaped"><span class="e">🏃</span>Escaped</button>
+   <button type="button" data-v="died"><span class="e">🪝</span>Died</button>
+  </div>
+
+  <label>Fun meter <span style="opacity:.7">(optional)</span></label>
+  <div class="seg n5 fun" id="f-fun">
+   <button type="button" data-v="1" title="1 – miserable">😩</button>
+   <button type="button" data-v="2" title="2 – meh">😕</button>
+   <button type="button" data-v="3" title="3 – fine">🙂</button>
+   <button type="button" data-v="4" title="4 – fun">😄</button>
+   <button type="button" data-v="5" title="5 – peak">🤩</button>
+  </div>
+
+  <details id="moreDetails">
+   <summary>More details (all optional)</summary>
+   <label for="f-build">Build name / theme</label>
+   <input id="f-build" list="dl-builds" placeholder="e.g. all-flashlight clown build">
+   <label>My 4 perks</label>
+   <div class="row"><input id="f-p1" list="dl-perks" placeholder="Perk 1"><input id="f-p2" list="dl-perks" placeholder="Perk 2"></div>
+   <div class="row" style="margin-top:8px"><input id="f-p3" list="dl-perks" placeholder="Perk 3"><input id="f-p4" list="dl-perks" placeholder="Perk 4"></div>
+   <div class="chips"><button type="button" class="chip" id="lastPerksBtn">↺ same perks as last match</button></div>
+   <div class="row">
+    <div><label for="f-surv">I played as</label><input id="f-surv" list="dl-survs" placeholder="Survivor"></div>
+    <div><label for="f-mates">Teammates escaped</label>
+     <select id="f-mates"><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
+   </div>
+   <label for="f-map">Map</label>
+   <select id="f-map"><option value="">– not sure / skip –</option></select>
+   <label for="f-kname">Killer player's name</label>
+   <input id="f-kname" list="dl-knames" placeholder="their in-game name">
+   <label for="f-date">Date</label>
+   <input id="f-date" type="date">
+  </details>
+  <label for="f-note">Note</label>
+  <textarea id="f-note" placeholder="anything funny, salty or sweet that happened"></textarea>
+  <button class="btn primary" type="submit" id="saveBtn">Save match</button>
+  <button class="btn hidden" type="button" id="cancelEdit" style="width:100%;margin-top:8px">Cancel edit</button>
+ </form>
+ <div id="logSummary"></div>
+</section>
+
+<!-- HISTORY -->
+<section id="v-history" class="hidden">
+ <h2>Match history</h2>
+ <input id="histSearch" placeholder="🔍 filter by killer, perk, note, build…">
+ <div class="card" id="histList"></div>
+</section>
+
+<!-- RIVALS -->
+<section id="v-rivals" class="hidden">
+ <h2>Rivals</h2>
+ <div id="rivalsOut"></div>
+</section>
+
+<!-- BUILDS -->
+<section id="v-builds" class="hidden">
+ <h2>Builds &amp; perks</h2>
+ <div class="card"><label for="minSample" style="margin-top:0">Minimum matches before a stat counts</label>
+  <input id="minSample" type="number" min="1" max="100" value="5" inputmode="numeric">
+  <p class="hint">Rows below this are faded: a 100% escape rate from 1 match is just luck 🍀</p></div>
+ <div id="buildsOut"></div>
+</section>
+
+<!-- PATCH -->
+<section id="v-patch" class="hidden">
+ <h2>Patch report</h2>
+ <div class="card"><label for="patchDate" style="margin-top:0">Patch went live on</label>
+  <input id="patchDate" type="date">
+  <label for="patchName">Patch name (optional)</label>
+  <input id="patchName" placeholder="e.g. 10.2.0">
+  <p class="hint">Matches on or after this date count as "after".</p></div>
+ <div id="patchOut"></div>
+</section>
+
+<!-- ROLL -->
+<section id="v-roll" class="hidden">
+ <h2>Roll a build 🎲</h2>
+ <div class="card">
+  <label style="margin-top:0">What's the vibe? (pick one or more)</label>
+  <div class="chips" id="moodChips"></div>
+  <button class="btn primary" id="rollBtn" type="button"><span id="rollDie">🎲</span> Roll 4 perks</button>
+  <p class="hint" id="poolInfo"></p>
+ </div>
+ <div id="rollOut"></div>
+ <div class="card">
+  <details id="ownDetails" style="margin-top:0;border-top:0;padding-top:0">
+   <summary>Perks I own (<span id="ownCount"></span>)</summary>
+   <p class="hint">Untick perks you haven't unlocked so the dice never hand you one. Everything starts ticked.</p>
+   <input id="ownSearch" placeholder="🔍 find a perk or survivor">
+   <div class="row" style="margin-top:8px"><button class="btn small" type="button" id="ownAll">Tick all</button><button class="btn small" type="button" id="ownNone">Untick all shown</button></div>
+   <div class="ownlist" id="ownList"></div>
+  </details>
+ </div>
+</section>
+
+<!-- DATA -->
+<section id="v-data" class="hidden">
+ <h2>Backup &amp; data</h2>
+ <div class="card">
+  <p class="hint" style="margin-top:0">Your matches live only in this browser on this device. Back up now and then, especially before clearing browser data or switching phones.</p>
+  <h3>Spreadsheet (CSV)</h3>
+  <div class="row"><button class="btn" id="csvExport">⬇️ Export CSV</button><button class="btn" id="csvImportBtn">⬆️ Import CSV</button></div>
+  <p class="hint">Import adds matches; ones already here (same id) are skipped.</p>
+  <h3>Full backup (JSON)</h3>
+  <div class="row"><button class="btn" id="jsonExport">⬇️ Backup</button><button class="btn" id="jsonImportBtn">⬆️ Restore</button></div>
+  <p class="hint">Restore replaces everything here with the backup file.</p>
+  <h3>Danger zone</h3>
+  <button class="btn danger" id="wipeBtn">🗑️ Delete all matches</button>
+  <input type="file" id="csvFile" accept=".csv,text/csv" class="hidden">
+  <input type="file" id="jsonFile" accept=".json,application/json" class="hidden">
+ </div>
+ <p class="hint">Killer, survivor, perk &amp; map lists from the dbd.tricky.lol API (Oct 2026: 44 killers, 176 survivor perks). New killer not listed yet? Just type the name, it still works. Fan-made, not affiliated with Behaviour Interactive.</p>
+</section>
+</main>
+
+<nav id="nav">
+ <button data-v="log" class="on"><span class="e">✍️</span>Log</button>
+ <button data-v="history"><span class="e">📜</span>History</button>
+ <button data-v="rivals"><span class="e">🔪</span>Rivals</button>
+ <button data-v="builds"><span class="e">🧪</span>Builds</button>
+ <button data-v="patch"><span class="e">🩹</span>Patch</button>
+ <button data-v="roll"><span class="e">🎲</span>Roll</button>
+</nav>
+<div class="toast" id="toast"></div>
+<datalist id="dl-killers"></datalist><datalist id="dl-perks"></datalist><datalist id="dl-survs"></datalist>
+<datalist id="dl-knames"></datalist><datalist id="dl-builds"></datalist>
+
+<script>
+"use strict";
+const DATA = __DATA__;
+const KEY = "dbdFogLog.v1", META = "dbdFogLog.meta.v1";
+const RESULTS = {gates:"🚪 Gates",hatch:"🕳️ Hatch",escaped:"🏃 Escaped",died:"🪝 Died"};
+const FUN = ["","😩","😕","🙂","😄","🤩"];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const isEsc = r => r === "gates" || r === "hatch" || r === "escaped";
+const pct = (a,b) => b ? Math.round(100*a/b) + "%" : "–";
+const today = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const norm = s => String(s||"").trim().toLowerCase();
+
+let matches = [], meta = {};
+function load(){
+ try { matches = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ matches = []; }
+ try { meta = JSON.parse(localStorage.getItem(META)) || {}; } catch(e){ meta = {}; }
+ if(!Array.isArray(matches)) matches = [];
+ meta.rivalNotes = meta.rivalNotes || {};
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(matches)); localStorage.setItem(META, JSON.stringify(meta)); }
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove("show"),2200); }
+const sorted = () => [...matches].sort((a,b)=> (b.date||"").localeCompare(a.date||"") || (b.created||0)-(a.created||0));
+
+// ---------- static lists ----------
+function fillLists(){
+ $("#dl-killers").innerHTML = DATA.killers.map(k=>`<option value="${esc(k)}">`).join("");
+ $("#dl-perks").innerHTML = DATA.perks.map(([p,o])=>`<option value="${esc(p)}">${esc(o)}</option>`).join("");
+ $("#dl-survs").innerHTML = DATA.survivors.map(s=>`<option value="${esc(s)}">`).join("");
+ let html = '<option value="">– not sure / skip –</option>', realm = null;
+ for(const [m,r] of DATA.maps){ if(r!==realm){ if(realm!==null) html+="</optgroup>"; html+=`<optgroup label="${esc(r||"Other")}">`; realm=r; } html+=`<option>${esc(m)}</option>`; }
+ $("#f-map").innerHTML = html + "</optgroup>";
+}
+function fillDynamicLists(){
+ const names = [...new Set(matches.map(m=>m.killerName).filter(Boolean))];
+ $("#dl-knames").innerHTML = names.map(n=>`<option value="${esc(n)}">`).join("");
+ const builds = [...new Set(matches.map(m=>m.build).filter(Boolean))];
+ $("#dl-builds").innerHTML = builds.map(n=>`<option value="${esc(n)}">`).join("");
+ const recent = [...new Set(sorted().map(m=>m.killer))].slice(0,6);
+ $("#recentKillers").innerHTML = recent.map(k=>`<button type="button" class="chip" data-k="${esc(k)}">${esc(k)}</button>`).join("");
+}
+// match typed text to canonical name (case-insensitive), else keep as typed
+function canon(v, list){ const n=norm(v); if(!n) return ""; const hit=list.find(x=>norm(x)===n); return hit || String(v).trim(); }
+const PERKNAMES = DATA.perks.map(p=>p[0]);
+
+// ---------- form ----------
+let editingId = null;
+function segVal(id){ const b=document.querySelector(`#${id} button.on`); return b ? b.dataset.v : ""; }
+function setSeg(id,v){ document.querySelectorAll(`#${id} button`).forEach(b=>b.classList.toggle("on", b.dataset.v===String(v))); }
+document.querySelectorAll(".seg").forEach(seg=>seg.addEventListener("click",e=>{
+ const b=e.target.closest("button"); if(!b) return;
+ const was=b.classList.contains("on");
+ seg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+ if(!(was && seg.id==="f-fun")) b.classList.add("on"); // tap fun again to clear
+}));
+$("#recentKillers").addEventListener("click",e=>{ const b=e.target.closest("[data-k]"); if(b) $("#f-killer").value=b.dataset.k; });
+$("#lastPerksBtn").addEventListener("click",()=>{
+ const last=sorted().find(m=>(m.perks||[]).some(Boolean));
+ if(!last) return toast("No perks logged yet");
+ [1,2,3,4].forEach(i=>$("#f-p"+i).value=last.perks[i-1]||"");
+ if(!$("#f-build").value && last.build) $("#f-build").value=last.build;
+});
+function resetForm(){
+ $("#logForm").reset(); setSeg("f-result",""); setSeg("f-fun","");
+ $("#f-date").value=today(); editingId=null;
+ $("#formTitle").textContent="How'd the trial go?"; $("#saveBtn").textContent="Save match";
+ $("#cancelEdit").classList.add("hidden"); $("#moreDetails").open=false;
+}
+function readForm(){
+ return {
+  date: $("#f-date").value || today(),
+  killer: canon($("#f-killer").value, DATA.killers),
+  result: segVal("f-result"),
+  fun: Number(segVal("f-fun")) || 0,
+  build: $("#f-build").value.trim(),
+  perks: [1,2,3,4].map(i=>canon($("#f-p"+i).value, PERKNAMES)),
+  survivor: canon($("#f-surv").value, DATA.survivors),
+  mates: $("#f-mates").value,
+  map: $("#f-map").value,
+  killerName: $("#f-kname").value.trim(),
+  note: $("#f-note").value.trim()
+ };
+}
+$("#logForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const m=readForm();
+ if(!m.killer){ toast("Pick who chased you 🔪"); $("#f-killer").focus(); return; }
+ if(!m.result){ toast("Tap what happened 🚪🕳️🏃🪝"); return; }
+ if(editingId){
+  const i=matches.findIndex(x=>x.id===editingId);
+  if(i>=0) matches[i]={...matches[i],...m};
+  toast("Match updated ✏️");
+ } else {
+  matches.push({id:uid(), created:Date.now(), ...m});
+  toast(isEsc(m.result) ? "Escaped! Logged 🎉" : "Logged. Better luck next trial 🪝");
+ }
+ save(); const wasEdit=!!editingId; resetForm(); renderAll();
+ if(wasEdit) show("history");
+});
+$("#cancelEdit").addEventListener("click",()=>{ resetForm(); show("history"); });
+function editMatch(id){
+ const m=matches.find(x=>x.id===id); if(!m) return;
+ show("log"); editingId=id;
+ $("#f-killer").value=m.killer; setSeg("f-result",m.result); setSeg("f-fun",m.fun||"");
+ $("#f-build").value=m.build||""; [1,2,3,4].forEach(i=>$("#f-p"+i).value=(m.perks||[])[i-1]||"");
+ $("#f-surv").value=m.survivor||""; $("#f-mates").value=m.mates??""; $("#f-map").value=m.map||"";
+ $("#f-kname").value=m.killerName||""; $("#f-date").value=m.date||today(); $("#f-note").value=m.note||"";
+ $("#moreDetails").open=true; $("#formTitle").textContent="Edit match"; $("#saveBtn").textContent="Save changes";
+ $("#cancelEdit").classList.remove("hidden"); window.scrollTo(0,0);
+}
+
+// ---------- stats helpers ----------
+function group(list, keyFn){
+ const g=new Map();
+ for(const m of list){ for(const k of [].concat(keyFn(m)).filter(Boolean)){
+  const key=norm(k); if(!g.has(key)) g.set(key,{name:k,n:0,e:0,funSum:0,funN:0,items:[]});
+  const o=g.get(key); o.n++; if(isEsc(m.result)) o.e++; if(m.fun){o.funSum+=m.fun;o.funN++;} o.items.push(m);
+ }}
+ return [...g.values()];
+}
+const avgFun = o => o.funN ? (o.funSum/o.funN) : null;
+const funCell = o => { const a=avgFun(o); return a==null ? "–" : `${FUN[Math.round(a)]} ${a.toFixed(1)}`; };
+const rateCell = o => `${pct(o.e,o.n)}<div class="bar"><i style="width:${o.n?100*o.e/o.n:0}%"></i></div>`;
+function emptyBox(icon, title, text){ return `<div class="card empty"><div class="big">${icon}</div><p><b>${title}</b></p><p>${text}</p></div>`; }
+
+// ---------- renders ----------
+function renderSummary(){
+ const n=matches.length;
+ if(!n){ $("#logSummary").innerHTML=emptyBox("🌫️","The fog is empty… for now","Log your next match above: just the killer and what happened, about 10 seconds. Everything else is optional. Once you have a few, check Rivals, Builds and Patch for your stats."); return; }
+ const e=matches.filter(m=>isEsc(m.result)).length;
+ const f=matches.filter(m=>m.fun); const fa=f.length? (f.reduce((s,m)=>s+m.fun,0)/f.length):null;
+ const t=today(), tm=matches.filter(m=>m.date===t), te=tm.filter(m=>isEsc(m.result)).length;
+ $("#logSummary").innerHTML=`<div class="card"><div class="stat">
+  <div><b>${n}</b><span>matches</span></div>
+  <div><b>${pct(e,n)}</b><span>escape rate</span></div>
+  <div><b>${fa==null?"–":FUN[Math.round(fa)]+" "+fa.toFixed(1)}</b><span>avg fun</span></div></div>
+  <p class="hint" style="text-align:center;margin-bottom:0">Today: ${tm.length} match${tm.length===1?"":"es"}${tm.length?`, ${te} escape${te===1?"":"s"}`:""}</p></div>`;
+}
+function renderHistory(){
+ if(!matches.length){ $("#histList").innerHTML=`<div class="empty"><div class="big">📜</div><p>No matches yet. Head to <b>Log</b> and add your first one!</p></div>`; return; }
+ const q=norm($("#histSearch").value);
+ const list=sorted().filter(m=>!q || norm([m.killer,m.killerName,m.build,m.note,m.map,m.survivor,...(m.perks||[]),m.result,m.date].join(" ")).includes(q));
+ if(!list.length){ $("#histList").innerHTML=`<div class="empty">Nothing matches "${esc(q)}"</div>`; return; }
+ $("#histList").innerHTML=list.map(m=>{
+  const extra=[m.survivor&&("as "+m.survivor), m.map, m.mates!==""&&m.mates!=null&&(`${m.mates}/3 mates out`), m.killerName&&("vs "+m.killerName)].filter(Boolean).map(esc).join(" · ");
+  const perks=(m.perks||[]).filter(Boolean).map(esc).join(", ");
+  return `<div class="match"><div class="grow">
+   <div><b>${esc(m.killer)}</b> <span class="badge ${isEsc(m.result)?"esc":"die"}">${RESULTS[m.result]||esc(m.result)}</span> ${m.fun?FUN[m.fun]:""}</div>
+   <div class="meta">${esc(m.date)}${extra?" · "+extra:""}</div>
+   ${m.build?`<div class="meta">🎭 ${esc(m.build)}</div>`:""}
+   ${perks?`<div class="meta">🧩 ${perks}</div>`:""}
+   ${m.note?`<div class="meta" style="color:var(--txt)">“${esc(m.note)}”</div>`:""}
+  </div><div style="display:flex;flex-direction:column;gap:6px">
+   <button class="btn small" data-edit="${esc(m.id)}">Edit</button><button class="btn small danger" data-del="${esc(m.id)}">Delete</button></div></div>`;
+ }).join("");
+}
+$("#histList").addEventListener("click",e=>{
+ const ed=e.target.closest("[data-edit]"), de=e.target.closest("[data-del]");
+ if(ed) editMatch(ed.dataset.edit);
+ if(de && confirm("Delete this match?")){ matches=matches.filter(m=>m.id!==de.dataset.del); save(); renderAll(); toast("Deleted"); }
+});
+$("#histSearch").addEventListener("input",renderHistory);
+
+function renderRivals(){
+ if(!matches.length){ $("#rivalsOut").innerHTML=emptyBox("🔪","No rivals yet","Every killer you log shows up here with how often you've faced them, how often you got out, and how fun they were. Add the killer player's name under <i>More details</i> to track specific people too."); return; }
+ const ks=group(matches,m=>m.killer).sort((a,b)=>b.n-a.n);
+ let h=`<div class="card"><h3 style="margin-top:0">By killer</h3><div class="tablewrap"><table><tr><th>Killer</th><th class="n">Faced</th><th class="n">Escaped</th><th class="n">Fun</th></tr>`+
+  ks.map(o=>`<tr><td>${esc(o.name)}</td><td class="n">${o.n}</td><td class="n">${rateCell(o)}</td><td class="n">${funCell(o)}</td></tr>`).join("")+`</table></div>`;
+ const best=ks.filter(o=>o.n>=3).sort((a,b)=>b.e/b.n-a.e/a.n);
+ if(best.length>=2) h+=`<p class="hint">😎 You do best vs <b>${esc(best[0].name)}</b>; your nemesis is <b>${esc(best[best.length-1].name)}</b> (min 3 matches).</p>`;
+ h+=`</div>`;
+ const ps=group(matches.filter(m=>m.killerName),m=>m.killerName).sort((a,b)=>b.n-a.n);
+ h+=`<div class="card"><h3 style="margin-top:0">Killer players you've met</h3>`;
+ if(!ps.length) h+=`<p class="hint">Add a killer's in-game name under <i>More details</i> when logging, and repeat offenders (or sweethearts) show up here.</p>`;
+ else h+=ps.map(o=>{
+  const played=[...new Set(o.items.map(m=>m.killer))].map(esc).join(", ");
+  const notes=o.items.filter(m=>m.note).slice(-3).map(m=>`<div class="meta">• ${esc(m.date)}: ${esc(m.note)}</div>`).join("");
+  const key=norm(o.name);
+  return `<div class="match"><div class="grow"><b>${esc(o.name)}</b> <span class="meta">played ${played}</span>
+   <div class="meta">Faced ${o.n}× · escaped ${pct(o.e,o.n)} · fun ${funCell(o)}</div>${notes}
+   <input class="rnote" data-k="${esc(key)}" placeholder="Your notes on this player (e.g. friendly, tunnels, farms)" value="${esc(meta.rivalNotes[key]||"")}" style="margin-top:6px"></div></div>`;
+ }).join("");
+ $("#rivalsOut").innerHTML=h+`</div>`;
+}
+$("#rivalsOut").addEventListener("change",e=>{ const i=e.target.closest(".rnote"); if(i){ meta.rivalNotes[i.dataset.k]=i.value.trim(); save(); toast("Note saved"); } });
+
+function renderBuilds(){
+ const min=Math.max(1, Number($("#minSample").value)||5); meta.minSample=min; save();
+ if(!matches.length){ $("#buildsOut").innerHTML=emptyBox("🧪","No builds yet","Open <i>More details</i> when logging to add your perks and a build name like “all-flashlight clown build”. You'll see escape rate and fun per perk, per 4-perk combo and per theme."); return; }
+ const table=(title,rows,label,showFun)=>{
+  if(!rows.length) return `<div class="card"><h3 style="margin-top:0">${title}</h3><p class="hint">Nothing logged here yet.</p></div>`;
+  return `<div class="card"><h3 style="margin-top:0">${title}</h3><div class="tablewrap"><table><tr><th>${label}</th><th class="n">Used</th><th class="n">Escaped</th>${showFun?'<th class="n">Fun</th>':""}</tr>`+
+   rows.map(o=>`<tr class="${o.n<min?"low":""}"><td>${esc(o.name)}${o.n<min?` <span class="meta">(need ${min-o.n} more)</span>`:""}</td><td class="n">${o.n}</td><td class="n">${rateCell(o)}</td>${showFun?`<td class="n">${funCell(o)}</td>`:""}</tr>`).join("")+`</table></div></div>`;
+ };
+ const sortRows=r=>r.sort((a,b)=>(b.n>=min)-(a.n>=min) || (b.e/b.n)-(a.e/a.n) || b.n-a.n);
+ const themes=sortRows(group(matches,m=>m.build));
+ const perks=sortRows(group(matches,m=>(m.perks||[]).filter(Boolean)));
+ const full=sortRows(group(matches.filter(m=>(m.perks||[]).filter(Boolean).length===4),m=>[...m.perks].sort((a,b)=>a.localeCompare(b)).join(" + ")));
+ const funThemes=themes.filter(o=>o.funN).sort((a,b)=>avgFun(b)-avgFun(a));
+ let h="";
+ if(funThemes.length) h+=`<p class="hint">🤡 Most fun theme so far: <b>${esc(funThemes[0].name)}</b> (${funCell(funThemes[0])})</p>`;
+ h+=table("Build themes",themes,"Theme",true)+table("Each perk",perks,"Perk",true)+table("Full 4-perk builds",full,"Build",true);
+ $("#buildsOut").innerHTML=h;
+}
+$("#minSample").addEventListener("input",renderBuilds);
+
+function renderPatch(){
+ const d=$("#patchDate").value; meta.patchDate=d; meta.patchName=$("#patchName").value.trim(); save();
+ if(!matches.length){ $("#patchOut").innerHTML=emptyBox("🩹","Nothing to compare yet","Log matches over time, then enter the date a patch dropped to see if it changed your escape rate and fun, killer by killer."); return; }
+ if(!d){ $("#patchOut").innerHTML=`<div class="card empty">Pick the patch date above to compare before vs after.</div>`; return; }
+ const before=matches.filter(m=>m.date<d), after=matches.filter(m=>m.date>=d);
+ const sum=l=>({n:l.length,e:l.filter(m=>isEsc(m.result)).length,funN:l.filter(m=>m.fun).length,funSum:l.reduce((s,m)=>s+(m.fun||0),0)});
+ const B=sum(before), A=sum(after);
+ const delta=(a,b)=>{ if(!a.n||!b.n) return "–"; const v=Math.round(100*a.e/a.n-100*b.e/b.n); return `<span class="${v>0?"up":v<0?"down":""}">${v>0?"+":""}${v} pts</span>`; };
+ let h=`<div class="card"><h3 style="margin-top:0">${esc(meta.patchName||"Patch")} overall</h3><div class="stat">
+  <div><b>${pct(B.e,B.n)}</b><span>before (${B.n})</span></div><div><b>${pct(A.e,A.n)}</b><span>after (${A.n})</span></div><div><b>${delta(A,B)}</b><span>change</span></div></div>
+  <p class="hint" style="margin-bottom:0">Fun: ${funCell(B)} before → ${funCell(A)} after. Small samples swing a lot, so give it 20+ matches each side before trusting it.</p></div>`;
+ const bk=new Map(group(before,m=>m.killer).map(o=>[norm(o.name),o])), ak=new Map(group(after,m=>m.killer).map(o=>[norm(o.name),o]));
+ const keys=[...new Set([...bk.keys(),...ak.keys()])];
+ const rows=keys.map(k=>({name:(ak.get(k)||bk.get(k)).name,b:bk.get(k)||{n:0,e:0},a:ak.get(k)||{n:0,e:0}})).sort((x,y)=>(y.a.n+y.b.n)-(x.a.n+x.b.n));
+ h+=`<div class="card"><h3 style="margin-top:0">By killer</h3><div class="tablewrap"><table><tr><th>Killer</th><th class="n">Before</th><th class="n">After</th><th class="n">Change</th></tr>`+
+  rows.map(r=>`<tr><td>${esc(r.name)}</td><td class="n">${pct(r.b.e,r.b.n)} <span class="meta">(${r.b.n})</span></td><td class="n">${pct(r.a.e,r.a.n)} <span class="meta">(${r.a.n})</span></td><td class="n">${delta(r.a,r.b)}</td></tr>`).join("")+`</table></div></div>`;
+ $("#patchOut").innerHTML=h;
+}
+$("#patchDate").addEventListener("change",renderPatch);$("#patchName").addEventListener("input",renderPatch);
+
+function renderAll(){ fillDynamicLists(); renderSummary(); renderHistory(); renderRivals(); renderBuilds(); renderPatch(); }
+
+// ---------- nav ----------
+const VIEWS=["log","history","rivals","builds","patch","roll","data"];
+function show(v){
+ VIEWS.forEach(x=>$("#v-"+x).classList.toggle("hidden",x!==v));
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+ window.scrollTo(0,0);
+}
+$("#nav").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) show(b.dataset.v); });
+$("#gearBtn").addEventListener("click",()=>show($("#v-data").classList.contains("hidden")?"data":"log"));
+
+// ---------- CSV / JSON ----------
+const COLS=["id","date","killer","result","fun","build","perk1","perk2","perk3","perk4","survivor","teammates_escaped","map","killer_name","note"];
+function csvCell(v){ v=String(v??""); if(/^[=+\-@\t\r]/.test(v)) v="'"+v; return /[",\n\r]/.test(v)?`"${v.replace(/"/g,'""')}"`:v; }
+function toCSV(){
+ return [COLS.join(",")].concat(sorted().map(m=>[m.id,m.date,m.killer,m.result,m.fun||"",m.build,...[0,1,2,3].map(i=>(m.perks||[])[i]||""),m.survivor,m.mates,m.map,m.killerName,m.note].map(csvCell).join(","))).join("\r\n");
+}
+function parseCSV(text){
+ const rows=[]; let row=[], f="", q=false;
+ text=text.replace(/^\uFEFF/,"");
+ for(let i=0;i<text.length;i++){ const c=text[i];
+  if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+  else if(c==='"') q=true; else if(c===","){row.push(f);f="";}
+  else if(c==="\n"||c==="\r"){ if(c==="\r"&&text[i+1]==="\n") i++; row.push(f); rows.push(row); row=[]; f=""; }
+  else f+=c; }
+ if(f!==""||row.length){ row.push(f); rows.push(row); }
+ return rows.filter(r=>r.some(x=>x.trim()!==""));
+}
+function download(name, text, type){
+ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name;
+ document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+}
+const unq=v=>String(v||"").trim().replace(/^'(?=[=+\-@])/,"");
+function rowToMatch(o){
+ let r=norm(o.result); if(r==="escape"||r==="escaped (gates)") r="gates"; if(r==="dead"||r==="sacrificed"||r==="killed") r="died";
+ if(!RESULTS[r]) return null;
+ const killer=canon(unq(o.killer),DATA.killers); if(!killer) return null;
+ let date=unq(o.date); if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) { const d=new Date(date); date=isNaN(d)?today():new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+ const fun=Math.min(5,Math.max(0,parseInt(o.fun)||0)); const mates=/^[0-3]$/.test(unq(o.teammates_escaped))?unq(o.teammates_escaped):"";
+ return {id:unq(o.id)||uid(), created:Date.now(), date, killer, result:r, fun, build:unq(o.build),
+  perks:["perk1","perk2","perk3","perk4"].map(k=>canon(unq(o[k]),PERKNAMES)), survivor:canon(unq(o.survivor),DATA.survivors),
+  mates, map:unq(o.map), killerName:unq(o.killer_name), note:unq(o.note)};
+}
+function importCSV(text){
+ const rows=parseCSV(text); if(rows.length<2) return toast("That CSV looks empty");
+ const head=rows[0].map(h=>norm(h).replace(/\s+/g,"_"));
+ if(!head.includes("killer")||!head.includes("result")) return toast("CSV needs at least 'killer' and 'result' columns");
+ const ids=new Set(matches.map(m=>m.id)); let added=0, skipped=0, bad=0;
+ for(const r of rows.slice(1)){ const o={}; head.forEach((h,i)=>o[h]=r[i]);
+  const m=rowToMatch(o); if(!m){bad++;continue;} if(ids.has(m.id)){skipped++;continue;} ids.add(m.id); matches.push(m); added++; }
+ save(); renderAll(); toast(`Imported ${added}${skipped?`, skipped ${skipped} duplicate`:""}${bad?`, ${bad} unreadable`:""}`);
+}
+$("#csvExport").addEventListener("click",()=>{ if(!matches.length) return toast("No matches to export yet"); download(`fog-log-${today()}.csv`,"\uFEFF"+toCSV(),"text/csv"); });
+$("#jsonExport").addEventListener("click",()=>download(`fog-log-backup-${today()}.json`,JSON.stringify({app:"fog-log",version:1,exported:new Date().toISOString(),matches,meta},null,1),"application/json"));
+$("#csvImportBtn").addEventListener("click",()=>$("#csvFile").click());
+$("#jsonImportBtn").addEventListener("click",()=>$("#jsonFile").click());
+$("#csvFile").addEventListener("change",async e=>{ const f=e.target.files[0]; if(f) importCSV(await f.text()); e.target.value=""; });
+function restoreJSON(text){
+ let d; try{ d=JSON.parse(text);}catch(err){ return toast("That's not a valid backup file"); }
+ const list=Array.isArray(d)?d:d.matches; if(!Array.isArray(list)) return toast("No matches found in that file");
+ const clean=list.map(m=>rowToMatch({...m,perk1:(m.perks||[])[0],perk2:(m.perks||[])[1],perk3:(m.perks||[])[2],perk4:(m.perks||[])[3],teammates_escaped:m.mates,killer_name:m.killerName})).filter(Boolean)
+  .map((m,i)=>({...m,created:list[i]&&list[i].created||m.created}));
+ if(!confirm(`Replace your ${matches.length} match(es) with ${clean.length} from the backup?`)) return;
+ matches=clean; if(d.meta&&typeof d.meta==="object") meta={...d.meta,rivalNotes:d.meta.rivalNotes||{}};
+ save(); syncInputs(); renderAll(); initRoll(); toast(`Restored ${clean.length} matches`);
+}
+$("#jsonFile").addEventListener("change",async e=>{ const f=e.target.files[0]; if(f) restoreJSON(await f.text()); e.target.value=""; });
+$("#wipeBtn").addEventListener("click",()=>{ if(matches.length && confirm(`Delete all ${matches.length} matches? Back up first if unsure!`)){ matches=[]; save(); renderAll(); toast("All cleared"); } });
+
+// ---------- ROLL A BUILD ----------
+// Mood tags for every survivor perk. Source of truth: data/perk_tags.txt (rebuild with src/build.py).
+// Format: "Perk name": ["mood,mood", "one-line description"]
+const PERK_TAGS = __PERK_TAGS__;
+const MOODS = [
+ {id:"annoy",  label:"😈 Annoy the killer",  name:"Annoy the killer"},
+ {id:"hidden", label:"🫥 Stay hidden",        name:"Stay hidden"},
+ {id:"chase",  label:"🏃 Chase / escape",     name:"Chase"},
+ {id:"support",label:"🩹 Healing / support",  name:"Support"},
+ {id:"gens",   label:"⚙️ Gens / objectives",  name:"Gen jockey"},
+ {id:"lucky",  label:"🍀 Lucky / hatch",      name:"Lucky"},
+ {id:"chaos",  label:"🤡 Pure chaos / meme",  name:"Pure chaos"}
+];
+const OWNER = Object.fromEntries(DATA.perks.map(p=>[p[0],p[1]]));
+const perkTags = n => (PERK_TAGS[n] ? PERK_TAGS[n][0].split(",") : []);
+let roll = [null,null,null,null], locked = [false,false,false,false];
+const selMoods = () => meta.moods && meta.moods.length ? meta.moods : [];
+const unowned = () => new Set(meta.unowned || []);
+function rollPool(){
+ const moods=selMoods(), no=unowned();
+ return Object.keys(PERK_TAGS).filter(n=>!no.has(n) && perkTags(n).some(t=>moods.includes(t)));
+}
+function renderMoods(){
+ const m=selMoods();
+ $("#moodChips").innerHTML=MOODS.map(x=>`<button type="button" class="chip ${m.includes(x.id)?"on":""}" data-m="${x.id}">${x.label} <span class="meta">${Object.keys(PERK_TAGS).filter(n=>perkTags(n).includes(x.id)).length}</span></button>`).join("");
+ const pool=rollPool(), need=4-locked.filter(Boolean).length;
+ $("#poolInfo").textContent = !m.length ? "Pick at least one vibe, then roll." :
+  `${pool.length} perk${pool.length===1?"":"s"} in the hat${(meta.unowned||[]).length?` (skipping ${(meta.unowned||[]).length} you don't own)`:""}.` + (pool.length<need?" Not enough to fill 4 slots, so add another vibe or tick more owned perks.":"");
+}
+$("#moodChips").addEventListener("click",e=>{
+ const b=e.target.closest("[data-m]"); if(!b) return;
+ const m=new Set(selMoods()); m.has(b.dataset.m)?m.delete(b.dataset.m):m.add(b.dataset.m);
+ meta.moods=MOODS.map(x=>x.id).filter(id=>m.has(id)); save(); renderMoods();
+});
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function doRoll(){
+ if(!selMoods().length) return toast("Pick a vibe first 😈🫥🤡");
+ const no=unowned(); locked=locked.map((l,i)=>l&&!!roll[i]&&!no.has(roll[i])); // unowned perks can't stay locked
+ const keep=roll.filter((p,i)=>locked[i]);
+ const pool=shuffle(rollPool().filter(n=>!keep.includes(n)));
+ const need=locked.filter(l=>!l).length;
+ if(pool.length<need) return toast("Not enough perks for that vibe. Add another mood!");
+ roll=roll.map((p,i)=> locked[i] ? p : pool.pop());
+ const d=$("#rollDie"); d.classList.remove("rolling"); void d.offsetWidth; d.classList.add("rolling");
+ meta.lastRoll={roll,locked}; save(); renderRoll(); renderMoods();
+}
+function rollBuildName(){
+ const names=MOODS.filter(x=>selMoods().includes(x.id)).map(x=>x.name);
+ return (names.length>2 ? names.slice(0,2).join(" + ")+" + more" : names.join(" + ")) + " roll";
+}
+function renderRoll(){
+ if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Pick a vibe and hit <b>Roll</b>. Lock (🔒) any perk you like, then reroll the rest. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
+ $("#rollOut").innerHTML=`<div class="card">`+roll.map((p,i)=>{
+  if(!p) return "";
+  const info=PERK_TAGS[p]||["",""];
+  const tags=perkTags(p).map(t=>{const m=MOODS.find(x=>x.id===t);return `<span class="tag">${m?m.label:esc(t)}</span>`;}).join("");
+  return `<div class="perkcard ${locked[i]?"locked":""}"><div class="num">${i+1}</div><div class="grow">
+   <b>${esc(p)}</b> <span class="meta">· ${esc(OWNER[p]||"")}</span>
+   <div style="margin:3px 0">${esc(info[1])}</div><div>${tags}</div></div>
+   <button type="button" class="lockbtn" data-lock="${i}" aria-label="${locked[i]?"Unlock":"Lock"} perk ${i+1}">${locked[i]?"🔒":"🔓"}</button></div>`;
+ }).join("")+`<div class="row" style="margin-top:10px"><button class="btn" type="button" id="rerollBtn">🎲 Reroll unlocked</button><button class="btn" type="button" id="useBuild" style="background:var(--red);border-color:var(--red);color:#fff;font-weight:600">✅ Use this build</button></div>
+  <p class="hint" style="margin-bottom:0">Build name will be: <b>${esc(rollBuildName())}</b></p></div>`;
+}
+$("#rollBtn").addEventListener("click",doRoll);
+$("#rollOut").addEventListener("click",e=>{
+ const l=e.target.closest("[data-lock]");
+ if(l){ const i=+l.dataset.lock; locked[i]=!locked[i]; meta.lastRoll={roll,locked}; save(); renderRoll(); renderMoods(); return; }
+ if(e.target.closest("#rerollBtn")) return doRoll();
+ if(e.target.closest("#useBuild")){
+  if(editingId) resetForm();
+  roll.forEach((p,i)=>$("#f-p"+(i+1)).value=p||"");
+  $("#f-build").value=rollBuildName(); $("#moreDetails").open=true;
+  show("log"); toast("Build loaded. Go have fun! 🎲");
+ }
+});
+function renderOwned(){
+ const no=unowned(), q=norm($("#ownSearch").value), all=Object.keys(PERK_TAGS);
+ $("#ownCount").textContent=`${all.length-no.size}/${all.length}`;
+ const shown=all.filter(n=>!q||norm(n+" "+(OWNER[n]||"")).includes(q));
+ $("#ownList").innerHTML=shown.map(n=>`<label><input type="checkbox" data-own="${esc(n)}" ${no.has(n)?"":"checked"}><span class="grow">${esc(n)} <span class="meta">· ${esc(OWNER[n]||"")}</span></span></label>`).join("") || `<div class="empty">No perk matches that.</div>`;
+}
+$("#ownSearch").addEventListener("input",renderOwned);
+$("#ownList").addEventListener("change",e=>{
+ const c=e.target.closest("[data-own]"); if(!c) return;
+ const no=unowned(); c.checked?no.delete(c.dataset.own):no.add(c.dataset.own);
+ meta.unowned=[...no]; save(); $("#ownCount").textContent=`${Object.keys(PERK_TAGS).length-no.size}/${Object.keys(PERK_TAGS).length}`; renderMoods();
+});
+$("#ownAll").addEventListener("click",()=>{ meta.unowned=[]; save(); renderOwned(); renderMoods(); });
+$("#ownNone").addEventListener("click",()=>{
+ const q=norm($("#ownSearch").value), no=unowned();
+ Object.keys(PERK_TAGS).filter(n=>!q||norm(n+" "+(OWNER[n]||"")).includes(q)).forEach(n=>no.add(n));
+ meta.unowned=[...no]; save(); renderOwned(); renderMoods();
+});
+function initRoll(){
+ if(meta.lastRoll && Array.isArray(meta.lastRoll.roll)){
+  roll=meta.lastRoll.roll.map(p=>PERK_TAGS[p]?p:null).concat([null,null,null,null]).slice(0,4);
+  locked=(meta.lastRoll.locked||[]).map(Boolean).concat([false,false,false,false]).slice(0,4);
+ }
+ renderMoods(); renderRoll(); renderOwned();
+}
+
+function syncInputs(){ $("#minSample").value=meta.minSample||5; $("#patchDate").value=meta.patchDate||""; $("#patchName").value=meta.patchName||""; }
+// expose for testing/debugging
+window.FogLog={importCSV,restoreJSON,toCSV,rollPool,get roll(){return roll;},get matches(){return matches;}};
+
+load(); fillLists(); syncInputs(); resetForm(); renderAll(); initRoll();
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+A Place For Us | While healing another Survivor, you both gain X. Whenever you finish healing the Obsession, you both gain X for Xs. When the trial starts, you are less likely to be the Obsession.
+Ace in the Hole | Whenever you loot an item from a Chest, it will have: A Visceral or lower rarity add-on. X% chance for an Uncommon or lower rarity add-on. When you escape, you keep your add-ons.
+Adrenaline | When all Generators are completed, if you are downed or injured, heal instantly. Then, ignoring X: You gain X% X for Xs. You gain X for Xs.
+Aftercare | You and up to X Survivors see each other's Auras whenever: You unhook them, or they unhook you. You finish healing them, or they finish healing you. This effect lasts until you are hooked.
+Alert | Whenever the Killer breaks a Pallet or Breakable Wall, or damages a Generator: You hear a sound cue. You see their Aura for Xs.
+Any Means Necessary | While next to a Dropped Pallet, use X for Xs to reset it. You see the Auras of Dropped Pallets.
+Apocalyptic Ingenuity | After you rummage or unlock X Chest, while next to a Broken Pallet, use X for Xs to create a Fragile Pallet. Within Xm, you see the Auras of Broken Pallets.
+Appraisal | When the trial starts, you earn X Tokens. Spend X Token to rummage an empty Chest, up to X times per Chest. You rummage Chests X% faster.
+Autodidact | You start the trial with X Tokens, up to X, and your good basic healing Skill Checks give X% less progress. While healing another Survivor without a Med-Kit: Whenever you hit a basic Skill Check, you earn X token. Whenever you hit a basic Skill Check, for each
+Babysitter | Whenever you unhook a Survivor: They gain X% X for Xs. They leave no Pools of Blood for Xs. They leave no Scratch Marks for Xs. You see the Killer's Aura for Xs.
+Background Player | Whenever the Killer picks-up another Survivor, for the next Xs, when you start running: Gain X% X for Xs. Gain X for Xs.
+Bada Bada Boom | After repairing X% of Generators, while next to a Window, use X to trap it for Xs. All Survivors see that Window's Aura for that time. When the Killer vaults that Window, the trap explodes and they gain X% X for Xs.
+Balanced Landing | Whenever you fall from at least Xm: You gain X% X for Xs. You gain X for Xs. Your stagger is X% shorter. Your Grunts from falling are X% quieter.
+Bardic Inspiration | While idle, use X to perform, empowering all Survivors within Xm for up to Xs. While you are performing, other Survivors will see your Aura. Roll a d20: 1 | You scream, but nothing happens. 2-10 | Basic Skill Checks give +X% progress. 11-19 | Basic Skill Check
+Better Than New | Whenever you finish healing another Survivor, until they take damage: They bless and cleanse Totems X% faster. They heal X% faster. They unlock Chests X% faster.
+Better Together | While you are repairing a Generator: Other Survivors see that Generator's Aura. Whenever the Killer downs a Survivor, you see the Auras of all Survivors for Xs.
+Bite the Bullet | While healing, you and the healed Survivor make no noises or Grunts of Pain. Whenever you miss a basic Skill Check: You lose only X% progress. The Killer is not alerted.
+Blast Mine | After repairing X% of Generators, while next to a Generator, use X to trap it for Xs. All Survivors see that Generator's Aura for that time. When the Killer damages that Generator, the trap explodes, then: They are stunned for Xs. Everyone nearby looking at th
+Blood Pact | While you are not the Obsession: While you or the Obsession are injured, you see each other's Auras. Whenever you finish healing the Obsession, or they finish healing you, while within Xm of each other, you both gain X% X. While you are the Obsession, if you a
+Blood Rush | Until all Generators are completed, whenever you are unhooked, for the next Xs, while X, use X to lose X instantly. This is disabled by conspicuous actions.
+Boil Over | While carried by the Killer: Whenever the Killer falls from at least Xm, you gain X% of your current wiggle progress. Your wiggle is X% stronger. Within Xm, the Killer cannot see Hook Auras.
+Bond | Within Xm, you see other Survivors' Auras.
+Boon: Circle of Healing | While next to a Totem, use X to bless it, creating a unique Boon Totem that combines all your Boons. Survivors within the Boon's range: While healing without a Med-Kit, they heal others X% faster. While injured, other Survivors see their Aura.
+Boon: Dark Theory | While next to a Totem, use X to bless it, creating a unique Boon Totem that combines all your Boons. Survivors within the Boon's range gain X% X. When leaving the range, this ends after Xs.
+Boon: Exponential | While next to a Totem, use X to bless it, creating a unique Boon Totem that combines all your Boons. Downed Survivors within the Boon's range: Recover X% faster. Can fully recover.
+Boon: Illumination | While next to a Totem, use X to bless it, creating a unique Boon Totem that combines all your Boons. Survivors within the Boon's range: See the Auras of Chests. See the Auras of Generators. While you have a Boon Totem, you bless X% faster.
+Boon: Shadow Step | While next to a Totem, use X to bless it, creating a unique Boon Totem that combines all your Boons. Survivors within the Boon's range: Leave no Scratch Marks. Their Auras cannot be seen by the Killer. When leaving the range, this ends after Xs.
+Boon: Steadfast | While next to a Totem, use X to bless it, creating a unique Boon Totem that combines all your Boons. Generators within the Boon's range: Regress X% slower. Survivors repair them X% faster. Survivors within the Boon's range see the Auras of affected Generators.
+Borrowed Time | Whenever you unhook a Survivor: They retain their unhook X for Xs longer. They retain their unhook X for Xs longer.
+Botany Knowledge | You heal X% faster.
+Breakdown | Whenever you are unhooked: The Hook breaks, then is repaired after Xs. You see the Killer's Aura for Xs.
+Breakout | Within Xm of a carried Survivor: You gain X% X. The carried Survivor wiggles X% faster.
+Buckle Up | While healing a downed Survivor, you both see the Killer's Aura. Whenever you finish healing a downed Survivor or fully recover: The Survivor gains X% X for Xs. The Survivor leaves no Scratch Marks for Xs.
+Built to Last | While holding a depleted item, after hiding in a Locker for Xs, it is recharged to X%. Each time you recharge an item this way, it recharges X% fewer Charges.
+Calm Spirit | You do not scare Crows or scream. You bless and cleanse Totems, and unlock Chests silently, and X% faster.
+Camaraderie | While you are struggling on Hook, when another Survivor gets within Xm, the timer is paused for Xs.
+Champion of Light | While you are using a Flashlight, you gain X% X. Whenever you blind the Killer, they gain X% X for Xs. Cooldown: Xs.
+Change of Plan | When the trial starts, you earn X Tokens. While hiding in a Locker and holding a non-event Toolbox, use X and spend 1 Token to transform your Toolbox and add-ons into a Med-Kit of the same rarity with X% Charges and random add-ons of the same rarity.
+Chemical Trap | After repairing X% of Generators, while next to a Dropped Pallet, use X to trap it for Xs. All Survivors see that Pallet's Aura for that time. When the Killer breaks that Pallet, the trap explodes and they gain X% X for Xs.
+Clairvoyance | Whenever you bless or cleanse a Totem, while not holding an item, use X to, for up to Xs and within Xm: See the Auras of Chests. See the Auras of Exit Gate Switches. See the Auras of Generators. See the Aura of the Hatch. See the Auras of Hooks.
+Clean Break | Whenever you finish healing another Survivor, while being healed by another Survivor, use X to gain X. After Xs, if you are not downed, you are instantly healed.
+Come and Get Me! | Whenever you unhook a Survivor, while crouched and idle, use X to have injured and downed Survivors within Xm: Make no Grunts of Pain for Xs. Leave no Pools of Blood for Xs. Leave no Scratch Marks for Xs. You scream, then the Killer sees your Aura for Xs.
+Conviction | After you finish healing X other Survivor, while downed with at least X% recovery, use X to recover instantly. You gain X, then, after Xs, you are downed instantly.
+Corrective Action | When the trial starts, you earn X Tokens, up to X. Whenever you hit a great basic Skill Check, earn X Token. Whenever another Survivor misses a basic Skill Check, spend X Token: The missed Skill Check becomes a good Skill Check. You see that Survivor's Aura fo
+Counterforce | When the trial starts, you earn X Token. Whenever you cleanse a Totem, earn X Token, then, you see the Aura of the farthest Totem for Xs. For each Token, you cleanse Totems X% faster.
+Cross-Examination | While in the Killer's Terror Radius and not being chased by the Killer, they leave Light Marks that last for Xs that you can see. While on the Killer's Light Marks, you gain X. This ends after Xs.
+Cut Loose | While chased by the Killer, whenever you medium or fast-vault: For up to Xs, your medium and fast vaults are silent. During that time, whenever you medium or fast-vault, the timer is reset. Cooldown: Xs.
+Dance With Me | Whenever you fast-exit a Locker, medium-vault, or fast-vault, you leave no Scratch Marks for Xs. Cooldown: Xs.
+Dark Sense | Whenever a Generator is completed, when the Killer gets within Xm of you, for Xs: You see the Auras of Pallets and Windows within Xm. You see the Auras of other Survivors. You see the Killer's Aura.
+Dead Hard | Whenever you are unhooked, while injured and running, use X: You gain X for Xs. You gain X for Xs.
+Deadline | While injured, basic Skill Checks: Are X% more likely to appear. Appear in random places. Whenever you miss a basic Skill Check, you lose X% less progress.
+Deception | Whenever you attempt to fast-enter a Locker: You do not enter the Locker. The Killer is alerted. You leave no Pools of Blood for Xs. You leave no Scratch Marks for Xs. Cooldown: Xs.
+Decisive Strike | Until all Generators are completed, whenever you are unhooked, for the next Xs: when the Killer picks you up, once per trial, hit a Special Skill check: Stun the Killer for Xs. Become the Obsession. This is disabled by conspicuous actions. At the start of the 
+Deja Vu | You see the Auras of the X Generators closest to each other and repair them X% faster.
+Deliverance | Once per trial, when you safely unhook another Survivor, you can unhook yourself. When you unhook yourself this way, you gain X for Xs.
+Desperate Measures | For each injured, downed, or hooked Survivor: You heal X% faster. You unhook X% faster.
+Detective's Hunch | Whenever a Generator is completed, for Xs, within Xm of you: You see the Auras of Chests. You see the Auras of Generators. You see the Auras of Totems.
+Distortion | When the trial starts, and after being chased for Xs, you earn X Token, up to X. While not downed, whenever the Killer attempts to see your Aura, spend X Token. Then, for the next Xs: The Killer cannot see your Aura. You leave no Scratch Marks.
+Diversion | After hiding for Xs within the Killer's Terror Radius, while crouched and idle, use X to throw a pebble Xm away: The Killer is alerted. The pebble leaves Scratch Marks.
+Do No Harm | While healing another Survivor, for each Hook State they have: You heal X% faster. Great basic Skill Checks, grant X% more progress. Basic Skill Checks are X% more likely to appear.
+Dramaturgy | While healthy and running, use X: You gain X% X for Xs. You gain X for Xs. Then, one happens at random: You gain X% X for Xs. You gain X for Xs. You gain a random rare item with random add-ons. You scream, but nothing happens. The same effect cannot happen twi
+Duty of Care | While healthy, whenever you take a protection hit, other Survivors within Xm gain X% X for Xs.
+Empathic Connection | You heal other Survivors X% faster. Injured Survivors see your Aura.
+Empathy | Within Xm, you see the Auras of injured Survivors.
+Extrasensory Perception | After crouching for Xs: You see Auras in an expanding radius up to Xm. You gain X. You gain X. When you stop crouching, or after Xs, cooldown: Xs.
+Exultation | Whenever you Pallet-stun the Killer: Your item rarity is upgraded to the next tier, if possible. If the item was upgraded, it recharges X% Charges. Cooldown: Xs.
+Eyes of Belmont | Whenever a Generator is completed, you see the Killer's Aura for Xs. Whenever you see the Killer's Aura for a duration, it is Xs longer.
+Fast Track | Whenever you unhook another Survivor, you earn X Token, up to X. While repairing, whenever you hit a great basic Skill Check, spend all Tokens. For each Token spent, the Generator gains X% permanent progress.
+Finesse | While healthy, you fast-vault X% faster. Whenever you fast-vault, cooldown: Xs.
+Five Moves Ahead | While you are in the Killer's Terror Radius or chased by the Killer: You see the Auras of the X closest Pallets. After you drop a Pallet, you start moving X% earlier. Whenever you drop a Pallet, cooldown: Xs.
+Fixated | While walking, you gain X% X. You see your own Scratch Marks.
+Flashbang | After repairing X% of Generators, while hiding in a Locker, use X to craft a Flashbang. When you use the Flashbang: Everyone nearby looking at the detonation is blinded. The Killer is alerted.
+Flip-Flop | While downed, whenever the Killer picks you up, X% of your recovery progress is added to your wiggle progress, up to X%.
+Flow State | Whenever a Generator is completed, earn X Token, up to X. For each Token: You bless and cleanse Totems X% faster. You heal X% faster. You unhook Survivors X% faster.
+Fogwise | While repairing, whenever you hit a great basic Skill Check, you see the Killer's Aura for Xs.
+For the People | While healthy and healing another Survivor without a Med-Kit, use X to heal them instantly: You take damage. You gain X for Xs. You become the Obsession. When the trial starts, you are less likely to be the Obsession.
+Friendly Competition | Whenever you finish repairing a Generator with at least 1 other Survivor, Survivors who finished repairing it repair X% faster for Xs.
+Fruits of Your Labor | Whenever a Generator is completed, you earn X Token. Whenever you finish repairing a Generator, for each Token: You gain X% X for Xs. You gain X% healing progress.
+Ghost Notes | While you have X, your Scratch Marks disappear X% faster. You lose X X% faster.
+Hardened | When you have blessed or cleansed a Totem and unlocked a Chest, whenever you would scream, you see the Killer's Aura for Xs instead.
+Head On | After hiding in a Locker for Xs, fast-exit to stun the Killer for Xs if they are within Xm, then gain X for Xs.
+Hope | When all Generators are completed, you gain X% X.
+Hyperfocus | Whenever you hit a great basic Skill Check, you earn X Token, up to X. For each Token, basic Skill Checks: Appear X% more often. Spin X% faster. Whenever you hit a great, give X% more progress. Whenever you miss a basic Skill Check, hit a good Skill Check, or 
+Inner Focus | Whenever the Killer damages another Survivor, you see the Killer's Aura for Xs. You see other Survivors' Scratch Marks.
+Inner Strength | Whenever you cleanse a Totem, while injured and not X, after hiding in a Locker for Xs, you become healthy instantly.
+Invocation: Treacherous Crows | While in the Basement next to the circle, use X to invoke. While invoking, other Survivors see your Aura and can join your Invocation. When the Invocation is completed: Whenever the Killer scares a Crow while a Survivor is in their Terror Radius, all Survivors
+Invocation: Weaving Spiders | While in the Basement next to the circle, use X to invoke. While invoking, other Survivors see your Aura and can join your Invocation. When the Invocation is completed: All Generators gain X permanent charges. You become injured. You gain X. Each Invocation ca
+Iron Will | While injured and not X, your Grunts of Pain are X% quieter.
+Kindred | While you are hooked, all Survivors see each others' Auras. While the Killer is within Xm, all Survivors sees the Killer's Aura. While another Survivor is hooked, you see the Auras of other Survivors. While the Killer is within Xm of the hooked Survivor, you s
+Last Stand | After hiding for Xs within the Killer's Terror Radius, when you fast-vault, once per trial, stun the Killer for Xs if they are within Xm.
+Leader | Within Xm of you, other Survivors: Cleanse Totems X% faster. Heal X% faster. Open Exit Gates X% faster. Sabotage Hooks X% faster. Unhook Survivors X% faster. Unlock Chests X% faster. After they leave your range, this ends after Xs.
+Left Behind | When all other Survivors are dead, while within Xm of the Hatch, you see its Aura.
+Lend a Hand | Whenever you bless or cleanse X Totem, while healing another Survivor and only once per Survivor, use X to give them X permanent healing charges.
+Light-footed | While healthy and running, your footsteps are silent to the Killer. Whenever you do a fast-action, cooldown: Xs.
+Lightweight | Your Scratch Marks disappear Xs faster and appear more spread out.
+Lithe | Whenever you medium or fast-vault: You gain X% X for Xs. You gain X for Xs.
+Low Profile | When all other Survivors are downed or hooked, for Xs: You make no Grunts of Pain. You leave no Pools of Blood. You leave no Scratch Marks.
+Lucky Break | While injured, for up to Xs: You leave no Pools of Blood. You leave no Scratch Marks. For each second spent healing another Survivor, recharge the duration by Xs.
+Lucky Star | While hiding in a Locker, you make no Grunts of Pain. Whenever you exit a Locker, for Xs: You see the Aura of the closest Generator. You see the Auras of other Survivors. You make no Grunts of Pain. You leave no Pools of Blood. Cooldown: Xs.
+Made for This | While injured, whenever you finish healing another Survivor, you gain X for Xs. While you are running and have X, you gain X% X.
+Mettle of Man | After taking X protection hits, while injured and until you go down, the next time you would be downed by the Killer, take no damage instead. When you become healthy, while you are at least Xm from the Killer, they see your Aura. When the trial starts, you are
+Mirrored Illusion | After repairing X% of Generators, while next to a Chest, Exit Gate Switch, Generator, or Totem, use X to create a static illusion for Xs.
+Moment of Glory | After you rummage or unlock X Chest, while not X, when you become injured, gain X. After Xs, if you are not downed, you are instantly healed.
+No Mither | When the trial starts, you become injured, then: You gain X. Your Grunts of Pain are X% quieter. You leave no Pools of Blood. You recover X% faster. You can fully recover.
+No One Left Behind | When all Generators are completed: You heal other Survivors X% faster. You unhook other Survivors X% faster. Whenever you unhook a Survivor, they gain X% more X. You see the Auras of other Survivors.
+Object of Obsession | While you are the Obsession, every Xs, the Killer sees your Aura for Xs. While the Killer sees your Aura: You see their Aura. You bless and cleanse Totems X% faster. You heal X% faster. You repair X% faster. When the trial starts, you are more likely to be the
+Off the Record | Until all Generators are completed, whenever you are unhooked, for the next Xs: You gain X. Your Grunts of Pain are X% quieter. The Killer cannot see your Aura.
+ONE-TWO-THREE-FOUR! | While idle, use X to perform, empowering all Survivors within Xm for up to Xs. While you are performing, other Survivors will see your Aura. You get special Skill Checks during that time: while healing or repairing, basic Skill Checks are X% more likely to app
+Open-Handed | All Survivors see Auras that have a range from Xm farther.
+Overcome | Whenever you take damage: You retain your speed boost for Xs longer. You gain X for Xs.
+Overzealous | Whenever you bless or cleanse a Totem, until you take damage, you repair X% faster. If that Totem was a Hex Totem, the effect is doubled.
+Parental Guidance | Whenever you stun the Killer, for Xs: You make no Grunts of Pain. You leave no Pools of Blood. You leave no Scratch Marks.
+Pharmacy | Whenever you unlock a Chest, it will contain a rare Med-Kit. You unlock and rummage Chests X% faster. You can rummage each Chest 1 time. The range at which the Killer hears you unlocking Chests is Xm shorter.
+Plot Twist | While injured, crouched and idle, use X to be downed silently. While downed this way, once per trial: You make no Grunts of Pain. You leave no Pools of Blood. You recover X% faster. You can fully recover. Whenever you recover this way: You gain X% X for Xs. Yo
+Plunderer's Instinct | You see the Aura of Chests and items. You unlock Chests X% faster. Whenever you unlock a Chest you are X% more likely to find an Item of higher rarity.
+Poised | The first time you start repairing each Generator, you see the Killer's Aura for Xs. Whenever a Generator is completed, you leave no Scratch Marks for Xs.
+Potential Energy | While repairing, use X to earn Tokens instead of progress, up to X Tokens. While you have at least X Token, X to spend all Tokens and gain X% progress for each Token spent. Whenever you take damage, lose all Tokens.
+Power Struggle | While carried by the Killer, while you have at least X% wiggle and next to an Upright Pallet, you can drop it to stun the Killer. While downed, you see the Auras of Upright Pallets.
+Premonition | While not chased by the Killer, whenever you look in the Killer’s direction within Xm: You are notified. You see the Killer's Aura for Xs. Cooldown: Xs.
+Prove Thyself | For each other Survivor within Xm of you, all Survivors repair X% faster.
+Quick & Quiet | You hide in Lockers and vault silently. The Killer is not alerted. Cooldown: Xs.
+Quick Gambit | While chased by the Killer: You see the Auras of other Survivors. Other Survivors repair X% faster. Whenever you take damage, cooldown: Xs.
+Rapid Response | Whenever you fast-exit a Locker, you gain X for Xs. Whenever you gain X, you see the Killer's Aura for Xs.
+Reactive Healing | While injured, whenever another Survivor within Xm of you takes damage, you gain X% missing healing progress.
+Reassurance | Once per Hook State, while within Xm of a hooked Survivor, use X to stop the sacrifice progress for Xs.
+Red Herring | After you repair a Generator for at least Xs, you see its Aura. When you hide in a Locker, the Killer is alerted to the Generator. Cooldown: Xs.
+Repressed Alliance | After repairing Generators for Xs, while repairing a Generator alone, use X to block that generator for Xs.
+Residual Manifest | Whenever you blind the Killer, they gain X for Xs. You can rummage Chests X time. The first time you rummage a Chest, it will contain an uncommon Flashlight.
+Resilience | While injured: You bless and cleanse Totems X% faster. You heal X% faster. You open Exit Gates X% faster. You repair X% faster. You sabotage Hooks X% faster. You unhook Survivors X% faster. You unlock chests X% faster. You vault X% faster.
+Resurgence | Whenever you are unhooked, you gain X% healing progress.
+Road Life | While injured and repairing a Generator: Whenever you hit a great basic Skill Check, you earn X Token. Whenever you miss a basic Skill Check, you lose X token. When you have X Tokens, you can heal yourself. Spend all Tokens to heal yourself X% faster. When you
+Rookie Spirit | After you hit X basic repair Skill Checks, while a Generator is regressing, you see its Aura.
+Saboteur | Within Xm of where another Survivor was picked-up by the Killer and is being carried, you see the Auras of Hooks and Scourge Hooks. You can sabotage Hooks. Cooldown: Xs.
+Salvation's Cry | Whenever the Killer starts chasing you: You see the Auras of other Survivors for Xs. Survivors not being chased see your Aura for Xs. Survivors not being chased see the Killer's Aura for Xs.
+Scavenger | While repairing and while your Toolbox is empty, whenever you hit a great basic Skill Check, you earn X Token. When you have X Tokens, spend them all: Your Toolbox is recharged instantly. You repair X% slower for Xs. You can rummage Chests X time. The first ti
+Scene Partner | While you are within the Killer's Terror Radius, whenever you look at them: Scream, then see the Killer's Aura for Xs. There is a X% chance you will scream again. If you do, you see the Killer's Aura for Xs more. Cooldown: Xs.
+Second Wind | After you heal X Survivor, while not X, when you are unhooked, you gain X. After Xs, if you are not downed, you are instantly healed.
+Self-Care | You can heal yourself, but X% slower.
+Self-Preservation | Whenever another Survivor is hooked, you gain X for Xs.
+Shoulder the Burden | Once per trial, if you have less than X Hook States while you are next to a hooked Survivor, use X to unhook them: They lose 1 Hook State. You gain 1 Hook State. You scream. You become Injured. You gain X for Xs.
+Slippery Meat | Other Survivors unhook you X% faster. Whenever you are unhooked, you gain X% more Haste.
+Small Game | Within Xm of a Totem, you see its Aura.
+Smash Hit | Whenever you Pallet-stun the Killer: You gain X% X for Xs. You gain X for Xs.
+Sole Survivor | Whenever you are hooked or complete a Generator, you earn X Token, up to X. For each Token, other Survivors open Exit Gates X% faster. When you are the last Survivor, if you have at least X Tokens: You can unlock the Hatch. For each Token, the Killer cannot se
+Solidarity | While injured and healing another Survivor, you also gain healing progress at X% speed.
+Soul Guard | While hexed, you can fully recover. Whenever you fully recover, you gain X for Xs. Cooldown: Xs.
+Specialist | Whenever you rummage or unlock a Chest, you earn X Token, up to X. While repairing a Generator, whenever you hit a great basic Skill Check, spend all Tokens. For each Token spent, the Generator gains X% permanent progress.
+Spine Chill | Whenever the Killer looks at you within Xm: You are notified. You cannot scream for Xs. You vault X% faster for Xs. Cooldown: Xs
+Sprint Burst | Whenever you start running: You gain X% X for Xs. You gain X for Xs.
+Stake Out | After hiding for Xs within Xm of the Killer, while in their Terror Radius, you earn X Token, up to X. While you have at least X Token, basic Skill Checks are replaced by special Skill Checks. Special Skill Checks grant +X% more progress. Whenever you hit or mi
+Still Sight | After being idle for Xs, within Xm, until you start moving: You see the Killer's Aura. You see the Auras of Chests. You see the Auras of Generators.
+Streetwise | The first time you deplete an item's Charges, you see the Killer's Aura for Xs. Whenever you loot an item from a Chest, it has X% more Charges.
+Strength in Shadows | While in the Basement: You can heal yourself, but X% slower. Whenever you finish healing, you see the Killer's Aura for Xs.
+Teamwork: Collective Stealth | Whenever another Survivor finishes healing you, while within Xm of each other, you both leave no Scratch Marks. When either of you leaves the range, this ends after Xs.
+Teamwork: Full Circuit | For each other Survivor repairing a Generator with you, good basic Skill Check zones are X% bigger. While repairing with at least 1 other Survivor, you repair X% faster.
+Teamwork: Power of Two | Whenever you finish healing another Survivor, while you stay within Xm of each other, you both gain X% X. When either of you leaves the range, this ends after Xs.
+Teamwork: Soft-Spoken | For each other Survivor repairing a Generator with you, the range of Generator repair noises is X% smaller. While repairing with at least 1 other Survivor, you repair X% faster.
+Teamwork: Throw Down | Whenever you blind or Pallet-stun the Killer, for Xs, other injured Survivors within Xm: Gain X. See the Killer's Aura.
+Teamwork: Toughen Up | While injured, whenever another Survivor within Xm of you blinds or Pallet-stuns the Killer, for Xs: You make no Grunts of Pain. You leave no Pools of Blood. You leave no Scratch Marks.
+Technician | While repairing a Generator: The range of Generator repair noises is Xm shorter. Whenever you miss a basic Skill Check, the Generator does not explode, but loses X% more progress.
+Tenacity | While downed: You gain X% X. You can crawl and recover at the same time. Your Grunts of Pain are X% quieter. The Killer cannot see your Aura.
+This Is Not Happening | Good basic Skill Check zones are X% bigger.
+Troubleshooter | While chased by the Killer: You see the Aura of the Generator with the most progress. Whenever you drop a Pallet, you see the Killer's Aura for Xs. When the Killer stops chasing you, this ends after Xs.
+Unbreakable | Once per trial, while downed by the Killer, you can fully recover. While downed, you recover X% faster.
+Up the Ante | For each other Survivor alive, all Survivors are X% luckier. All Survivors can attempt to unhook themselves.
+Urban Evasion | While crouched, you gain X% X.
+Vigil | All Survivors within Xm of you lose X X% faster. This effect ends Xs after they leave your range.
+Visionary | Within Xm of you, you see the Auras of Generators. Whenever a Generator is completed, cooldown: Xs.
+Wake Up! | When all Generators are completed: You see the Auras of Exit Gate Switches. While opening an Exit Gate, other Survivors see your Aura. You open Exit Gates X% faster, and an additional X% faster for each other Survivor alive.
+We See You | Whenever the Killer sees your Aura, you earn X Token. Cooldown: Xs. When you have X Tokens, spend them all. Then, all Survivors see the Killer's Aura for Xs.
+We'll make it | Whenever you unhook a Survivor, for Xs, you heal other Survivors X% faster.
+We're Gonna Live Forever | You heal downed Survivors X% faster. Whenever you finish healing a downed Survivor, they gain X for Xs. Cooldown: Xs.
+Wicked | While in the Basement, you can unhook yourself. Whenever you are unhooked, you see the Killer's Aura for Xs.
+Wide Open Throttle | Whenever you fast-vault a Pallet: You gain X% X for Xs. The Pallet is reset, blocked for Xs, and all Survivors see its Aura for that time. Cooldown: Xs.
+Windows of Opportunity | Within Xm of you see the Auras of Windows. You vault Windows X% faster. Whenever you vault a Window, cooldown: Xs.
+Wiretap | After repairing X% of Generators, while next to a Generator, use X to trap it for Xs or until the Killer damages that Generator. All Survivors see that Generator's Aura for that time. While the Killer is within Xm of that Generator, all Survivors see the Kille
