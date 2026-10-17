@@ -1,6 +1,6 @@
 # Fog Log perk tags. Format: Perk name | tags (comma list) | one-line plain description
 # Tags: annoy, hidden, chase, support, gens, lucky, chaos
-A Place For Us|support|Healing teammates speeds you both up a bit; you're less likely to be the Obsession.
+A Place For Us|support|While you heal a teammate you both become hard to track (no aura, scratch marks or grunts); you're less likely to be the Obsession.
 Ace in the Hole|lucky,chaos|Items from chests come with free add-ons, and you keep add-ons when you escape.
 Adrenaline|chase,support|When the last gen pops, you heal one health state and get a speed burst.
 Aftercare|support|You and teammates you unhook or heal see each other's auras.
@@ -19,7 +19,7 @@ Better Together|gens,support|Teammates see the gen you're on; you see everyone w
 Bite the Bullet|support,hidden|Healing makes no noise and a missed skill check doesn't alert the killer.
 Blast Mine|annoy,gens|Trap a gen; when the killer kicks it, it explodes and blinds/stuns them.
 Blood Pact|support|Linked with the Obsession: see each other while injured, speed up after heals.
-Blood Rush|chase,chaos|After being unhooked, choose to drop to injured-and-broken for a sprint.
+Blood Rush|chase,chaos|After being unhooked, press a button to shake off Exhausted instantly so your sprint perk is ready again.
 Boil Over|annoy|Wiggle harder while carried and hide nearby hook auras from the killer.
 Bond|support|See nearby teammates' auras.
 Boon: Circle of Healing|support|Bless a totem so nearby survivors heal faster (and can find each other).
@@ -45,7 +45,7 @@ Come and Get Me!|annoy,support,chaos|After an unhook, scream on purpose to pull 
 Conviction|support|After healing someone, instantly pick yourself up from the ground for a while.
 Corrective Action|gens,support|Turn teammates' missed skill checks into good ones.
 Counterforce|gens|Cleanse totems faster and see the next totem.
-Cross-Examination|chase|See the killer's light trail and get a boost when you stand on it.
+Cross-Examination|chase|Near the killer (not in chase) you see their light trail; standing on it makes you hard to track.
 Cut Loose|chase|Fast vaults during chase become silent for a while.
 Dance With Me|hidden,chase|Vaults and locker exits leave no scratch marks for a moment.
 Dark Sense|chase|After a gen pops, see the killer, pallets and windows when they come close.
@@ -78,7 +78,7 @@ Fogwise|gens|Great skill checks on gens show you where the killer is.
 For the People|support,chaos|Heal a teammate instantly by taking the hit yourself.
 Friendly Competition|gens|Finish a gen with a buddy and you both repair faster after.
 Fruits of Your Labor|gens|Finishing gens gives you a speed boost and some healing.
-Ghost Notes|hidden|Your scratch marks fade faster while you're exposed.
+Ghost Notes|hidden|While Exhausted, your scratch marks fade faster and Exhausted wears off sooner.
 Hardened|chaos|Your screams become killer-aura reveals instead.
 Head On|annoy|Jump out of a locker to stun the killer.
 Hope|chase|Faster movement once all gens are done.
@@ -122,12 +122,12 @@ Premonition|chase|Get warned when you look toward the killer.
 Prove Thyself|gens|Everyone repairs faster when working on a gen together.
 Quick & Quiet|hidden|Lockers and vaults make no noise.
 Quick Gambit|chase,gens|While chased, see teammates and they repair faster.
-Rapid Response|chase,hidden|Locker exits give a speed burst and show the killer.
+Rapid Response|chase,hidden|Fast-exiting a locker makes you Exhausted, and whenever you get Exhausted you see the killer for 2s.
 Reactive Healing|support|Get healing progress when a teammate near you gets hit.
 Reassurance|support|Pause a hooked teammate's timer from nearby.
 Red Herring|annoy,chaos|Hiding in a locker sends the killer a fake noise at your last gen.
 Repressed Alliance|annoy,gens|Block a gen so the killer can't kick it for a while.
-Residual Manifest|annoy|Find a flashlight and slow the killer when you blind them.
+Residual Manifest|annoy|Find a flashlight in your first chest; blinding the killer also stops them seeing auras for a while.
 Resilience|gens,support|Do everything faster while injured.
 Resurgence|support|Get a chunk of healing when you're unhooked.
 Road Life|gens,support|Hit greats on gens while injured to unlock self-heals.
@@ -138,7 +138,7 @@ Scavenger|gens,lucky|Great skill checks refill your empty toolbox.
 Scene Partner|chaos|Scream when you look at the killer, then see their aura.
 Second Wind|support|After healing someone, getting unhooked auto-heals you later.
 Self-Care|support|Heal yourself without a med-kit (slowly).
-Self-Preservation|chase|Get a speed boost whenever someone else is hooked.
+Self-Preservation|chase|Whenever someone else gets hooked, you become hard to track (no aura, scratch marks or grunts) for ~15s.
 Shoulder the Burden|support,chaos|Take a teammate's hook stage onto yourself.
 Slippery Meat|lucky|Teammates unhook you faster and you get more speed after.
 Small Game|gens|See nearby totems.
@@ -164,7 +164,7 @@ Tenacity|lucky|Crawl and recover at the same time while downed.
 This Is Not Happening|gens|Bigger good skill check zones.
 Troubleshooter|chase,gens|In chase, see the gen with the most progress; drop pallets to see the killer.
 Unbreakable|lucky|Pick yourself up off the ground once per match.
-Up the Ante|lucky,chaos|Everyone gets luckier and can try to unhook themselves.
+Up the Ante|lucky,chaos|Everyone can try to unhook themselves on their first hook, with better luck the more survivors are alive.
 Urban Evasion|hidden|Crouch-walk faster.
 Vigil|support|You and nearby teammates shake off slowdowns faster.
 Visionary|gens|See gens near you.

@@ -85,7 +85,20 @@ tr.low td{opacity:.45}
 .perkcard.locked .lockbtn{border-color:var(--warn);background:rgba(224,168,58,.18)}
 .tag{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:1px 6px;margin-right:4px;white-space:nowrap}
 .ownlist{max-height:320px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
-.ownlist label{display:flex;align-items:center;gap:10px;margin:0;padding:8px 10px;border-bottom:1px solid var(--line);color:var(--txt);font-size:14px}
+.ownrow{border-bottom:1px solid var(--line)}
+.ownrow .orow{display:flex;align-items:center;gap:10px;padding:4px 10px}
+.ownname{flex:1;text-align:left;background:none;border:0;color:var(--txt);font:inherit;font-size:14px;padding:8px 0;cursor:pointer;min-height:40px}
+.ownname::after{content:" ▸";color:var(--red2)}.ownrow.open .ownname::after{content:" ▾"}
+.owntip{padding:0 12px 12px 40px;font-size:14px;display:none}.ownrow.open .owntip{display:block}
+details.tip{margin-top:6px;border-top:0;padding-top:0}
+details.tip summary{padding:6px 0;font-size:14px;color:var(--warn)}
+details.tip summary::before{content:"💡 ";color:inherit}details.tip[open] summary::before{content:"💡 "}
+.tiptext{background:rgba(224,168,58,.08);border-left:3px solid var(--warn);border-radius:8px;padding:8px 10px;font-size:14.5px;line-height:1.45}
+.plan{border-color:rgba(224,168,58,.45)}
+.plan h3{color:var(--warn)}
+.plan .pitem{padding:10px 0;border-bottom:1px solid var(--line)}.plan .pitem:last-of-type{border-bottom:0}
+.plan .pitem b{font-size:16px}
+.gloss{font-size:13px;color:var(--dim);margin-top:8px}.gloss b{color:var(--txt);font-weight:600}
 .ownlist input{width:20px;height:20px;min-height:0;accent-color:var(--red)}
 @keyframes shake{0%,100%{transform:none}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
 .rolling{animation:shake .3s}
@@ -198,7 +211,7 @@ tr.low td{opacity:.45}
  <div class="card">
   <details id="ownDetails" style="margin-top:0;border-top:0;padding-top:0">
    <summary>Perks I own (<span id="ownCount"></span>)</summary>
-   <p class="hint">Untick perks you haven't unlocked so the dice never hand you one. Everything starts ticked.</p>
+   <p class="hint">Untick perks you haven't unlocked so the dice never hand you one. Everything starts ticked. Tap a perk's name to read how to use it 💡</p>
    <input id="ownSearch" placeholder="🔍 find a perk or survivor">
    <div class="row" style="margin-top:8px"><button class="btn small" type="button" id="ownAll">Tick all</button><button class="btn small" type="button" id="ownNone">Untick all shown</button></div>
    <div class="ownlist" id="ownList"></div>
@@ -539,7 +552,7 @@ $("#wipeBtn").addEventListener("click",()=>{ if(matches.length && confirm(`Delet
 // Mood tags for every survivor perk. Source of truth: data/perk_tags.txt (rebuild with src/build.py).
 // Format: "Perk name": ["mood,mood", "one-line description"]
 const PERK_TAGS = {
- "A Place For Us": ["support", "Healing teammates speeds you both up a bit; you're less likely to be the Obsession."],
+ "A Place For Us": ["support", "While you heal a teammate you both become hard to track (no aura, scratch marks or grunts); you're less likely to be the Obsession."],
  "Ace in the Hole": ["lucky,chaos", "Items from chests come with free add-ons, and you keep add-ons when you escape."],
  "Adrenaline": ["chase,support", "When the last gen pops, you heal one health state and get a speed burst."],
  "Aftercare": ["support", "You and teammates you unhook or heal see each other's auras."],
@@ -558,7 +571,7 @@ const PERK_TAGS = {
  "Bite the Bullet": ["support,hidden", "Healing makes no noise and a missed skill check doesn't alert the killer."],
  "Blast Mine": ["annoy,gens", "Trap a gen; when the killer kicks it, it explodes and blinds/stuns them."],
  "Blood Pact": ["support", "Linked with the Obsession: see each other while injured, speed up after heals."],
- "Blood Rush": ["chase,chaos", "After being unhooked, choose to drop to injured-and-broken for a sprint."],
+ "Blood Rush": ["chase,chaos", "After being unhooked, press a button to shake off Exhausted instantly so your sprint perk is ready again."],
  "Boil Over": ["annoy", "Wiggle harder while carried and hide nearby hook auras from the killer."],
  "Bond": ["support", "See nearby teammates' auras."],
  "Boon: Circle of Healing": ["support", "Bless a totem so nearby survivors heal faster (and can find each other)."],
@@ -584,7 +597,7 @@ const PERK_TAGS = {
  "Conviction": ["support", "After healing someone, instantly pick yourself up from the ground for a while."],
  "Corrective Action": ["gens,support", "Turn teammates' missed skill checks into good ones."],
  "Counterforce": ["gens", "Cleanse totems faster and see the next totem."],
- "Cross-Examination": ["chase", "See the killer's light trail and get a boost when you stand on it."],
+ "Cross-Examination": ["chase", "Near the killer (not in chase) you see their light trail; standing on it makes you hard to track."],
  "Cut Loose": ["chase", "Fast vaults during chase become silent for a while."],
  "Dance With Me": ["hidden,chase", "Vaults and locker exits leave no scratch marks for a moment."],
  "Dark Sense": ["chase", "After a gen pops, see the killer, pallets and windows when they come close."],
@@ -617,7 +630,7 @@ const PERK_TAGS = {
  "For the People": ["support,chaos", "Heal a teammate instantly by taking the hit yourself."],
  "Friendly Competition": ["gens", "Finish a gen with a buddy and you both repair faster after."],
  "Fruits of Your Labor": ["gens", "Finishing gens gives you a speed boost and some healing."],
- "Ghost Notes": ["hidden", "Your scratch marks fade faster while you're exposed."],
+ "Ghost Notes": ["hidden", "While Exhausted, your scratch marks fade faster and Exhausted wears off sooner."],
  "Hardened": ["chaos", "Your screams become killer-aura reveals instead."],
  "Head On": ["annoy", "Jump out of a locker to stun the killer."],
  "Hope": ["chase", "Faster movement once all gens are done."],
@@ -661,12 +674,12 @@ const PERK_TAGS = {
  "Prove Thyself": ["gens", "Everyone repairs faster when working on a gen together."],
  "Quick & Quiet": ["hidden", "Lockers and vaults make no noise."],
  "Quick Gambit": ["chase,gens", "While chased, see teammates and they repair faster."],
- "Rapid Response": ["chase,hidden", "Locker exits give a speed burst and show the killer."],
+ "Rapid Response": ["chase,hidden", "Fast-exiting a locker makes you Exhausted, and whenever you get Exhausted you see the killer for 2s."],
  "Reactive Healing": ["support", "Get healing progress when a teammate near you gets hit."],
  "Reassurance": ["support", "Pause a hooked teammate's timer from nearby."],
  "Red Herring": ["annoy,chaos", "Hiding in a locker sends the killer a fake noise at your last gen."],
  "Repressed Alliance": ["annoy,gens", "Block a gen so the killer can't kick it for a while."],
- "Residual Manifest": ["annoy", "Find a flashlight and slow the killer when you blind them."],
+ "Residual Manifest": ["annoy", "Find a flashlight in your first chest; blinding the killer also stops them seeing auras for a while."],
  "Resilience": ["gens,support", "Do everything faster while injured."],
  "Resurgence": ["support", "Get a chunk of healing when you're unhooked."],
  "Road Life": ["gens,support", "Hit greats on gens while injured to unlock self-heals."],
@@ -677,7 +690,7 @@ const PERK_TAGS = {
  "Scene Partner": ["chaos", "Scream when you look at the killer, then see their aura."],
  "Second Wind": ["support", "After healing someone, getting unhooked auto-heals you later."],
  "Self-Care": ["support", "Heal yourself without a med-kit (slowly)."],
- "Self-Preservation": ["chase", "Get a speed boost whenever someone else is hooked."],
+ "Self-Preservation": ["chase", "Whenever someone else gets hooked, you become hard to track (no aura, scratch marks or grunts) for ~15s."],
  "Shoulder the Burden": ["support,chaos", "Take a teammate's hook stage onto yourself."],
  "Slippery Meat": ["lucky", "Teammates unhook you faster and you get more speed after."],
  "Small Game": ["gens", "See nearby totems."],
@@ -703,7 +716,7 @@ const PERK_TAGS = {
  "This Is Not Happening": ["gens", "Bigger good skill check zones."],
  "Troubleshooter": ["chase,gens", "In chase, see the gen with the most progress; drop pallets to see the killer."],
  "Unbreakable": ["lucky", "Pick yourself up off the ground once per match."],
- "Up the Ante": ["lucky,chaos", "Everyone gets luckier and can try to unhook themselves."],
+ "Up the Ante": ["lucky,chaos", "Everyone can try to unhook themselves on their first hook, with better luck the more survivors are alive."],
  "Urban Evasion": ["hidden", "Crouch-walk faster."],
  "Vigil": ["support", "You and nearby teammates shake off slowdowns faster."],
  "Visionary": ["gens", "See gens near you."],
@@ -715,6 +728,185 @@ const PERK_TAGS = {
  "Wide Open Throttle": ["annoy,chase", "Fast-vault a pallet to reset it and block it for a while."],
  "Windows of Opportunity": ["chase", "See windows and vault them faster."],
  "Wiretap": ["gens", "Trap a gen to reveal the killer to everyone when they're near it."]
+};
+// Beginner "How to use it" tips. Source of truth: data/perk_tips.txt (rebuild with src/build.py).
+const PERK_TIPS = {
+ "A Place For Us": "Works automatically while you heal a teammate: you both turn \"Elusive\" (no aura, scratch marks or pain grunts) so the killer has trouble finding you. Heal behind cover and you're much safer. Healing the Obsession gives you both that stealth for up to 30s after.",
+ "Ace in the Hole": "Passive: any item you pull from a chest comes with free add-ons. Open a chest early when it's safe and you get a better toolbox, med-kit or flashlight. Don't spend ages hunting chests while gens need doing.",
+ "Adrenaline": "Triggers by itself when the last gen gets finished: you heal one health state and get a short sprint. If you're on the hook when it pops, it waits and triggers once you're unhooked. It ignores Exhausted, so it works even right after Sprint Burst or Lithe.",
+ "Aftercare": "Passive: when you unhook or heal someone (or they do it for you), you can see each other's auras for the rest of the match. Great for solo queue: you always know where your buddies are. It resets when you get hooked, so rebuild it by healing people again.",
+ "Alert": "Passive: whenever the killer kicks a gen or breaks a pallet or wall, you hear a sound and see them for a few seconds. Use it to know when it's safe to keep working or time to sneak away. Pairs well with any perk that makes you stay on gens.",
+ "Any Means Necessary": "Stand next to a pallet that's already been dropped and hold the Active Ability button for a few seconds to lift it back up. Do this away from the killer so your favorite loop works again later. You can also see dropped pallets' auras, so you know which ones to fix.",
+ "Apocalyptic Ingenuity": "First open or rummage one chest. Then stand by a broken pallet's spot and press the Active Ability button for 3s to rebuild it as a Fragile Pallet. It's one-use and breaks easily, so treat it as an emergency escape, not a long loop.",
+ "Appraisal": "You start with 4 tokens: spend one to rummage an already-opened chest again (up to twice per chest), and you search chests faster. Good for item fishing early in the match. Combo: Plunderer's Instinct to see where chests are.",
+ "Autodidact": "Healing teammates without a med-kit, every skill check you hit makes the next ones give more progress (up to 5 stacks). It starts slower than normal, so it's only worth it if you heal a lot. You can't get \"great\" skill checks while healing with it, so don't worry about timing perfectly.",
+ "Babysitter": "Passive: when you unhook someone, they run a bit faster and leave no blood or scratch marks for up to 30s, and you see the killer for 8s. Unhook, then you lead the killer away while your friend vanishes. Mistake: unhooking right in front of the killer, it can't save that.",
+ "Background Player": "When the killer picks someone up, you get a 10s window: start running to get a big sprint (and Exhausted). Use it to rush toward them for a pallet stun or flashlight save. Don't waste it by just jogging around; save it for a rescue.",
+ "Bada Bada Boom": "After the team does about 20% of gens, stand by a window and press the second Active Ability button to trap it. If the killer vaults it, they get slowed for 4s. Trap a window you plan to loop so you can escape after they vault.",
+ "Balanced Landing": "Run off any ledge or drop of about 1.25m or more (stairs edges, roofs, upper floors) to get a 3s sprint, a faster landing and silent grunts. Learn the drops on maps like Coal Tower or The Game and lead chases there. It gives Exhausted (sprint perks recharge for 40-60s, only while you're not running).",
+ "Bardic Inspiration": "Stand still and press the Active Ability button to play your lute. Teammates nearby get bonus skill-check progress depending on your d20 roll (a 1 just makes you scream). Play it when nobody's being chased and friends are on gens near you.",
+ "Better Than New": "Passive: anyone you finish healing gets faster at healing, totems and chests until they're hit. Just heal your teammates like normal and they'll be quicker at helping others. Works great with any healing-speed perk.",
+ "Better Together": "Passive: while you're on a gen, teammates see that gen's aura, and when someone goes down you see everyone for a while. Lets solo teammates come help you finish gens. Useful when your team doesn't talk.",
+ "Bite the Bullet": "Passive: healing makes no noise for you or the person you heal, and a missed healing skill check doesn't alert the killer. Heal in quiet corners and you're hard to find. Combo: Botany Knowledge to heal faster too.",
+ "Blast Mine": "After about 40% of gens are done, press the second Active Ability button while on a gen to trap it. When the killer kicks that gen, it explodes, stunning and blinding them. Trap a gen and keep working; then run when they come to kick it.",
+ "Blood Pact": "Passive with the Obsession (the survivor the killer is \"focused\" on, shown with a special icon): when either of you is hurt you see each other, and healing each other speeds you both up. Go heal the Obsession when they're hurt. It doesn't work if you are the Obsession.",
+ "Blood Rush": "For up to 60s after you're unhooked, press the Active Ability button to remove Exhausted instantly, so a sprint perk like Sprint Burst is ready again. Doing \"loud\" stuff like gens or healing cancels the window. Only useful with an Exhausted perk.",
+ "Boil Over": "Passive while the killer carries you: you wiggle harder, and the killer can't see hook auras near you so they have to search for one. Wiggle like crazy (spam the wiggle input). Gets extra wiggle if the killer drops down a ledge while carrying you.",
+ "Bond": "Passive: you see teammates' auras in a large radius. Use it to find someone to heal you or to avoid leading the killer to them. Mistake: running a chase straight into your teammate's gen.",
+ "Boon: Circle of Healing": "Find a normal totem (stone pile with skulls), press the Active Ability button to bless it. Survivors near it heal each other much faster without a med-kit, and injured people show up to others. Put it somewhere central and hidden; the killer can snuff it out.",
+ "Boon: Dark Theory": "Bless a totem with the Active Ability button. Everyone near it moves a little faster (lingers a few seconds after leaving). Bless one near gens or loops you use a lot.",
+ "Boon: Exponential": "Bless a totem with the Active Ability button. Anyone downed in its range can pick themselves up all the way, and faster. If you get downed, crawl into the boon area and recover. Bless one in a hidden spot so the killer doesn't snuff it.",
+ "Boon: Illumination": "Bless a totem with the Active Ability button (you bless faster with this perk). Survivors in range see chests and gens. Nice for finding gens on big maps early in the match.",
+ "Boon: Shadow Step": "Bless a totem with the Active Ability button. Survivors in range leave no scratch marks and the killer can't see their aura. Great for losing the killer: run through the boon area and break line of sight.",
+ "Boon: Steadfast": "Bless a totem near a group of gens with the Active Ability button. Those gens repair faster and regress (lose progress) slower, and you can see them. Pick a totem close to the gens you'll be working on.",
+ "Borrowed Time": "Passive: when you unhook someone, they keep their \"Endurance\" longer (they can take one extra hit without going down) and their speed boost. Protects teammates from \"tunneling\" (the killer chasing the person who just got unhooked). Unhook when the killer isn't right there for best results.",
+ "Botany Knowledge": "Passive: you heal faster, both yourself (with a med-kit or perk) and others. Just heal more often and you'll get the team healthy quicker. Combo: Self-Care or Circle of Healing.",
+ "Breakdown": "Passive: when you get unhooked, that hook breaks for 3 minutes and you see the killer for a few seconds. Run away from where they are and the killer has to carry you farther next time. Broken hooks mean more wiggle time.",
+ "Breakout": "Passive: when you're within 5m of someone being carried, you move faster and they wiggle faster. Follow the killer closely (risky!) to help your friend wiggle free. Combo: a flashlight or Saboteur.",
+ "Buckle Up": "While picking up a downed teammate you both see the killer, and when they're back up they get a short sprint with no scratch marks. Pick people up when the killer's chasing someone else. You also get it when you fully recover yourself.",
+ "Built to Last": "When your item runs out (like an empty med-kit or toolbox), hide in a locker for 10-14s while holding it to recharge it. It gets weaker each time. Great for getting extra heals with a med-kit.",
+ "Calm Spirit": "Passive: you don't scream (from perks that force screams) and don't scare crows; totems and chests are silent and a bit faster. Good stealth perk vs killers that make you scream. Lets you sneak past crow-filled areas.",
+ "Camaraderie": "Passive: when you're on the hook in the second stage (struggling), a teammate coming close pauses your timer for ~30s. Gives teammates more time to save you. Combo: Kindred so everyone knows where you are.",
+ "Champion of Light": "While using a flashlight you move faster, and blinding the killer slows them for 6s. Bring or find a flashlight. Aim for their eyes; a blind at a pallet or when they pick someone up is best.",
+ "Change of Plan": "You start with 2 tokens. Hide in a locker holding a toolbox and press the second Active Ability button to turn it into a med-kit. Use it when your team needs heals more than gens. Needs a regular toolbox (not an event one).",
+ "Chemical Trap": "After ~20% of gens are done, stand by a dropped pallet and press the second Active Ability button to trap it. When the killer breaks it, they're slowed for 4s. Trap pallets you just dropped in a chase.",
+ "Clairvoyance": "After blessing or cleansing a totem, with empty hands, press the Use Item button to see chests, gens, hooks, exit gate switches and even the hatch for ~10s. Great for finding the hatch late in the match. You need empty hands, so drop your item first if needed.",
+ "Clean Break": "After you've healed a teammate, while someone is healing you, press the Active Ability button. You become \"Broken\" (can't be healed) for a while, then auto-heal if you weren't downed. Saves time when healing is slow.",
+ "Come and Get Me!": "After an unhook, crouch, stand still and press the Active Ability button. You scream and the killer sees you, while injured or downed teammates near you go fully stealthy. Use it to pull the killer toward you so your friend escapes.",
+ "Conviction": "After you've healed one teammate, if you get downed and recover at least 25%, press the Active Ability button to stand up instantly. You're Broken (can't be healed) and you'll drop to the ground again after 20-30s. Use that time to reach a teammate, a gen finish or the exit gate, not to hide.",
+ "Corrective Action": "Passive: you start with a few tokens and earn more with great skill checks. When a teammate misses a skill check, a token turns it into a good one. Just do gens and hit greats; it helps the whole team.",
+ "Counterforce": "Passive: you cleanse totems faster (stacking), and after each one you see the farthest totem. Go totem hunting to kill hex totems (those lit with candles, they power the killer's perks). Combo: Small Game to spot totems.",
+ "Cross-Examination": "When you're in the killer's terror radius (heartbeat) but not chased, you can see their light trail. Standing on it makes you Elusive (no aura, scratch marks or grunts) for a few seconds. Walk behind the killer on their trail to stay hidden.",
+ "Cut Loose": "During a chase, a fast or medium vault makes your vaults silent for a few seconds; each new vault resets it. Chain window vaults to keep the killer guessing. Has a 45s cooldown after it ends.",
+ "Dance With Me": "Passive: fast-vaulting or jumping out of a locker leaves no scratch marks for 5s. Break line of sight, vault a window, then change direction. Combo: Quick & Quiet or Lithe.",
+ "Dark Sense": "After a gen is done, the next time the killer comes close you see them, other survivors, and nearby pallets/windows. Use the warning to move away or plan your loop. Triggers automatically, nothing to press.",
+ "Dead Hard": "Only after you've been unhooked: while injured and running, press the Active Ability button right before the killer hits you to take no damage. Timing is everything; press it too early and you waste it. Gives Exhausted, so don't pair with other sprint perks.",
+ "Deadline": "Passive while injured: skill checks pop up more often and in random spots on the screen, but missing costs less. Keep your eyes on the whole screen, not just the middle. Makes injured gen work less punishing.",
+ "Deception": "Run into a locker fast (sprint at it) and you won't go in; you make a fake locker noise and leave no tracks for 5s. Use it after breaking line of sight so the killer searches the locker. It only works on fast locker entries.",
+ "Decisive Strike": "Within 60s after being unhooked (before all gens are done), if the killer picks you up, hit the skill check to stun them and escape. Doing gens or healing during that time cancels it. Stops the killer from \"tunneling\" you (chasing you right after your unhook).",
+ "Deja Vu": "Passive: you see the 3 gens that sit closest together and repair them a bit faster. Work on those first so the killer can't guard three close gens at the end (players call that a \"3-gen\"). Nothing to press.",
+ "Deliverance": "Passive: after you unhook a teammate safely (they don't get hit soon after), you can unhook yourself once. You're Broken (can't be healed) for a while afterwards. Go for an early safe unhook to earn it.",
+ "Desperate Measures": "Passive: you heal and unhook faster for every teammate who's hurt, downed or hooked. Great when things are going badly. Combo: any healing perk.",
+ "Detective's Hunch": "Passive: whenever a gen is done, you see nearby chests, gens and totems for 20s. Use it to find the next gen or cleanse totems. Combo: Counterforce.",
+ "Distortion": "Passive: when the killer tries to see your aura (with a perk or power), a token blocks it and hides your scratch marks for a few seconds. You start with one; earn more by being chased. Good against aura-reading killers.",
+ "Diversion": "Hide near the killer (in their heartbeat) for 20-30s, then crouch, stand still and press the Active Ability button to throw a pebble 20m away. The killer hears a noise and sees scratch marks there. Throw it the opposite way from where you plan to go.",
+ "Do No Harm": "Passive: you heal teammates much faster the more times they've been hooked. Prioritize healing people who've been hooked. Skill checks show up more often, so stay focused.",
+ "Dramaturgy": "While healthy and running, press the Active Ability button: short sprint plus a random effect (another sprint, a free rare item, a scream, or \"Exposed\", which means you'll go down in one hit). Gives Exhausted. Use it for fun or when you want to gamble.",
+ "Duty of Care": "Passive: when you take a hit for a teammate while healthy, survivors near you get a speed boost for a few seconds. Body block for your friend, then everyone runs. Great for chaotic team plays.",
+ "Empathic Connection": "Passive: you heal others faster and injured teammates can see you. Hurt solo teammates will come to you for a heal. Combo: Botany Knowledge.",
+ "Empathy": "Passive: you see injured teammates' auras from far away. Shows you where chases are happening and who needs healing. Stay away from those areas unless you're going to help.",
+ "Extrasensory Perception": "Crouch for 4s: you see auras around you (killer, survivors, gens, pallets, etc.) and become Elusive, but \"Oblivious\" (no heartbeat warning). Crouching ends it. Use it when you're unsure where the killer is.",
+ "Exultation": "Passive: when you stun the killer with a pallet, your item upgrades to a better rarity and recharges. Bring a cheap item and drop pallets on the killer. Has a short cooldown.",
+ "Eyes of Belmont": "Passive: when a gen gets done you see the killer briefly, and every perk that shows the killer for some time shows them 2s longer. Combo with other aura perks like Alert or Fogwise.",
+ "Fast Track": "Passive: each time you unhook someone you get a token. Hit a great skill check on a gen to spend them all for a chunk of bonus progress. Unhook, then go straight to a gen.",
+ "Finesse": "Passive: while healthy, your fast vaults are quicker (cooldown after). Run toward windows and vault at full sprint. Great on window-heavy maps.",
+ "Five Moves Ahead": "Passive: in the killer's heartbeat or chase, you see the 5 closest pallets, and you recover faster after dropping one. Use it to plan where to run next. Cooldown after each pallet drop.",
+ "Fixated": "Passive: you walk faster and can see your own scratch marks. Walk (don't run) when the killer is near to sneak around faster. Watching your own marks teaches you how killers track you.",
+ "Flashbang": "After ~40-50% of gens are done, hide in a locker and press the Active Ability button to craft a Flashbang. Throw it (use item) at the killer's face, especially when they pick someone up. The killer hears it, so throw and run.",
+ "Flip-Flop": "Passive: when you're downed, the time you spend recovering turns into wiggle progress when the killer picks you up. Hold the recover button while downed. Combo: Boil Over or Power Struggle.",
+ "Flow State": "Passive: every completed gen gives a token (max 5), making you faster at totems, healing and unhooking. Helps a lot late in the match. Nothing to press.",
+ "Fogwise": "Passive: on a gen, every great skill check shows you the killer for a few seconds. Try to hit greats (the tiny white zone). Lets you know when to leave a gen.",
+ "For the People": "While healthy and healing a teammate without a med-kit, press the Active Ability button to heal them instantly. You get hurt, become Broken for a while, and become the Obsession. Use it right after an unhook to save time.",
+ "Friendly Competition": "Passive: finish a gen with at least one other survivor and you both repair faster for about 90s. Work on gens together. Combo: Prove Thyself.",
+ "Fruits of Your Labor": "Passive: every finished gen gives you a token; when you finish a gen yourself you get a tiny speed boost and some healing per token. Better later in the match. Don't count on it early.",
+ "Ghost Notes": "Passive while Exhausted (your sprint perk is recharging): your scratch marks fade faster and Exhausted wears off sooner. Pair with Sprint Burst, Lithe or Dead Hard. Use your sprint to break line of sight, then hide.",
+ "Hardened": "After you've done one totem and opened one chest, any time you'd scream (from killer powers or perks), you see the killer instead. Get the totem and chest done early. Hilarious vs killers who make you scream.",
+ "Head On": "Hide in a locker for at least 3s, then hold Run and press the action button to burst out (a \"fast exit\"); if the killer is within 2.5m they get stunned for 3s. Wait for the killer's footsteps or heartbeat right next to you before jumping. It gives Exhausted, so it won't work right after a sprint perk.",
+ "Hope": "Passive: once all gens are done, you move a bit faster. Helps get to the exit gate. Nothing to press.",
+ "Hyperfocus": "Passive: every great skill check gives a stack that makes the next greats worth more (skill checks get faster too). A miss or good check resets it. Combo: Stake Out or This Is Not Happening.",
+ "Inner Focus": "Passive: when the killer hits any teammate, you see the killer briefly, and you can see teammates' scratch marks. Know when to leave your gen. Helps you find teammates too.",
+ "Inner Strength": "After cleansing a totem, if you're hurt (and not Broken), hide in a locker for about 8-10s to heal fully. A free self-heal per totem. Cleanse totems as you find them.",
+ "Invocation: Treacherous Crows": "Go to the basement, stand by the circle and press the second Active Ability button to start. When done, whenever the killer scares a crow near a survivor, everyone sees the killer briefly. You get injured and Broken, so do it early when safe.",
+ "Invocation: Weaving Spiders": "Go to the basement, stand by the circle and press the Active Ability button. When finished, all gens get some free progress, but you're injured and Broken. Others can join to speed it up. Best done early when the killer is busy.",
+ "Iron Will": "Passive: while injured and not Exhausted, your pain grunts are silent. Hide around corners and the killer can't hear you. Doesn't work while Exhausted, so be careful pairing it with sprint perks.",
+ "Kindred": "Passive: when you're hooked, everyone sees each other and the killer if they're near you. When someone else is hooked, you see the others. Helps solo teams decide who goes for the save.",
+ "Last Stand": "Hide for a long time (90-120s) inside the killer's heartbeat, then fast-vault when they're right behind you to stun them once. It's a late-game surprise. Charge it while doing gens near the killer.",
+ "Leader": "Passive: teammates near you heal, unhook, cleanse totems, open gates and chests faster. Stick with teammates. Pair it with healing or exit gate perks.",
+ "Left Behind": "Passive: when you're the last survivor, you see the hatch when nearby. Helps you escape when the team is gone. Combo: Clairvoyance or Sole Survivor.",
+ "Lend a Hand": "After cleansing or blessing a totem, while healing a teammate, press the second Active Ability button to give them extra healing charges. Once per teammate. Helps when lots of people are hurt.",
+ "Light-footed": "Passive: your footsteps are silent while running and healthy. Use it to sneak around without the killer hearing you. Fast vaults or locker exits put it on cooldown.",
+ "Lightweight": "Passive: your scratch marks (the red streaks you leave when running) fade faster and are spread out. Break line of sight, then turn a corner so the killer loses your trail. Combo: Dance With Me or Lithe.",
+ "Lithe": "Fast-vault a window or pallet (sprint straight into it) to get a 3s speed burst. Use it in chase to gain distance on the killer. It gives Exhausted, so you can't use it with other sprint perks until it recharges (40-60s, only while you're not running).",
+ "Low Profile": "Passive: when every other survivor is downed or hooked, you leave no blood, scratch marks or grunts for up to 90s. Use that time to hide and hunt for the hatch. Combo: Left Behind or Sole Survivor.",
+ "Lucky Break": "Passive while injured: no blood or scratch marks for up to 60s total. Healing teammates refills the timer. Great for losing the killer after a hit; don't waste it by just doing gens while hurt.",
+ "Lucky Star": "Passive: you're silent inside lockers. When you come out, for 30s you see the nearest gen and your teammates, and stay silent and bloodless. Hide when the killer passes by, then hop out and go do the gen it shows you.",
+ "Made for This": "Passive: while injured, finishing a heal on a teammate gives you \"Endurance\" (you survive one hit that would down you) for a few seconds. If you have \"Deep Wound\" (a bleed-out timer some killers give you) you also run a bit faster. So heal others even when you're hurt.",
+ "Mettle of Man": "Passive: after taking 3 hits for teammates (\"protection hits\", e.g. body blocking), the next hit that would down you doesn't. You're more likely to be the Obsession, and once you're healthy again the killer sees you when you're far away. Fun if you love body blocking.",
+ "Mirrored Illusion": "After the team finishes about 20% of gens, stand next to a gen, chest, totem or exit gate switch and press the second Active Ability button to create a frozen copy of yourself for up to a minute. Killers sometimes swing at it or waste time checking. It doesn't move, so it's a meme more than a plan.",
+ "Moment of Glory": "After you open or rummage one chest, the next time you get hit you become Broken (can't be healed), then you heal yourself automatically after 60-80s if you're not downed. Open a chest early to arm it. Don't waste time healing while it's counting down.",
+ "No Mither": "You start the match injured and stay Broken (can't be healed) all match. In return you're silent, leave no blood, recover faster when downed and can pick yourself up. A real meme perk: play stealthy and never take a hit you can avoid.",
+ "No One Left Behind": "Passive once all gens are done: you heal and unhook teammates much faster, people you unhook run faster, and you see everyone's auras. Go back for hooked teammates at the end instead of leaving. Combo: Hope or Borrowed Time.",
+ "Object of Obsession": "Only works if you're the Obsession (the survivor with the special icon). Every 30s the killer sees you for 4s, but you see them too and work a bit faster while it lasts. Risky: if you're in a bad spot when it fires, move away.",
+ "Off the Record": "Passive: for up to 40s after you're unhooked (before gens are done), you get \"Endurance\" (survive one hit that would down you), your grunts are silent and the killer can't see your aura. Run away right after the unhook. Doing gens or healing doesn't cancel it, but getting hit ends the Endurance.",
+ "ONE-TWO-THREE-FOUR!": "Stand still and press the second Active Ability button to play guitar for up to 15s; teammates within 16m see you and get special, more frequent skill checks on gens and heals. Finish the song and the boost lasts 90s. Play it when friends are on gens near you, not when the killer is close.",
+ "Open-Handed": "Passive: every aura perk with a range (seeing things through walls) reaches 8-16m farther, for the whole team. On its own it does nothing. Combo: Bond, Empathy, Kindred or Dark Sense.",
+ "Overcome": "Passive: when you get hit, your speed boost after the hit lasts 2s longer. It gives Exhausted, so it can't trigger if a sprint perk was just used. Run straight to the nearest window or pallet after you're hit.",
+ "Overzealous": "Passive: after you cleanse or bless a totem, you repair gens faster until you get hit (double if it was a hex totem, the lit-candle kind). Do a totem first, then hop on a gen. Combo: Small Game to find totems.",
+ "Parental Guidance": "Passive: after you stun the killer (pallet, Head On, etc.), you leave no grunts, blood or scratch marks for a few seconds. Stun them, then run around a corner and change direction. Combo: Smash Hit or Head On.",
+ "Pharmacy": "Passive: the first chest you open always has a rare med-kit, and you open chests faster and more quietly. Open one early, then heal yourself and teammates with the kit. You can only rummage each chest once.",
+ "Plot Twist": "While injured, crouched and standing still, press the second Active Ability button to drop to the ground on purpose, silently. You can then pick yourself up faster, and when you do, you're fully healed with a short sprint. Do it somewhere hidden; once per match, plus once more after all gens are done.",
+ "Plunderer's Instinct": "Passive: you see chests and items lying around, open chests much faster, and find better items. Great for grabbing a toolbox or med-kit early. Combo: Ace in the Hole or Appraisal.",
+ "Poised": "Passive: the first time you start each gen, you see the killer for 8s. Whenever a gen pops, you leave no scratch marks for a while. Check where the killer is when you sit down on a gen, and walk away after a gen pops.",
+ "Potential Energy": "While on a gen, press the second Active Ability button to store progress as tokens (up to 20) instead of filling the gen. Press it again on any gen to dump them all at once. Getting hit loses all tokens, so don't hold them too long.",
+ "Power Struggle": "Passive: while the killer carries you, once you've wiggled 15-25% and you pass a standing pallet, you can drop it on them to escape. While downed you see pallets, so crawl toward them. Combo: Flip-Flop to start the carry with more wiggle.",
+ "Premonition": "Passive: when you're not being chased, looking toward the killer within 32m warns you and shows them for 3s. Turn your camera around while doing gens to check for them. Has a cooldown of about 45-55s.",
+ "Prove Thyself": "Passive: all survivors repair faster for each teammate within 4m of you. Work on gens together with others to get the most out of it. Combo: Friendly Competition or Teamwork perks.",
+ "Quick & Quiet": "Passive: hiding in a locker or vaulting makes no noise and doesn't alert the killer (cooldown 15-25s). Break line of sight, then jump into a locker or over a window silently. Works best when the killer can't see you do it.",
+ "Quick Gambit": "Passive: during a chase you see your teammates and they repair gens a bit faster. Use it to lead the killer away from them. Getting hit puts it on a 40s cooldown.",
+ "Rapid Response": "Fast-exiting a locker gives you Exhausted (no sprint), and any time you get Exhausted you see the killer for 2s. So jumping out of a locker shows you where they are. Careful: it also blocks your sprint perks for a while.",
+ "Reactive Healing": "Passive: while you're injured, when a teammate within 32m gets hit, you instantly get part of your missing healing. Stay near teammates; a couple of their hits can heal you a lot. Combo: Self-Care to finish the heal.",
+ "Reassurance": "When you're within 6m of a hooked teammate, press the second Active Ability button to pause their hook timer for 20-30s. Once per hook stage. Use it when the killer is camping (guarding the hook) and you can't unhook yet.",
+ "Red Herring": "Passive: once you've worked on a gen, its aura stays visible to you, and hiding in a locker makes that gen send a fake noise alert to the killer. Use it to pull the killer away from where you actually are. Has a short cooldown.",
+ "Repressed Alliance": "After you've worked on gens for 30-40s total, while repairing a gen alone, press the Active Ability button to block it for 15s so the killer can't kick it. Use it right before you leave a gen the killer is coming to. It also blocks survivors from working it.",
+ "Residual Manifest": "Your first chest gives a flashlight, and blinding the killer gives them \"Blindness\" (they can't see auras) for 20-30s. Open a chest early, then try to blind the killer when they pick someone up or break a pallet. Aim at their face.",
+ "Resilience": "Passive: while injured, you do almost everything a bit faster (gens, healing, totems, vaulting, gates). It's a small bonus that works while you're hurt. Don't skip healing just to keep it.",
+ "Resurgence": "Passive: when you're unhooked, you instantly get 50-70% of a heal. Finish the rest with a teammate or Self-Care. Great vs killers who hook a lot.",
+ "Road Life": "While injured and on a gen, great skill checks give tokens (misses lose one). With enough tokens you can heal yourself without a med-kit. Practice hitting greats; it's slow if you keep missing.",
+ "Rookie Spirit": "Passive: after you hit a few skill checks while repairing, you see gens that are losing progress (the killer kicked them). Go fix those gens before they drop too far. Simple and great for learning the map.",
+ "Saboteur": "Passive: when the killer is carrying someone, you see nearby hooks and can break one without a toolbox (cooldown 60-70s). Run ahead and sabotage the hook they're heading to. Don't do it right in front of the killer or you'll get hit.",
+ "Salvation's Cry": "Passive: when the killer starts chasing you, you see teammates for a moment, and those not in chase see you and the killer for 5s. Helps your solo teammates know where the killer is. Nothing to press.",
+ "Scavenger": "Passive: with an empty toolbox, great skill checks on gens refill it (but you repair slower for a bit after). Your first chest gives a toolbox. Hit greats on gens to keep the toolbox going.",
+ "Scene Partner": "Passive: inside the killer's heartbeat, looking at them makes you scream and see them for a few seconds (sometimes you scream twice). Screaming tells the killer where you are, so use it when you're already in chase. Combo: Hardened for a silly scream build.",
+ "Second Wind": "After you heal one teammate, the next time you're unhooked you become Broken (can't be healed), then heal yourself automatically after 20-28s if you're not downed. Heal someone early to arm it. Don't get hit while it counts down.",
+ "Self-Care": "Passive: you can heal yourself without a med-kit, but slowly. Heal in a safe spot after a chase. Combo: Botany Knowledge to make it much faster.",
+ "Self-Preservation": "Passive: whenever another survivor gets hooked, you become \"Elusive\" for about 15s (no aura, scratch marks or grunts). Use that time to slip away or reposition for a rescue. It ends early if you get hit.",
+ "Shoulder the Burden": "Once per match, standing next to a hooked teammate (if you've been hooked fewer than 2 times), press the second Active Ability button to unhook them and take one of their hook stages. You get injured, scream and become Broken for a while. Use it to save someone who's about to die on their next hook.",
+ "Slippery Meat": "Passive: teammates unhook you much faster, and you run a bit faster after being unhooked. Get away from the hook quickly. Combo: Off the Record or Decisive Strike.",
+ "Small Game": "Passive: you see nearby totems (piles of skulls and candles). Cleanse hex totems (lit candles) to break the killer's perks. Combo: Counterforce.",
+ "Smash Hit": "Passive: stunning the killer with a pallet gives you a 4s speed burst. It gives Exhausted. Drop pallets right on the killer's head, then run.",
+ "Sole Survivor": "Passive: you earn tokens when you're hooked or finish gens. If you're the last survivor alive with at least 3, you can open the hatch (even if it's closed) and the killer can't see your aura for a while. Fun for dramatic last-survivor escapes.",
+ "Solidarity": "Passive: while injured, healing a teammate also heals you a bit. Heal others while you're hurt instead of hiding. Combo: Made for This.",
+ "Soul Guard": "Passive: while you're \"hexed\" (affected by the killer's hex totem perks, shown with a skull icon), you can pick yourself up from downed. When you get up, you survive one hit for a few seconds. Fun vs hex killers.",
+ "Specialist": "Passive: each chest you open or rummage gives a token. Great skill checks on gens spend them all for bonus progress. Open a few chests, then hit greats on a gen.",
+ "Spine Chill": "Passive: when the killer looks at you within 40m, you get a warning icon, can't scream, and vault faster for a while. Watch for the icon to know when to leave a gen or hide. Great for beginners.",
+ "Sprint Burst": "Passive: start running to get a 2s speed burst. It gives Exhausted. Walk normally so it's ready when the killer comes, then sprint away.",
+ "Stake Out": "Passive: hide within 24m of the killer while in their heartbeat for 15s to earn tokens. Tokens turn normal skill checks into easier, bonus-progress ones. Hide near the killer between gens.",
+ "Still Sight": "Passive: stand still for 2-4s to see the killer, chests and gens within 24m. Stop moving now and then to check where the killer is.",
+ "Streetwise": "Passive: items from chests have more charges. The first time your item runs out, you see the killer for 8s. Open a chest early.",
+ "Strength in Shadows": "Passive: in the basement, you can heal yourself (slowly), and when you finish healing you see the killer for a while. A fun meme perk.",
+ "Teamwork: Collective Stealth": "Passive: when a teammate finishes healing you, you both leave no scratch marks as long as you stay within 8-16m of each other. Get healed, then move away from the area together. Splitting up ends it 4s later.",
+ "Teamwork: Full Circuit": "Passive: for each teammate on the gen with you, the skill check \"good\" zone gets bigger, and with at least one buddy you repair 5% faster. Join teammates' gens instead of starting your own. Great if skill checks stress you out.",
+ "Teamwork: Power of Two": "Passive: when you finish healing a teammate, you both move 5% faster while you stay within 8-16m of each other. Stick together after the heal and go do a gen or totem as a duo. It ends 4s after you split up.",
+ "Teamwork: Soft-Spoken": "Passive: for each teammate on the gen with you, the gen's noise is harder for the killer to hear from far away, and with a buddy you repair 5% faster. Share gens with teammates. Combo: Teamwork: Full Circuit.",
+ "Teamwork: Throw Down": "Passive: when you stun the killer with a pallet or blind them with a flashlight, injured teammates within 24m get \"Endurance\" (survive one hit that would down them) and see the killer for a few seconds. Go for pallet stuns near hurt friends. Combo: Flashbang or a flashlight.",
+ "Teamwork: Toughen Up": "Passive: while you're injured, when a teammate within 24m stuns or blinds the killer, you leave no grunts, blood or scratch marks for 20-30s. That's your moment to sneak off and heal. It depends on your teammates, so it won't always trigger.",
+ "Technician": "Passive: your gen repairs are quieter (the killer must be closer to hear), and a missed skill check doesn't make the gen explode and alert the killer, but you lose a bit more progress. Great for nervous skill-check hitters. Combo: This Is Not Happening.",
+ "Tenacity": "Passive while downed: you crawl faster, can crawl and recover at the same time, your grunts are quieter and the killer can't see your aura. If the killer leaves you on the ground, crawl away to a hiding spot while recovering. Combo: Unbreakable to pick yourself up.",
+ "This Is Not Happening": "Passive: while repairing or healing, the \"good\" zone on skill checks is much bigger, so you'll miss far less. Just do gens and heals like normal. Combo: Hyperfocus or Technician if skill checks stress you out.",
+ "Troubleshooter": "Passive during chase: you see the gen with the most progress, and dropping a pallet shows you the killer for a few seconds. Lead the killer away from that gen so teammates can finish it. Knowing where they are after a pallet drop helps you pick a direction.",
+ "Unbreakable": "Passive: once per match, when the killer downs you you can pick yourself all the way up (hold the recover button), and you recover faster. Use it when the killer leaves you on the ground to chase someone else. Crawl somewhere hidden first if you can.",
+ "Up the Ante": "Passive: lets every survivor try to unhook themselves during their first hook stage (a small luck-based chance), and the chance goes up for each survivor still alive. Spam the self-unhook attempt when nobody can come save you. Pure luck fun; luck offerings make it a bit better.",
+ "Urban Evasion": "Passive: you crouch-walk almost twice as fast. Crouch to sneak between gens without being seen; crouching hides you behind short walls and leaves no scratch marks. Mistake: crouching inside the killer's line of sight, they can still see you.",
+ "Vigil": "Passive: you and teammates within 16m recover from \"Exhausted\" faster (Exhausted = your sprint perk is recharging). Stay near teammates who run sprint perks. Combo: Sprint Burst or Lithe in the same build.",
+ "Visionary": "Passive: you see gens within 32m of you (short cooldown after a gen is completed). No more wandering around looking for gens. Great on big or confusing maps.",
+ "Wake Up!": "Passive once all gens are done: you see the exit gate switches, open gates faster (even faster with more teammates alive), and teammates see you while you open. Head straight for a gate. Mistake: opening the gate the killer is standing next to.",
+ "We See You": "Passive: whenever the killer sees your aura (their perks or power), you get a token. At 4 tokens, every survivor sees the killer for 10-15s. Great vs killers who see auras a lot. Nothing to press.",
+ "We'll make it": "Passive: after you unhook someone, you heal other survivors twice as fast for 70-90s. Unhook, take them somewhere safe and heal them right away. Combo: Botany Knowledge for very fast heals.",
+ "We're Gonna Live Forever": "Passive: you pick up downed teammates twice as fast, and they get \"Endurance\" (survive one hit) for 6-10s after (30s cooldown). Pick people up when the killer is busy elsewhere. Combo: Buckle Up.",
+ "Wicked": "Passive: when you're hooked in the basement you can unhook yourself, and whenever you're unhooked you see the killer for up to 20s. Use that view to run the opposite way. Basement hooks are dangerous, so this turns them into a funny escape.",
+ "Wide Open Throttle": "Passive: fast-vault a dropped pallet to get a small speed boost; the pallet resets and is blocked for 60s, and everyone sees it. That pallet can't be used for a minute, so vault it to escape, not to loop it. 60s cooldown.",
+ "Windows of Opportunity": "Passive: you see windows within 24m. Use it to plan escape routes in a chase. Cooldown after each window vault.",
+ "Wiretap": "After the team finishes about 40% of gens, stand next to a gen and press the second Active Ability button to trap it for up to 2 minutes. While the killer is within 14m of it, every survivor sees them. Trap a gen the killer keeps coming back to; kicking it ends the trap."
 };
 const MOODS = [
  {id:"annoy",  label:"😈 Annoy the killer",  name:"Annoy the killer"},
@@ -747,7 +939,7 @@ $("#moodChips").addEventListener("click",e=>{
  meta.moods=MOODS.map(x=>x.id).filter(id=>m.has(id)); save(); renderMoods();
 });
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function doRoll(){
+function doRoll(){ showPlan=false;
  if(!selMoods().length) return toast("Pick a vibe first 😈🫥🤡");
  const no=unowned(); locked=locked.map((l,i)=>l&&!!roll[i]&&!no.has(roll[i])); // unowned perks can't stay locked
  const keep=roll.filter((p,i)=>locked[i]);
@@ -763,23 +955,36 @@ function rollBuildName(){
  return (names.length>2 ? names.slice(0,2).join(" + ")+" + more" : names.join(" + ")) + " roll";
 }
 function renderRoll(){
- if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Pick a vibe and hit <b>Roll</b>. Lock (🔒) any perk you like, then reroll the rest. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
+ if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Pick a vibe and hit <b>Roll</b>. Lock (🔒) any perk you like, then reroll the rest. Every perk has a 💡 tip, and <b>Game plan</b> shows all 4 at once for the lobby. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
  $("#rollOut").innerHTML=`<div class="card">`+roll.map((p,i)=>{
   if(!p) return "";
   const info=PERK_TAGS[p]||["",""];
   const tags=perkTags(p).map(t=>{const m=MOODS.find(x=>x.id===t);return `<span class="tag">${m?m.label:esc(t)}</span>`;}).join("");
   return `<div class="perkcard ${locked[i]?"locked":""}"><div class="num">${i+1}</div><div class="grow">
    <b>${esc(p)}</b> <span class="meta">· ${esc(OWNER[p]||"")}</span>
-   <div style="margin:3px 0">${esc(info[1])}</div><div>${tags}</div></div>
+   <div style="margin:3px 0">${esc(info[1])}</div><div>${tags}</div>
+   <details class="tip" ${showTips?"open":""}><summary>How to use it</summary><div class="tiptext">${esc(PERK_TIPS[p]||"No tip yet.")}</div></details></div>
    <button type="button" class="lockbtn" data-lock="${i}" aria-label="${locked[i]?"Unlock":"Lock"} perk ${i+1}">${locked[i]?"🔒":"🔓"}</button></div>`;
  }).join("")+`<div class="row" style="margin-top:10px"><button class="btn" type="button" id="rerollBtn">🎲 Reroll unlocked</button><button class="btn" type="button" id="useBuild" style="background:var(--red);border-color:var(--red);color:#fff;font-weight:600">✅ Use this build</button></div>
-  <p class="hint" style="margin-bottom:0">Build name will be: <b>${esc(rollBuildName())}</b></p></div>`;
+  <div class="row" style="margin-top:8px"><button class="btn" type="button" id="planBtn">📋 Game plan</button><button class="btn" type="button" id="tipsToggle">${showTips?"🙈 Hide all tips":"💡 Show all tips"}</button></div>
+  <p class="hint" style="margin-bottom:0">Build name will be: <b>${esc(rollBuildName())}</b></p></div>
+  <div id="planOut">${showPlan?planHTML():""}</div>`;
+}
+let showTips=false, showPlan=false;
+const GLOSSARY=`<div class="gloss"><b>Exhausted</b> = sprint perks are recharging (only while you're not running) · <b>Haste</b> = faster · <b>Hindered</b> = slowed · <b>Broken</b> = can't be healed · <b>Endurance</b> = survive one hit that would down you · <b>Elusive</b> = no aura, scratch marks, blood or grunts · <b>Obsession</b> = the survivor the killer is fixated on · <b>Tunneling</b> = killer chasing the person who was just unhooked</div>`;
+function planHTML(){
+ const ps=roll.filter(Boolean);
+ return `<div class="card plan"><h3 style="margin-top:0">📋 Lobby game plan</h3>`+ps.map((p,i)=>`<div class="pitem"><b>${i+1}. ${esc(p)}</b> <span class="meta">· ${esc((PERK_TAGS[p]||["",""])[1])}</span><div class="tiptext" style="margin-top:6px">${esc(PERK_TIPS[p]||"")}</div></div>`).join("")+GLOSSARY+
+  `<button class="btn" type="button" id="planClose" style="width:100%;margin-top:10px">Got it, let's go 🔦</button></div>`;
 }
 $("#rollBtn").addEventListener("click",doRoll);
 $("#rollOut").addEventListener("click",e=>{
  const l=e.target.closest("[data-lock]");
  if(l){ const i=+l.dataset.lock; locked[i]=!locked[i]; meta.lastRoll={roll,locked}; save(); renderRoll(); renderMoods(); return; }
  if(e.target.closest("#rerollBtn")) return doRoll();
+ if(e.target.closest("#tipsToggle")){ showTips=!showTips; renderRoll(); return; }
+ if(e.target.closest("#planBtn")){ showPlan=!showPlan; renderRoll(); if(showPlan) setTimeout(()=>$("#planOut").scrollIntoView({behavior:"smooth",block:"start"}),30); return; }
+ if(e.target.closest("#planClose")){ showPlan=false; renderRoll(); return; }
  if(e.target.closest("#useBuild")){
   if(editingId) resetForm();
   roll.forEach((p,i)=>$("#f-p"+(i+1)).value=p||"");
@@ -791,9 +996,11 @@ function renderOwned(){
  const no=unowned(), q=norm($("#ownSearch").value), all=Object.keys(PERK_TAGS);
  $("#ownCount").textContent=`${all.length-no.size}/${all.length}`;
  const shown=all.filter(n=>!q||norm(n+" "+(OWNER[n]||"")).includes(q));
- $("#ownList").innerHTML=shown.map(n=>`<label><input type="checkbox" data-own="${esc(n)}" ${no.has(n)?"":"checked"}><span class="grow">${esc(n)} <span class="meta">· ${esc(OWNER[n]||"")}</span></span></label>`).join("") || `<div class="empty">No perk matches that.</div>`;
+ $("#ownList").innerHTML=shown.map(n=>`<div class="ownrow"><div class="orow"><input type="checkbox" data-own="${esc(n)}" ${no.has(n)?"":"checked"} aria-label="I own ${esc(n)}"><button type="button" class="ownname">${esc(n)} <span class="meta">· ${esc(OWNER[n]||"")}</span></button></div>
+  <div class="owntip"><div style="margin-bottom:6px">${esc((PERK_TAGS[n]||["",""])[1])}</div><div class="tiptext">${esc(PERK_TIPS[n]||"")}</div></div></div>`).join("") || `<div class="empty">No perk matches that.</div>`;
 }
 $("#ownSearch").addEventListener("input",renderOwned);
+$("#ownList").addEventListener("click",e=>{ const b=e.target.closest(".ownname"); if(b) b.closest(".ownrow").classList.toggle("open"); });
 $("#ownList").addEventListener("change",e=>{
  const c=e.target.closest("[data-own]"); if(!c) return;
  const no=unowned(); c.checked?no.delete(c.dataset.own):no.add(c.dataset.own);

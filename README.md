@@ -14,6 +14,8 @@ Perk name | tags | one-line description
 
 Tags are a comma-separated list drawn from `annoy`, `hidden`, `chase`, `support`, `gens`, `lucky`, and `chaos`. Lines starting with `#` are comments.
 
+Beginner how-to tips live in [`data/perk_tips.txt`](data/perk_tips.txt).
+
 After you edit the file, rebuild the page:
 
 ```bash

@@ -85,7 +85,20 @@ tr.low td{opacity:.45}
 .perkcard.locked .lockbtn{border-color:var(--warn);background:rgba(224,168,58,.18)}
 .tag{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:1px 6px;margin-right:4px;white-space:nowrap}
 .ownlist{max-height:320px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
-.ownlist label{display:flex;align-items:center;gap:10px;margin:0;padding:8px 10px;border-bottom:1px solid var(--line);color:var(--txt);font-size:14px}
+.ownrow{border-bottom:1px solid var(--line)}
+.ownrow .orow{display:flex;align-items:center;gap:10px;padding:4px 10px}
+.ownname{flex:1;text-align:left;background:none;border:0;color:var(--txt);font:inherit;font-size:14px;padding:8px 0;cursor:pointer;min-height:40px}
+.ownname::after{content:" ▸";color:var(--red2)}.ownrow.open .ownname::after{content:" ▾"}
+.owntip{padding:0 12px 12px 40px;font-size:14px;display:none}.ownrow.open .owntip{display:block}
+details.tip{margin-top:6px;border-top:0;padding-top:0}
+details.tip summary{padding:6px 0;font-size:14px;color:var(--warn)}
+details.tip summary::before{content:"💡 ";color:inherit}details.tip[open] summary::before{content:"💡 "}
+.tiptext{background:rgba(224,168,58,.08);border-left:3px solid var(--warn);border-radius:8px;padding:8px 10px;font-size:14.5px;line-height:1.45}
+.plan{border-color:rgba(224,168,58,.45)}
+.plan h3{color:var(--warn)}
+.plan .pitem{padding:10px 0;border-bottom:1px solid var(--line)}.plan .pitem:last-of-type{border-bottom:0}
+.plan .pitem b{font-size:16px}
+.gloss{font-size:13px;color:var(--dim);margin-top:8px}.gloss b{color:var(--txt);font-weight:600}
 .ownlist input{width:20px;height:20px;min-height:0;accent-color:var(--red)}
 @keyframes shake{0%,100%{transform:none}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
 .rolling{animation:shake .3s}
@@ -198,7 +211,7 @@ tr.low td{opacity:.45}
  <div class="card">
   <details id="ownDetails" style="margin-top:0;border-top:0;padding-top:0">
    <summary>Perks I own (<span id="ownCount"></span>)</summary>
-   <p class="hint">Untick perks you haven't unlocked so the dice never hand you one. Everything starts ticked.</p>
+   <p class="hint">Untick perks you haven't unlocked so the dice never hand you one. Everything starts ticked. Tap a perk's name to read how to use it 💡</p>
    <input id="ownSearch" placeholder="🔍 find a perk or survivor">
    <div class="row" style="margin-top:8px"><button class="btn small" type="button" id="ownAll">Tick all</button><button class="btn small" type="button" id="ownNone">Untick all shown</button></div>
    <div class="ownlist" id="ownList"></div>
@@ -539,6 +552,8 @@ $("#wipeBtn").addEventListener("click",()=>{ if(matches.length && confirm(`Delet
 // Mood tags for every survivor perk. Source of truth: data/perk_tags.txt (rebuild with src/build.py).
 // Format: "Perk name": ["mood,mood", "one-line description"]
 const PERK_TAGS = __PERK_TAGS__;
+// Beginner "How to use it" tips. Source of truth: data/perk_tips.txt (rebuild with src/build.py).
+const PERK_TIPS = __PERK_TIPS__;
 const MOODS = [
  {id:"annoy",  label:"😈 Annoy the killer",  name:"Annoy the killer"},
  {id:"hidden", label:"🫥 Stay hidden",        name:"Stay hidden"},
@@ -570,7 +585,7 @@ $("#moodChips").addEventListener("click",e=>{
  meta.moods=MOODS.map(x=>x.id).filter(id=>m.has(id)); save(); renderMoods();
 });
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function doRoll(){
+function doRoll(){ showPlan=false;
  if(!selMoods().length) return toast("Pick a vibe first 😈🫥🤡");
  const no=unowned(); locked=locked.map((l,i)=>l&&!!roll[i]&&!no.has(roll[i])); // unowned perks can't stay locked
  const keep=roll.filter((p,i)=>locked[i]);
@@ -586,23 +601,36 @@ function rollBuildName(){
  return (names.length>2 ? names.slice(0,2).join(" + ")+" + more" : names.join(" + ")) + " roll";
 }
 function renderRoll(){
- if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Pick a vibe and hit <b>Roll</b>. Lock (🔒) any perk you like, then reroll the rest. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
+ if(!roll.some(Boolean)){ $("#rollOut").innerHTML=`<div class="card empty"><div class="big">🎲</div><p>Pick a vibe and hit <b>Roll</b>. Lock (🔒) any perk you like, then reroll the rest. Every perk has a 💡 tip, and <b>Game plan</b> shows all 4 at once for the lobby. Hit <b>Use this build</b> and it's ready in the Log.</p></div>`; return; }
  $("#rollOut").innerHTML=`<div class="card">`+roll.map((p,i)=>{
   if(!p) return "";
   const info=PERK_TAGS[p]||["",""];
   const tags=perkTags(p).map(t=>{const m=MOODS.find(x=>x.id===t);return `<span class="tag">${m?m.label:esc(t)}</span>`;}).join("");
   return `<div class="perkcard ${locked[i]?"locked":""}"><div class="num">${i+1}</div><div class="grow">
    <b>${esc(p)}</b> <span class="meta">· ${esc(OWNER[p]||"")}</span>
-   <div style="margin:3px 0">${esc(info[1])}</div><div>${tags}</div></div>
+   <div style="margin:3px 0">${esc(info[1])}</div><div>${tags}</div>
+   <details class="tip" ${showTips?"open":""}><summary>How to use it</summary><div class="tiptext">${esc(PERK_TIPS[p]||"No tip yet.")}</div></details></div>
    <button type="button" class="lockbtn" data-lock="${i}" aria-label="${locked[i]?"Unlock":"Lock"} perk ${i+1}">${locked[i]?"🔒":"🔓"}</button></div>`;
  }).join("")+`<div class="row" style="margin-top:10px"><button class="btn" type="button" id="rerollBtn">🎲 Reroll unlocked</button><button class="btn" type="button" id="useBuild" style="background:var(--red);border-color:var(--red);color:#fff;font-weight:600">✅ Use this build</button></div>
-  <p class="hint" style="margin-bottom:0">Build name will be: <b>${esc(rollBuildName())}</b></p></div>`;
+  <div class="row" style="margin-top:8px"><button class="btn" type="button" id="planBtn">📋 Game plan</button><button class="btn" type="button" id="tipsToggle">${showTips?"🙈 Hide all tips":"💡 Show all tips"}</button></div>
+  <p class="hint" style="margin-bottom:0">Build name will be: <b>${esc(rollBuildName())}</b></p></div>
+  <div id="planOut">${showPlan?planHTML():""}</div>`;
+}
+let showTips=false, showPlan=false;
+const GLOSSARY=`<div class="gloss"><b>Exhausted</b> = sprint perks are recharging (only while you're not running) · <b>Haste</b> = faster · <b>Hindered</b> = slowed · <b>Broken</b> = can't be healed · <b>Endurance</b> = survive one hit that would down you · <b>Elusive</b> = no aura, scratch marks, blood or grunts · <b>Obsession</b> = the survivor the killer is fixated on · <b>Tunneling</b> = killer chasing the person who was just unhooked</div>`;
+function planHTML(){
+ const ps=roll.filter(Boolean);
+ return `<div class="card plan"><h3 style="margin-top:0">📋 Lobby game plan</h3>`+ps.map((p,i)=>`<div class="pitem"><b>${i+1}. ${esc(p)}</b> <span class="meta">· ${esc((PERK_TAGS[p]||["",""])[1])}</span><div class="tiptext" style="margin-top:6px">${esc(PERK_TIPS[p]||"")}</div></div>`).join("")+GLOSSARY+
+  `<button class="btn" type="button" id="planClose" style="width:100%;margin-top:10px">Got it, let's go 🔦</button></div>`;
 }
 $("#rollBtn").addEventListener("click",doRoll);
 $("#rollOut").addEventListener("click",e=>{
  const l=e.target.closest("[data-lock]");
  if(l){ const i=+l.dataset.lock; locked[i]=!locked[i]; meta.lastRoll={roll,locked}; save(); renderRoll(); renderMoods(); return; }
  if(e.target.closest("#rerollBtn")) return doRoll();
+ if(e.target.closest("#tipsToggle")){ showTips=!showTips; renderRoll(); return; }
+ if(e.target.closest("#planBtn")){ showPlan=!showPlan; renderRoll(); if(showPlan) setTimeout(()=>$("#planOut").scrollIntoView({behavior:"smooth",block:"start"}),30); return; }
+ if(e.target.closest("#planClose")){ showPlan=false; renderRoll(); return; }
  if(e.target.closest("#useBuild")){
   if(editingId) resetForm();
   roll.forEach((p,i)=>$("#f-p"+(i+1)).value=p||"");
@@ -614,9 +642,11 @@ function renderOwned(){
  const no=unowned(), q=norm($("#ownSearch").value), all=Object.keys(PERK_TAGS);
  $("#ownCount").textContent=`${all.length-no.size}/${all.length}`;
  const shown=all.filter(n=>!q||norm(n+" "+(OWNER[n]||"")).includes(q));
- $("#ownList").innerHTML=shown.map(n=>`<label><input type="checkbox" data-own="${esc(n)}" ${no.has(n)?"":"checked"}><span class="grow">${esc(n)} <span class="meta">· ${esc(OWNER[n]||"")}</span></span></label>`).join("") || `<div class="empty">No perk matches that.</div>`;
+ $("#ownList").innerHTML=shown.map(n=>`<div class="ownrow"><div class="orow"><input type="checkbox" data-own="${esc(n)}" ${no.has(n)?"":"checked"} aria-label="I own ${esc(n)}"><button type="button" class="ownname">${esc(n)} <span class="meta">· ${esc(OWNER[n]||"")}</span></button></div>
+  <div class="owntip"><div style="margin-bottom:6px">${esc((PERK_TAGS[n]||["",""])[1])}</div><div class="tiptext">${esc(PERK_TIPS[n]||"")}</div></div></div>`).join("") || `<div class="empty">No perk matches that.</div>`;
 }
 $("#ownSearch").addEventListener("input",renderOwned);
+$("#ownList").addEventListener("click",e=>{ const b=e.target.closest(".ownname"); if(b) b.closest(".ownrow").classList.toggle("open"); });
 $("#ownList").addEventListener("change",e=>{
  const c=e.target.closest("[data-own]"); if(!c) return;
  const no=unowned(); c.checked?no.delete(c.dataset.own):no.add(c.dataset.own);
