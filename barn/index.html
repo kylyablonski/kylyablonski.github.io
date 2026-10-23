@@ -53,7 +53,26 @@ textarea{min-height:110px;resize:vertical}
 .seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{flex:1}
 .mini{width:42px;height:42px;flex:none;border-radius:12px;background:#ead6b3;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}.mini svg{width:40px;height:40px}
 a{color:#5e7254;font-weight:800}
-</style></head><body><div class="app" id="app"></div>
+.sw{width:40px;height:40px;border-radius:50%;border:3px solid #fffaf0;box-shadow:0 0 0 2px #d6c8ad;cursor:pointer;margin:4px;padding:0;font-size:18px;background:#fff}
+.sw.on{box-shadow:0 0 0 3px #4a3528}.opt{display:flex;flex-wrap:wrap;align-items:center}
+.seg button.on{background:#4a3528;color:#fff7ea;box-shadow:none}
+.lbl{font-weight:800;font-size:13px;margin:12px 0 4px}
+.ponybig{background:linear-gradient(#e6ecd9,#f6efe1);border-radius:18px;display:flex;justify-content:center}.ponybig svg{width:230px;height:190px}
+.days{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px}.days button{flex:none;min-width:58px}
+.tray{display:flex;flex-wrap:wrap;gap:6px}.pp{touch-action:none;user-select:none;-webkit-user-select:none;background:#fffaf0;border:2px solid #e4d6bd;border-radius:14px;padding:2px 6px 4px;font:inherit;font-size:11px;font-weight:800;color:inherit;cursor:grab;min-height:44px;display:flex;flex-direction:column;align-items:center}
+.pp svg{width:46px;height:38px}.pp.on{border-color:#4a3528;background:#fbe8bf}
+.map{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;border-radius:24px;background:#a9c98f;box-shadow:inset 0 0 0 5px #7fa36a;position:relative}
+.zone{border-radius:18px;min-height:128px;padding:8px;position:relative;cursor:pointer;border:3px solid rgba(74,53,40,.25)}
+.zone.hot{outline:4px dashed #4a3528}.zone .zn{font-family:Fredoka,sans-serif;font-weight:600;font-size:14px;background:#fffaf0cc;border-radius:9px;padding:2px 8px;display:inline-block}
+.zone .ps{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px}.zone .ps button{background:#fffaf0dd;border:0;border-radius:10px;padding:0 2px;font:inherit;font-size:9.5px;font-weight:800;color:inherit;cursor:pointer}.zone .ps svg{width:40px;height:33px;display:block}
+.z-barn{background:repeating-linear-gradient(90deg,#c99a68 0 14px,#bf8f5d 14px 16px)}
+.z-arena{background:radial-gradient(#ecd3a2 2px,transparent 3px) 0 0/14px 14px,#e3c48c;border-radius:30px}
+.z-pen{background:radial-gradient(circle,#e3c48c 58%,#8c623c 59% 63%,#b7d79c 64%)}
+.z-wash{background:repeating-conic-gradient(#cfe3ee 0 25%,#b7d3e3 0 50%) 0 0/20px 20px}
+.z-pasture{background:radial-gradient(#8fb87a 2px,transparent 3px) 0 0/16px 16px,#b7d79c;grid-column:span 2;border-style:dashed}
+.z-trail{background:linear-gradient(115deg,transparent 42%,#d9bf8f 43% 53%,transparent 54%),#93b97c;grid-column:span 2}
+.dragghost{position:fixed;pointer-events:none;z-index:20;opacity:.85;transform:translate(-50%,-60%)}.dragghost svg{width:70px;height:58px}
+</style></head><body><style id="themecss"></style><div class="app" id="app"></div>
 <nav id="nav"></nav><div class="toast" id="toast"><span id="tmsg"></span><button id="tundo">Undo</button></div>
 <script>
 const DAY=864e5, TODAY=new Date(); TODAY.setHours(12,0,0,0);
@@ -90,9 +109,36 @@ function sample(){
  posts:[
   {id:1,when:ago(1),text:'Farrier coming Tuesday 9am 🧲 Reply YES to sign up!',ask:true,yes:['maya','ruth','lena']},
   {id:2,when:ago(5),text:'Arena footing is being dragged Saturday morning — please ride after 11. Thank you! 🌿',ask:false,yes:[]}],
- sent:[]};
+ sent:[],cfg:defCfg(),plans:seedPlans()};
 }
-let S; try{S=JSON.parse(localStorage.getItem('wcs-proto'))}catch(e){} if(!S||!S.horses)S=sample();
+const LOOKS={biscuit:['bay','black','star','front','sage','none','walnut','classic'],clem:['chestnut','flax','blaze','hind','rose','rose','walnut','scallop'],
+ honey:['palomino','cream','snip','none','sky','sky','sage','rounded'],midnight:['black','black','star','all','lavender','sunny','navy','classic'],
+ juniper:['bay','black','none','hind','none','none','walnut','rounded'],maple:['chestnut','auburn','blaze','front','sunny','lavender','rose','scallop'],
+ rosie:['gray','gray','none','none','rose','rose','rose','rounded'],pebble:['gray','gray','snip','none','none','none','sage','classic'],
+ patches:['white','auburn','none','all','sky','none','sky','scallop'],sprout:['dun','black','star','none','sage','sunny','walnut','rounded']};
+const KEYS=['coat','mane','mark','socks','blanket','bow','plate','plateStyle'];
+const COATS={bay:'#8a5a3b',chestnut:'#c8743f',black:'#3a2a22',gray:'#c9c6c0',palomino:'#e2b965',white:'#f4efe6',buckskin:'#c9a66b',dun:'#d08a4e',roan:'#b7a49a'};
+const MANES={black:'#2b1d16',flax:'#f3e2b3',cream:'#fff3d6',auburn:'#7a4a2e',gray:'#8a8580',pink:'#f3a5c0',lavender:'#b9a3e0'};
+const FAB={none:null,rose:'#e99aa8',sky:'#8fc1e3',sage:'#8fb87a',sunny:'#f2c94c',lavender:'#b9a3e0',navy:'#3d5a80',walnut:'#7a5235'};
+const PLATES={walnut:'#7a5235',sage:'#5e8a4c',rose:'#c46a7d',sky:'#4f86ad',navy:'#3d5a80'};
+const THEMES={sage:['#cfdcc3','#e6ecd9','#b9c9a9','#8fb87a','#6d9a5a'],rose:['#f1cfd3','#f8e3e5','#dfb2b8','#d98a98','#b76878'],sky:['#c6dcea','#e1edf5','#a9c5d8','#6fa3c8','#4f86ad'],
+ lavender:['#d9cfee','#ece6f7','#c0b3dd','#9e88cf','#7d67b0'],sunny:['#f3e0a8','#f9efcf','#ddc68a','#d9a93f','#b3862a']};
+const ICONS=['🌿','🐴','🌻','🍎','🏡','🌙','⭐','🥕'];
+function defCfg(){return{name:'Willow Creek Stables',theme:'sage',icon:'🌿'}}
+const SPOTS=[['barn','Stalls & barn','🏠'],['arena','Arena','🟫'],['pen','Round pen','⭕'],['wash','Wash rack','🫧'],['trail','Trail','🌲'],['pasture','Pasture','🌼']];
+const dayStr=n=>ago(-n);
+function seedPlans(){const fri=(5-TODAY.getDay()+7)%7;return[
+ {id:1,horse:'biscuit',spot:'arena',day:dayStr(fri),time:'16:00',note:'Flatwork + cool down'},
+ {id:2,horse:'clem',spot:'trail',day:dayStr(0),time:'10:00',note:'Easy hack'},
+ {id:3,horse:'juniper',spot:'pen',day:dayStr(0),time:'17:30',note:''},
+ {id:4,horse:'pebble',spot:'pasture',day:dayStr(0),time:'',note:'Turnout all day'},
+ {id:5,horse:'honey',spot:'wash',day:dayStr(1),time:'09:00',note:'Bath day 🫧'},
+ {id:6,horse:'midnight',spot:'arena',day:dayStr(2),time:'18:00',note:'Lesson'}]}
+function defLook(h){const L=LOOKS[h.id];if(L)return Object.fromEntries(KEYS.map((k,i)=>[k,L[i]]));
+ const c=Object.keys(COATS).find(k=>COATS[k]===h.coat)||'bay';return{coat:c,mane:'black',mark:'none',socks:'none',blanket:'none',bow:'none',plate:'walnut',plateStyle:'classic'}}
+function migrate(){S.cfg=Object.assign(defCfg(),S.cfg||{});if(!Array.isArray(S.plans))S.plans=seedPlans();
+ S.horses.forEach(h=>{h.look=Object.assign(defLook(h),h.look||{})});if(!Array.isArray(S.sent))S.sent=[];if(!Array.isArray(S.posts))S.posts=[]}
+let S; try{S=JSON.parse(localStorage.getItem('wcs-proto'))}catch(e){} if(!S||!S.horses)S=sample(); migrate(); localStorage.setItem("wcs-proto",JSON.stringify(S));
 let savedAt=Date.now();
 const save=()=>{localStorage.setItem('wcs-proto',JSON.stringify(S));savedAt=Date.now()};
 const boarded=()=>S.horses.filter(h=>h.owner);
@@ -104,25 +150,36 @@ function dueTxt(d){return d<0?`${-d} day${d==-1?'':'s'} overdue`:d===0?'due toda
 function badge(h){if(!h.bill)return'';const b=h.bill;
  if(b.status==='late')return`<span class="b c">Owes $${b.board} · ${b.daysLate} days late</span>`;
  if(b.next)return`<span class="b a">Invoice due ${fmt(b.next)}</span>`;return`<span class="b g">✓ Paid up</span>`}
-function face(h,cls='h'){return`<svg viewBox="0 0 100 100" class="${cls}" aria-hidden="true"><path d="M28 22 l6-14 8 14z M58 22 l8-14 6 14z" fill="${h.coat}" stroke="#4a3528" stroke-width="2" stroke-linejoin="round"/>
-<path d="M30 24 q20-12 40 0 q10 30 2 58 q-22 12-44 0 q-8-28 2-58z" fill="${h.coat}" stroke="#4a3528" stroke-width="2.2"/>${h.id==='patches'?'<ellipse cx="62" cy="40" rx="9" ry="7" fill="#7a4a2e"/><ellipse cx="38" cy="66" rx="7" ry="5" fill="#7a4a2e"/>':`<path d="M50 34 q-3 18 0 38 q3-20 0-38z" fill="${h.blaze}" opacity=".9"/>`}
-<path d="M34 20 q10 -6 18 2 q-6 10 -16 8z" fill="${h.mane}" stroke="#4a3528" stroke-width="1.5"/><ellipse cx="50" cy="80" rx="17" ry="11" fill="#f0c9b4" stroke="#4a3528" stroke-width="2"/>
-<circle cx="44" cy="80" r="2" fill="#4a3528"/><circle cx="56" cy="80" r="2" fill="#4a3528"/><path d="M38 46 q4 4 8 0" stroke="#2b1d16" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M54 46 q4 4 8 0" stroke="#2b1d16" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-<ellipse cx="36" cy="56" rx="5" ry="3" fill="#f3a5a0" opacity=".6"/><ellipse cx="64" cy="56" rx="5" ry="3" fill="#f3a5a0" opacity=".6"/></svg>`}
+function face(h,cls='h'){const L=h.look||defLook(h),c=COATS[L.coat]||L.coat,m=MANES[L.mane]||'#2b1d16',o='#4a3528',bl=FAB[L.blanket],bw=FAB[L.bow];
+ const sk=k=>L.socks==='all'||L.socks===k;const leg=(x,k)=>`<rect x="${x}" y="58" width="8" height="30" rx="3" fill="${c}" stroke="${o}" stroke-width="1.6"/>${sk(k)?`<rect x="${x+.8}" y="76" width="6.4" height="11" rx="2" fill="#fffaf0"/>`:''}<rect x="${x}" y="86" width="8" height="5" rx="2" fill="${o}"/>`;
+ return`<svg viewBox="0 0 124 100" class="${cls}" aria-hidden="true"><path d="M27 44 q-14 8 -10 34 q6-6 8-16 q2 10 8 14 q-4-18 2-30z" fill="${m}" stroke="${o}" stroke-width="1.6"/>
+${leg(34,'hind')}${leg(46,'hind')}${leg(76,'front')}${leg(88,'front')}<ellipse cx="62" cy="52" rx="35" ry="17" fill="${c}" stroke="${o}" stroke-width="2"/>
+${bl?`<path d="M42 37 q20-7 40 0 l2 22 q-22 7 -44 0z" fill="${bl}" stroke="${o}" stroke-width="1.6"/><path d="M44 55 q20 5 38 0" stroke="#fffaf0" stroke-width="2" fill="none" stroke-dasharray="3 3"/>`:''}
+<path d="M80 50 L88 22 L102 24 L98 56z" fill="${c}" stroke="${o}" stroke-width="2" stroke-linejoin="round"/><path d="M90 14 l3-11 l5 12z" fill="${c}" stroke="${o}" stroke-width="1.6" stroke-linejoin="round"/>
+<g transform="rotate(32 103 30)"><rect x="88" y="21" width="30" height="17" rx="8.5" fill="${c}" stroke="${o}" stroke-width="2"/>
+${L.mark==='star'?'<path d="M99 25 l1.6 3 3.2.4 -2.4 2.2.6 3.2 -3-1.6 -3 1.6.6-3.2 -2.4-2.2 3.2-.4z" fill="#fffaf0"/>':''}${L.mark==='blaze'?'<rect x="97" y="25" width="20" height="4.5" rx="2.2" fill="#fffaf0"/>':''}${L.mark==='snip'?'<ellipse cx="114" cy="30" rx="3" ry="2.4" fill="#fffaf0"/>':''}
+<circle cx="115" cy="33" r="1.3" fill="${o}"/></g><circle cx="98" cy="25" r="2" fill="#2b1d16"/><ellipse cx="101" cy="33" rx="3" ry="1.8" fill="#f3a5a0" opacity=".6"/>
+<path d="M88 16 q-10 14 -10 34 l7 -2 q0-16 9-29z" fill="${m}" stroke="${o}" stroke-width="1.5"/>
+${bw?`<g transform="translate(86 22)"><path d="M0 0 l-8 -5 v10z M0 0 l8 -5 v10z" fill="${bw}" stroke="${o}" stroke-width="1.2"/><path d="M0 0 l-3 9 M0 0 l3 9" stroke="${bw}" stroke-width="2.4"/><circle r="2.6" fill="${bw}" stroke="${o}" stroke-width="1.2"/></g>`:''}</svg>`}
+const plateCss=h=>{const L=h.look||{},st=L.plateStyle;return`background:${PLATES[L.plate]||'#7a5235'};border-radius:${st==='rounded'?'14px':st==='scallop'?'14px 14px 4px 4px':'4px'};${st==='scallop'?'border:2px dotted #fff3dc;':''}`};
+function setLook(id,k,v){const h=S.horses.find(x=>x.id===id);h.look[k]=v;save();render()}
+function setCfg(k,v){S.cfg[k]=v;save();render()}
+function themeCss(){const t=THEMES[S.cfg.theme]||THEMES.sage;document.getElementById('themecss').textContent=`header{background:linear-gradient(${t[0]},${t[1]});box-shadow:0 4px 0 ${t[2]}}.btn:not(.ghost):not(.warm):not(.done){background:${t[3]};box-shadow:0 3px 0 ${t[4]}}nav button.on{background:${t[1]}}.bar i{background:${t[3]}}`;
+ document.title=S.cfg.name+' — prototype'}
 function billing(){const b=boarded(),tot=b.reduce((s,h)=>s+h.bill.board,0),owed=b.filter(h=>h.bill.status==='late');return{tot,col:tot-owed.reduce((s,h)=>s+h.bill.board,0),owed,b}}
 const hdr=(t,sub='')=>`<header><h1>${t}<span class="tag">Sample data</span></h1>${sub}</header>`;
 const savedLine=()=>`<div class="saved">✓ Saved on this phone · works offline</div>`;
 let route={v:'barn'}; let draft={};
 function go(v,p={}){route={v,...p};render();scrollTo(0,0)}
 const V={
-barn(){const B=billing();return hdr('🌿 Willow Creek Stables',`<div class="sync"><b>●</b> Synced from QuickBooks (sample) · 2 min ago</div>
+barn(){const B=billing();return hdr(`${S.cfg.icon} <span class="nm">${esc(S.cfg.name)}</span>`,`<div class="sync"><b>●</b> Synced from QuickBooks (sample) · 2 min ago</div>
 <div class="chips"><button class="chip" style="flex:1" onclick="go('billing')">Board collected $${B.col.toLocaleString()} / $${B.tot.toLocaleString()}<div class="bar"><i style="width:${B.col/B.tot*100}%"></i></div></button>${B.owed.length?`<button class="chip o" onclick="go('billing')">⚠ ${B.owed.length} overdue</button>`:''}</div>`)+
-`<div class="aisle">${S.horses.map(h=>{const[c,t]=careDot(h);return`<button class="stall" onclick="go('horse',{id:'${h.id}'})"><div class="door">${face(h)}</div><div class="plaque">${h.name}</div>
+`<div class="aisle">${S.horses.map(h=>{const[c,t]=careDot(h);return`<button class="stall" onclick="go('horse',{id:'${h.id}'})"><div class="door">${face(h)}</div><div class="plaque" style="${plateCss(h)}">${esc(h.name)}</div>
 <div class="own">${h.owner||'<i>Barn horse · no billing</i>'}</div>${badge(h)}<div class="care"><span class="dot ${c}"></span>${t}</div></button>`}).join('')}</div>
-<div class="qb">Billing badges are mock values “as if synced from QuickBooks” — no real connection.</div>${savedLine()}`},
+${todaySum()}<div style="padding:0 14px"><button class="btn ghost full" onclick="go('custom')">🎨 Customize the barn</button></div><div class="qb" style="margin-top:10px">Billing badges are mock values “as if synced from QuickBooks” — no real connection.</div>${savedLine()}`},
 horse(){const h=S.horses.find(x=>x.id===route.id);const care=careFor(h);
  return `<div class="wrap"><button class="back" onclick="go('barn')">‹ Barn</button>
-<div class="card hero"><div class="door">${face(h)}</div><div><h2>${h.name}</h2><div class="own">${h.owner?'Boarded · owner '+h.owner:'Barn horse · no billing'}</div>${badge(h)}</div></div>
+<div class="card hero"><div class="door">${face(h)}</div><div><h2>${esc(h.name)}</h2><button class="btn sm" style="margin:4px 0" onclick="go('style',{id:'${h.id}'})">🎀 Style my pony</button><div class="own">${h.owner?'Boarded · owner '+h.owner:'Barn horse · no billing'}</div>${badge(h)}</div></div>
 ${h.owner?`<div class="card"><div class="row"><div style="flex:1"><div class="n" style="font-weight:800">${h.owner}</div><div class="own">${h.phone} (sample)</div></div>
 <button class="btn ghost sm" onclick="toast('📞 Prototype — no call placed')">Call</button><button class="btn sm" onclick="go('remind',{id:'${h.id}'})">Text</button></div>
 <div class="item"><div class="t"><div class="s">Balance (QuickBooks sample)</div><div class="n">${h.bill.status==='late'?`$${h.bill.board} owed · ${h.bill.daysLate} days late`:'$0 · paid up'}</div></div>${h.bill.status==='late'?`<button class="btn warm sm" onclick="go('remind',{id:'${h.id}',kind:'bill'})">Nudge</button>`:''}</div></div>`:''}
@@ -131,8 +188,8 @@ ${h.owner?`<div class="card"><div class="row"><div style="flex:1"><div class="n"
 <div style="display:flex;flex-direction:column;gap:6px"><button class="btn sm ${c.last===ago(0)?'done':''}" onclick="logDone('${h.id}','${c.k}')">${c.last===ago(0)?'✓ Done':'Log done'}</button>${h.owner&&c.d<=14?`<button class="btn ghost sm" onclick="go('remind',{id:'${h.id}',care:'${c.k}'})">Remind</button>`:''}</div></div>`).join('')}</div>${savedLine()}</div>`},
 remind(){const h=S.horses.find(x=>x.id===route.id)||boarded()[0];const care=careFor(h);const c=care.find(x=>x.k===route.care)||care[0];
  const key=h.id+(route.kind||c.k);
- if(!(key in draft))draft[key]=route.kind==='bill'?`Hi ${first(h.owner)}, just a friendly note that ${h.name}'s board of $${h.bill.board} is ${h.bill.daysLate} days past due. You can pay through the QuickBooks link anytime. Thank you! 🌿 — Willow Creek`:
-  `Hi ${first(h.owner)}, ${h.name}'s ${c.n.toLowerCase()} is ${c.d<0?'overdue by '+(-c.d)+' days':c.d===0?'due today':'due in '+c.d+' days'} (${fmt(c.due)}). Want me to put ${h.name} on the list? Reply YES 🐴 — Willow Creek`;
+ if(!(key in draft))draft[key]=route.kind==='bill'?`Hi ${first(h.owner)}, just a friendly note that ${h.name}'s board of $${h.bill.board} is ${h.bill.daysLate} days past due. You can pay through the QuickBooks link anytime. Thank you! 🌿 — ${S.cfg.name}`:
+  `Hi ${first(h.owner)}, ${h.name}'s ${c.n.toLowerCase()} is ${c.d<0?'overdue by '+(-c.d)+' days':c.d===0?'due today':'due in '+c.d+' days'} (${fmt(c.due)}). Want me to put ${h.name} on the list? Reply YES 🐴 — ${S.cfg.name}`;
  const sent=S.sent.filter(s=>s.to===h.owner).slice(-3);
  return hdr('💬 Reminder preview')+`<div class="wrap"><button class="back" onclick="go('horse',{id:'${h.id}'})">‹ ${h.name}</button>
 <div class="card"><div class="row"><div class="mini">${face(h,'')}</div><div><b>To: ${h.owner}</b><div class="own">${h.phone} · plain SMS, no app needed</div></div></div>
@@ -152,6 +209,31 @@ posts(){const B=boarded();return hdr('📣 Announcements','<div class="sync">One
 ${p.ask?`<div class="own"><b>${yes.length} said YES</b></div><div>${yes.map(h=>`<span class="pill yes">✓ ${first(h.owner)} (${h.name})</span>`).join('')}</div>
 <div class="own" style="margin-top:8px"><b>${no.length} haven't replied</b></div><div>${no.map(h=>`<span class="pill wait">${first(h.owner)} (${h.name})</span>`).join('')}</div>
 <div class="own" style="margin-top:6px">Tap a name to mark a reply (sample)</div>`:'<div class="own">FYI post · no replies needed</div>'}</div>`}).join('')}${savedLine()}</div>`},
+custom(){const c=S.cfg;return hdr('🎨 Customize the barn')+`<div class="wrap"><button class="back" onclick="go('barn')">‹ Barn</button><div class="card">
+<div class="lbl">Barn name</div><input id="bname" value="${esc(c.name)}" maxlength="40" oninput="S.cfg.name=this.value||'My Barn';save();themeCss();document.querySelector('h1 .nm')&&(document.querySelector('h1 .nm').textContent=S.cfg.name)">
+<div class="lbl">Barn icon</div><div class="opt">${ICONS.map(i=>`<button class="sw ${c.icon===i?'on':''}" aria-label="icon ${i}" onclick="setCfg('icon','${i}')">${i}</button>`).join('')}</div>
+<div class="lbl">Color theme</div><div class="opt">${Object.entries(THEMES).map(([k,t])=>`<button class="sw ${c.theme===k?'on':''}" data-theme="${k}" aria-label="${k} theme" style="background:linear-gradient(135deg,${t[0]} 50%,${t[3]} 50%)" onclick="setCfg('theme','${k}')"></button>`).join('')}</div>
+<div class="own" style="margin-top:10px">Changes save on this phone and show everywhere in the app.</div></div>${savedLine()}</div>`},
+style(){const h=S.horses.find(x=>x.id===route.id),L=h.look;
+ const sw=(k,map,none)=>`<div class="opt">${Object.entries(map).map(([n,v])=>`<button class="sw ${L[k]===n?'on':''}" data-k="${k}" data-v="${n}" aria-label="${k} ${n}" title="${n}" style="background:${v||'#fff'}" onclick="setLook('${h.id}','${k}','${n}')">${v?'':'✕'}</button>`).join('')}</div>`;
+ const seg=(k,opts)=>`<div class="seg">${opts.map(o=>`<button class="btn ghost sm ${L[k]===o?'on':''}" data-k="${k}" data-v="${o}" onclick="setLook('${h.id}','${k}','${o}')">${o}</button>`).join('')}</div>`;
+ return hdr('🎀 Style my pony')+`<div class="wrap"><button class="back" onclick="go('horse',{id:'${h.id}'})">‹ ${esc(h.name)}</button>
+<div class="card"><div class="ponybig">${face(h,'')}</div><div style="text-align:center;margin-top:-6px"><span class="plaque" style="${plateCss(h)};margin:0;font-size:17px">${esc(h.name)}</span></div>
+<div class="lbl">Coat · ${L.coat}</div>${sw('coat',COATS)}<div class="lbl">Mane & tail · ${L.mane}</div>${sw('mane',MANES)}
+<div class="lbl">Face marking</div>${seg('mark',['none','star','blaze','snip'])}<div class="lbl">Socks</div>${seg('socks',['none','front','hind','all'])}
+<div class="lbl">Blanket · ${L.blanket}</div>${sw('blanket',FAB)}<div class="lbl">Bow in the mane · ${L.bow}</div>${sw('bow',FAB)}
+<div class="lbl">Stall nameplate</div>${sw('plate',PLATES)}${seg('plateStyle',['classic','rounded','scallop'])}
+<div class="own" style="margin-top:10px">Just for fun — no points, no unlocks. Saves on this phone.</div></div>${savedLine()}</div>`},
+map(){const d=dayStr(mapDay),P=S.plans.filter(p=>p.day===d);
+ const dn=n=>n===0?'Today':new Date(dayStr(n)+'T12:00').toLocaleDateString('en-US',{weekday:'short'});
+ return hdr('🗺️ Barn map','<div class="sync">Tap or drag your pony onto a spot to say where you’ll be</div>')+`<div class="wrap" style="margin-top:12px">
+<div class="days">${[0,1,2,3,4,5,6].map(n=>`<button class="btn sm ${n===mapDay?'':'ghost'}" data-day="${n}" onclick="mapDay=${n};render()">${dn(n)}<br><span style="font-size:10.5px">${fmt(dayStr(n))}</span></button>`).join('')}</div>
+<div class="card"><div class="lbl" style="margin-top:0">1 · Pick your pony</div><div class="tray">${S.horses.map(h=>`<button class="pp ${pick===h.id?'on':''}" data-h="${h.id}">${face(h,'')}${esc(h.name)}</button>`).join('')}</div>
+<div class="row" style="margin-top:8px"><div style="flex:1"><div class="lbl">Time (optional)</div><input type="time" id="ptime" value="${esc(pt.time)}" oninput="pt.time=this.value"></div><div style="flex:1.4"><div class="lbl">Note (optional)</div><input id="pnote" placeholder="e.g. trail ride" value="${esc(pt.note)}" oninput="pt.note=this.value"></div></div>
+<div class="own" style="margin-top:8px">${pick?`2 · Now tap a spot for <b>${esc(S.horses.find(h=>h.id===pick).name)}</b> on ${dn(mapDay)}`:'2 · Then tap a spot on the map (or just drag the pony there)'}</div></div>
+<div class="map">${SPOTS.map(([k,n,e])=>`<div class="zone z-${k}" data-spot="${k}" onclick="tapSpot('${k}')"><span class="zn">${e} ${n}</span><div class="ps">${P.filter(p=>p.spot===k).map(p=>{const h=S.horses.find(x=>x.id===p.horse);return h?`<button title="Remove" onclick="event.stopPropagation();delPlan(${p.id})">${face(h,'')}${esc(h.name)}${p.time?' · '+t12(p.time):''}</button>`:''}).join('')}</div></div>`).join('')}</div>
+<h3>Who’s coming · ${dn(mapDay)} ${fmt(d)}</h3><div class="card">${P.length?SPOTS.filter(([k])=>P.some(p=>p.spot===k)).map(([k,n,e])=>`<div class="lbl">${e} ${n}</div>${P.filter(p=>p.spot===k).sort((a,b)=>(a.time||'99').localeCompare(b.time||'99')).map(p=>`<div class="item"><div class="mini">${face(S.horses.find(x=>x.id===p.horse)||{},'')}</div><div class="t"><div class="n">${planTxt(p)}</div>${p.note?`<div class="s">${esc(p.note)}</div>`:''}</div><button class="btn ghost sm" onclick="delPlan(${p.id})" aria-label="remove">✕</button></div>`).join('')}`).join(''):'<div class="own">Nobody’s planned yet — a quiet barn day 🌾</div>'}</div>
+<div class="proto">🧪 Prototype — plans save on this phone only.</div>${savedLine()}</div>`},
 billing(){const B=billing();const pct=B.col/B.tot*100;return hdr('💵 Billing',`<div class="sync"><b>●</b> Synced from QuickBooks (sample) · mock values</div>`)+`<div class="wrap" style="margin-top:14px">
 <div class="card"><div class="own">Board collected this month</div><div class="big">$${B.col.toLocaleString()} <span style="font-size:18px;color:#9a8670">/ $${B.tot.toLocaleString()}</span></div>
 <div class="bar" style="height:12px"><i style="width:${pct}%"></i></div><div class="own" style="margin-top:6px">${Math.round(pct)}% · ${B.b.length-B.owed.length} of ${B.b.length} boarders paid</div></div>
@@ -159,7 +241,7 @@ billing(){const B=billing();const pct=B.col/B.tot*100;return hdr('💵 Billing',
 <button class="btn warm sm" onclick="go('remind',{id:'${h.id}',kind:'bill'})">${s?'Again':'Send reminder'}</button></div>`}).join(''):'<div class="own">Everyone is paid up 🌿</div>'}</div>
 <h3>Everyone</h3><div class="card">${B.b.map(h=>`<button class="item" style="width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;text-align:left;cursor:pointer" onclick="go('horse',{id:'${h.id}'})"><div class="mini">${face(h,'')}</div><div class="t"><div class="n">${h.owner}</div><div class="s">${h.name} · $${h.bill.board}/mo</div></div>${badge(h)}</button>`).join('')}</div>
 <div class="own" style="text-align:center">Barn horses (${S.horses.length-B.b.length}) aren't billed.</div>
-<div style="margin:18px 0"><button class="btn ghost full" onclick="if(confirm('Reset all sample data?')){localStorage.removeItem('wcs-proto');S=sample();draft={};save();go('barn');toast('Sample data reset')}">↺ Reset sample data</button></div><p style="text-align:center;font-size:12px;opacity:.6;margin:8px 0 90px">© 2026 Kylie Yablonski. All rights reserved.<br>Prototype for demonstration only. Not for redistribution.</p></div>`}};
+<div style="margin:18px 0"><button class="btn ghost full" onclick="if(confirm('Reset all sample data?')){localStorage.removeItem('wcs-proto');S=sample();migrate();draft={};mapDay=0;pick=null;save();go('barn');toast('Sample data reset')}">↺ Reset sample data</button></div><p style="text-align:center;font-size:12px;opacity:.6;margin:8px 0 90px">© 2026 Kylie Yablonski. All rights reserved.<br>Prototype for demonstration only. Not for redistribution.</p></div>`}};
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 let undoFn=null,tt;
 function toast(m,undo){const t=document.getElementById('toast');document.getElementById('tmsg').textContent=m;const u=document.getElementById('tundo');u.style.display=undo?'':'none';undoFn=undo;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),4500)}
@@ -171,8 +253,27 @@ function addPost(){const t=document.getElementById('newpost').value.trim();if(!t
  const p={id:Date.now(),when:ago(0),text:t,ask:document.getElementById('ask').checked,yes:[]};S.posts.unshift(p);save();render();toast('✓ Posted (on this phone only)',()=>{S.posts=S.posts.filter(x=>x!==p);save();render()})}
 document.addEventListener('click',e=>{const p=e.target.closest('.pill.wait,.pill.yes');if(!p)return;const card=[...document.querySelectorAll('.card')].indexOf(p.closest('.card'));
  const nm=p.textContent.replace('✓ ','').split(' ')[0].toLowerCase();const post=S.posts[card-1];if(!post)return;post.yes.includes(nm)?post.yes=post.yes.filter(x=>x!==nm):post.yes.push(nm);save();render()});
-const TABS=[['barn','🏡','Barn'],['remind','💬','Reminders'],['posts','📣','Posts'],['billing','💵','Billing']];
-function render(){document.getElementById('app').innerHTML=V[route.v]();const tab=route.v==='horse'?'barn':route.v;
+let mapDay=0,pick=null,pt={time:'',note:''};
+const t12=t=>{if(!t)return'';let[h,m]=t.split(':').map(Number);const ap=h<12?'am':'pm';h=h%12||12;return h+(m?':'+String(m).padStart(2,'0'):'')+ap};
+const whoOf=h=>h.owner?first(h.owner):'Barn';
+function planTxt(p){const h=S.horses.find(x=>x.id===p.horse)||{name:'?'};const sp=SPOTS.find(s=>s[0]===p.spot);
+ const dn=daysTo(p.day)===0?'Today':new Date(p.day+'T12:00').toLocaleDateString('en-US',{weekday:'long'});return esc(`${whoOf(h)} & ${h.name} – ${sp?sp[1]:p.spot} – ${dn}${p.time?' '+t12(p.time):''}`)}
+function addPlan(hid,spot){const p={id:Date.now(),horse:hid,spot,day:dayStr(mapDay),time:pt.time,note:pt.note.trim()};S.plans.push(p);pick=null;pt={time:'',note:''};save();render();
+ toast('✓ '+planTxt(p).replace(/&amp;/g,'&'),()=>{S.plans=S.plans.filter(x=>x!==p);save();render()})}
+function tapSpot(k){if(pick)addPlan(pick,k);else toast('Pick a pony first 🐴')}
+function delPlan(id){const p=S.plans.find(x=>x.id===id);S.plans=S.plans.filter(x=>x!==p);save();render();toast('Removed from the map',()=>{S.plans.push(p);save();render()})}
+function todaySum(){const P=S.plans.filter(p=>p.day===dayStr(0)).sort((a,b)=>(a.time||'99').localeCompare(b.time||'99'));
+ return`<div class="wrap"><div class="card"><div class="row"><b style="flex:1;font-family:Fredoka,sans-serif;font-size:16px">☀️ Today at the barn</b><button class="btn ghost sm" onclick="mapDay=0;go('map')">Map</button></div>
+${P.length?P.map(p=>`<div class="own" style="font-size:13px">• ${planTxt(p)}</div>`).join(''):'<div class="own">No plans yet today.</div>'}</div></div>`}
+let drag=null;
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('.pp');if(!b)return;drag={id:b.dataset.h,x:e.clientX,y:e.clientY,g:null};});
+document.addEventListener('pointermove',e=>{if(!drag)return;if(!drag.g&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>8){drag.g=document.createElement('div');drag.g.className='dragghost';drag.g.innerHTML=face(S.horses.find(h=>h.id===drag.id),'');document.body.appendChild(drag.g)}
+ if(drag.g){e.preventDefault();drag.g.style.left=e.clientX+'px';drag.g.style.top=e.clientY+'px';document.querySelectorAll('.zone').forEach(z=>z.classList.remove('hot'));const z=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-spot]');z&&z.classList.add('hot')}},{passive:false});
+document.addEventListener('pointerup',e=>{if(!drag)return;const d=drag;drag=null;if(d.g){d.g.remove();const z=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-spot]');document.querySelectorAll('.zone').forEach(z=>z.classList.remove('hot'));if(z)addPlan(d.id,z.dataset.spot)}
+ else{pick=pick===d.id?null:d.id;render()}});
+document.addEventListener('pointercancel',()=>{if(drag&&drag.g)drag.g.remove();drag=null});
+const TABS=[['barn','🏡','Barn'],['map','🗺️','Map'],['remind','💬','Reminders'],['posts','📣','Posts'],['billing','💵','Billing']];
+function render(){document.getElementById('app').innerHTML=V[route.v]();const tab=['horse','style','custom'].includes(route.v)?'barn':route.v;themeCss();
  document.getElementById('nav').innerHTML=TABS.map(([v,e,l])=>`<button class="${tab===v?'on':''}" onclick="go('${v}')" aria-label="${l}"><span>${e}</span>${l}</button>`).join('')}
 render();
 </script></body></html>
