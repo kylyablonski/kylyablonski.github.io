@@ -1,0 +1,178 @@
+<!-- © 2026 Kylie Yablonski. All rights reserved. This prototype, its design, code, and content may not be copied, modified, or redistributed without written permission. -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="copyright" content="© 2026 Kylie Yablonski. All rights reserved."><meta name="theme-color" content="#cfdcc3"><title>Willow Creek Stables — prototype</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Fredoka:wght@500;600&display=swap');
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Nunito,'Varela Round',ui-rounded,system-ui,sans-serif;background:#f6efe1;color:#4a3528}
+.app{max-width:430px;margin:auto;min-height:100vh;background:linear-gradient(#f9f3e7,#efe3cc);padding-bottom:96px}
+header{padding:18px 18px 12px;background:linear-gradient(#cfdcc3,#e6ecd9);border-radius:0 0 28px 28px;box-shadow:0 4px 0 #b9c9a9}
+h1{font-family:Fredoka,Nunito,sans-serif;font-size:24px;margin:0;display:flex;align-items:center;gap:6px}
+h2{font-family:Fredoka,Nunito,sans-serif;font-size:21px;margin:0}
+h3{font-family:Fredoka,Nunito,sans-serif;font-size:17px;margin:18px 4px 8px}
+.tag{font-family:Nunito;font-size:10.5px;font-weight:800;background:#fffaf0;color:#9a6a10;border:1.5px dashed #e2b965;border-radius:9px;padding:2px 7px;margin-left:auto;white-space:nowrap}
+.sync{font-size:12px;color:#5e7254;margin-top:4px}.sync b{color:#2ca01c}
+.chips{display:flex;gap:8px;margin-top:12px}.chip{background:#fffaf0;border-radius:14px;padding:9px 11px;font-size:12px;font-weight:700;box-shadow:0 2px 0 #d6c8ad;border:0;color:inherit;font-family:inherit;text-align:left}
+.bar{height:7px;border-radius:4px;background:#eadfc8;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;background:#8fb87a;border-radius:4px}
+.chip.o{color:#b4573f;background:#fde6df}
+.aisle{padding:14px 12px 10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;background:repeating-linear-gradient(90deg,#c99a68 0 22px,#bf8f5d 22px 24px);margin:14px 10px;border-radius:22px;box-shadow:inset 0 0 0 5px #9c6f45}
+.stall{background:#fff7ea;border-radius:18px;padding:8px 8px 10px;text-align:center;box-shadow:0 3px 0 #8c623c;border:0;font-family:inherit;color:inherit;cursor:pointer}
+.stall:active{transform:translateY(2px);box-shadow:0 1px 0 #8c623c}
+.door{background:repeating-linear-gradient(45deg,#e7cfa8 0 8px,#ddc296 8px 16px);border-radius:14px 14px 6px 6px;border:3px solid #9c6f45;height:96px;display:flex;justify-content:center;align-items:flex-end;overflow:hidden}
+.h{width:88px;height:88px}
+.plaque{font-family:Fredoka,sans-serif;font-weight:600;display:inline-block;margin-top:-10px;position:relative;background:#7a5235;color:#fff3dc;padding:2px 12px;border-radius:8px;font-size:14px}
+.own{font-size:11px;margin:4px 0;color:#7d6450}.own i{color:#9a8670}
+.b{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:10px}.g{background:#dcebd2;color:#3f7a35}.c{background:#fbd9cf;color:#b04a33}.a{background:#fbe8bf;color:#9a6a10}
+.care{font-size:10.5px;margin-top:5px;color:#6b5646}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:1px}
+.dot.green{background:#8fb87a}.dot.amber{background:#e8b04a}.dot.coral{background:#e07a62}
+.qb{text-align:center;font-size:11px;color:#9a8670;margin:-4px 0 6px}
+.wrap{padding:0 14px}
+.card{background:#fffaf0;border-radius:18px;padding:14px;box-shadow:0 3px 0 #d6c8ad;margin-bottom:12px}
+.row{display:flex;align-items:center;gap:10px}
+.item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px dashed #e4d6bd}.item:last-child{border:0}
+.item .t{flex:1;min-width:0}.item .n{font-weight:800;font-size:15px}.item .s{font-size:12.5px;color:#7d6450}
+.btn{border:0;border-radius:14px;font-family:inherit;font-weight:800;font-size:14px;padding:12px 14px;min-height:46px;cursor:pointer;background:#8fb87a;color:#fff;box-shadow:0 3px 0 #6d9a5a}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #6d9a5a}
+.btn.ghost{background:#efe3cc;color:#4a3528;box-shadow:0 3px 0 #d6c8ad}.btn.warm{background:#c8743f;box-shadow:0 3px 0 #9b5a2f}
+.btn.sm{min-height:44px;padding:8px 12px;font-size:13px}.btn.full{width:100%}
+.btn.done{background:#dcebd2;color:#3f7a35;box-shadow:0 3px 0 #b9d3ab}
+.back{background:none;border:0;font:inherit;font-weight:800;color:#5e7254;padding:10px 0;min-height:44px;cursor:pointer;font-size:15px}
+.hero{display:flex;gap:12px;align-items:center}.hero .door{width:104px;height:104px;flex:none}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:auto;background:#fffaf0;display:flex;border-radius:22px 22px 0 0;box-shadow:0 -3px 0 #e4d6bd;padding:6px 6px calc(8px + env(safe-area-inset-bottom))}
+nav button{flex:1;border:0;background:none;font-family:inherit;font-size:11px;font-weight:800;color:#9a8670;padding:6px 2px;min-height:58px;border-radius:14px;cursor:pointer}
+nav button span{display:block;font-size:22px}nav button.on{background:#e6ecd9;color:#4a3528}
+textarea,input,select{width:100%;font-family:inherit;font-size:16px;color:#4a3528;background:#fff;border:2px solid #e4d6bd;border-radius:14px;padding:12px}
+textarea{min-height:110px;resize:vertical}
+.bubble{background:#dcebd2;border-radius:18px 18px 4px 18px;padding:12px 14px;font-size:15px;margin:6px 0 6px 30px;white-space:pre-wrap}
+.proto{font-size:11.5px;font-weight:800;color:#9a6a10;background:#fbe8bf;border-radius:10px;padding:6px 10px;margin:8px 0}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:5px 9px;border-radius:12px;margin:3px 3px 0 0}
+.yes{background:#dcebd2;color:#3f7a35}.wait{background:#efe3cc;color:#7d6450}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);opacity:0;transition:.25s;background:#4a3528;color:#fff7ea;border-radius:16px;padding:12px 14px;font-weight:700;font-size:14px;display:flex;gap:12px;align-items:center;max-width:92vw;z-index:9;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%);pointer-events:auto}.toast button{background:#8fb87a;border:0;color:#fff;font:inherit;font-weight:800;border-radius:10px;padding:8px 12px;min-height:40px}
+.saved{font-size:11.5px;color:#5e7254;text-align:center;margin:10px 0}
+.big{font-family:Fredoka,sans-serif;font-size:30px;font-weight:600}
+.seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{flex:1}
+.mini{width:42px;height:42px;flex:none;border-radius:12px;background:#ead6b3;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}.mini svg{width:40px;height:40px}
+a{color:#5e7254;font-weight:800}
+</style></head><body><div class="app" id="app"></div>
+<nav id="nav"></nav><div class="toast" id="toast"><span id="tmsg"></span><button id="tundo">Undo</button></div>
+<script>
+const DAY=864e5, TODAY=new Date(); TODAY.setHours(12,0,0,0);
+const ago=d=>new Date(TODAY-d*DAY).toISOString().slice(0,10);
+const fmt=s=>new Date(s+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const fmtY=s=>new Date(s+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const daysTo=s=>Math.round((new Date(s+'T12:00')-TODAY)/DAY);
+const addDays=(s,n)=>new Date(new Date(s+'T12:00').getTime()+n*DAY).toISOString().slice(0,10);
+const addMonths=(s,n)=>{const d=new Date(s+'T12:00');d.setMonth(d.getMonth()+n);return d.toISOString().slice(0,10)};
+// Care rules
+const CARE=[
+ {k:'farrier',n:'Farrier',e:'🧲',rule:'about every 7 weeks',next:d=>addDays(d,49)},
+ {k:'vax',n:'Vaccines',e:'💉',rule:'spring & fall',next:d=>{const x=new Date(d+'T12:00'),y=x.getFullYear(),m=x.getMonth();return m<2?`${y}-04-01`:m<8?`${y}-10-01`:`${y+1}-04-01`}},
+ {k:'coggins',n:'Coggins',e:'🧪',rule:'yearly',next:d=>addMonths(d,12)},
+ {k:'dental',n:'Dental',e:'🦷',rule:'yearly',next:d=>addMonths(d,12)},
+ {k:'fecal',n:'Fecal count',e:'🔬',rule:'every 6 months',next:d=>addMonths(d,6)},
+ {k:'saddle',n:'Saddle fit check',e:'🐴',rule:'every 6 months',next:d=>addMonths(d,6)},
+ {k:'reflock',n:'Saddle reflock',e:'🧵',rule:'about every 2 years',next:d=>addMonths(d,24)}];
+const nov1=(()=>{const d=new Date(TODAY);d.setMonth(d.getMonth()+1,1);return d.toISOString().slice(0,10)})();
+function sample(){
+ const H=(id,name,coat,blaze,mane,owner,phone,bill,last)=>({id,name,coat,blaze,mane,owner,phone,bill,last});
+ const L=(f,v,c,d,fe,s,r)=>({farrier:ago(f),vax:ago(v),coggins:ago(c),dental:ago(d),fecal:ago(fe),saddle:ago(s),reflock:ago(r)});
+ return {horses:[
+  H('biscuit','Biscuit','#8a5a3b','#fffaf0','#2b1d16','Maya Torres','(555) 201-4418',{board:350,status:'paid'},L(44,30,120,200,60,90,300)),
+  H('clem','Clementine','#c8743f','#fffaf0','#7a4a2e','Ruth Whitfield','(555) 304-9921',{board:450,status:'late',daysLate:12},L(44,40,100,150,70,40,500)),
+  H('honey','Honey','#e2b965','#fffaf0','#9b6440','Dana Okafor','(555) 772-1180',{board:300,status:'paid',next:nov1},L(20,35,200,350,50,60,200)),
+  H('midnight','Midnight','#3a2a22','#f4efe6','#1a110c','Jess Calloway','(555) 615-0043',{board:300,status:'paid'},L(10,25,90,100,30,20,400)),
+  H('juniper','Juniper','#9b6440','#f6ecd2','#2b1d16','Lena Brooks','(555) 418-7750',{board:300,status:'paid'},L(58,30,150,180,90,100,600)),
+  H('maple','Maple','#b5651d','#fffaf0','#5a3018','Priya Nandakumar','(555) 990-3312',{board:275,status:'paid',next:nov1},L(30,28,330,120,100,170,710)),
+  H('rosie','Rosie','#d9cfc4','#fffaf0','#8a7d70','Theo Marsh','(555) 247-6605',{board:275,status:'paid'},L(15,31,60,40,170,30,100)),
+  H('pebble','Pebble','#c9c6c0','#f4efe6','#7c7770',null,null,null,L(35,240,140,250,80,null,null)),
+  H('patches','Patches','#f4efe6','#fffaf0','#7a4a2e',null,null,null,L(25,30,60,80,40,null,null)),
+  H('sprout','Sprout','#d08a4e','#f6ecd2','#7a4a2e',null,null,null,L(40,28,200,90,178,null,null))],
+ posts:[
+  {id:1,when:ago(1),text:'Farrier coming Tuesday 9am 🧲 Reply YES to sign up!',ask:true,yes:['maya','ruth','lena']},
+  {id:2,when:ago(5),text:'Arena footing is being dragged Saturday morning — please ride after 11. Thank you! 🌿',ask:false,yes:[]}],
+ sent:[]};
+}
+let S; try{S=JSON.parse(localStorage.getItem('wcs-proto'))}catch(e){} if(!S||!S.horses)S=sample();
+let savedAt=Date.now();
+const save=()=>{localStorage.setItem('wcs-proto',JSON.stringify(S));savedAt=Date.now()};
+const boarded=()=>S.horses.filter(h=>h.owner);
+const first=n=>n.split(' ')[0];
+function careFor(h){return CARE.filter(c=>h.last[c.k]).map(c=>{const due=c.next(h.last[c.k]);return {...c,last:h.last[c.k],due,d:daysTo(due)}}).sort((a,b)=>a.d-b.d)}
+function careDot(h){const c=careFor(h)[0];if(!c)return['green','All care current'];
+ if(c.d<0)return['coral',`${c.n} overdue`]; if(c.d<=14)return['amber',`${c.n} ${c.d===0?'due today':'in '+c.d+' days'}`]; return['green','All care current']}
+function dueTxt(d){return d<0?`${-d} day${d==-1?'':'s'} overdue`:d===0?'due today':`due in ${d} day${d==1?'':'s'}`}
+function badge(h){if(!h.bill)return'';const b=h.bill;
+ if(b.status==='late')return`<span class="b c">Owes $${b.board} · ${b.daysLate} days late</span>`;
+ if(b.next)return`<span class="b a">Invoice due ${fmt(b.next)}</span>`;return`<span class="b g">✓ Paid up</span>`}
+function face(h,cls='h'){return`<svg viewBox="0 0 100 100" class="${cls}" aria-hidden="true"><path d="M28 22 l6-14 8 14z M58 22 l8-14 6 14z" fill="${h.coat}" stroke="#4a3528" stroke-width="2" stroke-linejoin="round"/>
+<path d="M30 24 q20-12 40 0 q10 30 2 58 q-22 12-44 0 q-8-28 2-58z" fill="${h.coat}" stroke="#4a3528" stroke-width="2.2"/>${h.id==='patches'?'<ellipse cx="62" cy="40" rx="9" ry="7" fill="#7a4a2e"/><ellipse cx="38" cy="66" rx="7" ry="5" fill="#7a4a2e"/>':`<path d="M50 34 q-3 18 0 38 q3-20 0-38z" fill="${h.blaze}" opacity=".9"/>`}
+<path d="M34 20 q10 -6 18 2 q-6 10 -16 8z" fill="${h.mane}" stroke="#4a3528" stroke-width="1.5"/><ellipse cx="50" cy="80" rx="17" ry="11" fill="#f0c9b4" stroke="#4a3528" stroke-width="2"/>
+<circle cx="44" cy="80" r="2" fill="#4a3528"/><circle cx="56" cy="80" r="2" fill="#4a3528"/><path d="M38 46 q4 4 8 0" stroke="#2b1d16" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M54 46 q4 4 8 0" stroke="#2b1d16" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+<ellipse cx="36" cy="56" rx="5" ry="3" fill="#f3a5a0" opacity=".6"/><ellipse cx="64" cy="56" rx="5" ry="3" fill="#f3a5a0" opacity=".6"/></svg>`}
+function billing(){const b=boarded(),tot=b.reduce((s,h)=>s+h.bill.board,0),owed=b.filter(h=>h.bill.status==='late');return{tot,col:tot-owed.reduce((s,h)=>s+h.bill.board,0),owed,b}}
+const hdr=(t,sub='')=>`<header><h1>${t}<span class="tag">Sample data</span></h1>${sub}</header>`;
+const savedLine=()=>`<div class="saved">✓ Saved on this phone · works offline</div>`;
+let route={v:'barn'}; let draft={};
+function go(v,p={}){route={v,...p};render();scrollTo(0,0)}
+const V={
+barn(){const B=billing();return hdr('🌿 Willow Creek Stables',`<div class="sync"><b>●</b> Synced from QuickBooks (sample) · 2 min ago</div>
+<div class="chips"><button class="chip" style="flex:1" onclick="go('billing')">Board collected $${B.col.toLocaleString()} / $${B.tot.toLocaleString()}<div class="bar"><i style="width:${B.col/B.tot*100}%"></i></div></button>${B.owed.length?`<button class="chip o" onclick="go('billing')">⚠ ${B.owed.length} overdue</button>`:''}</div>`)+
+`<div class="aisle">${S.horses.map(h=>{const[c,t]=careDot(h);return`<button class="stall" onclick="go('horse',{id:'${h.id}'})"><div class="door">${face(h)}</div><div class="plaque">${h.name}</div>
+<div class="own">${h.owner||'<i>Barn horse · no billing</i>'}</div>${badge(h)}<div class="care"><span class="dot ${c}"></span>${t}</div></button>`}).join('')}</div>
+<div class="qb">Billing badges are mock values “as if synced from QuickBooks” — no real connection.</div>${savedLine()}`},
+horse(){const h=S.horses.find(x=>x.id===route.id);const care=careFor(h);
+ return `<div class="wrap"><button class="back" onclick="go('barn')">‹ Barn</button>
+<div class="card hero"><div class="door">${face(h)}</div><div><h2>${h.name}</h2><div class="own">${h.owner?'Boarded · owner '+h.owner:'Barn horse · no billing'}</div>${badge(h)}</div></div>
+${h.owner?`<div class="card"><div class="row"><div style="flex:1"><div class="n" style="font-weight:800">${h.owner}</div><div class="own">${h.phone} (sample)</div></div>
+<button class="btn ghost sm" onclick="toast('📞 Prototype — no call placed')">Call</button><button class="btn sm" onclick="go('remind',{id:'${h.id}'})">Text</button></div>
+<div class="item"><div class="t"><div class="s">Balance (QuickBooks sample)</div><div class="n">${h.bill.status==='late'?`$${h.bill.board} owed · ${h.bill.daysLate} days late`:'$0 · paid up'}</div></div>${h.bill.status==='late'?`<button class="btn warm sm" onclick="go('remind',{id:'${h.id}',kind:'bill'})">Nudge</button>`:''}</div></div>`:''}
+<h3>Care schedule</h3><div class="card">${care.map(c=>`<div class="item"><div style="font-size:22px">${c.e}</div><div class="t"><div class="n">${c.n} <span class="dot ${c.d<0?'coral':c.d<=14?'amber':'green'}"></span></div>
+<div class="s">${dueTxt(c.d)} · ${fmt(c.due)} · last ${fmtY(c.last)}</div><div class="s" style="font-size:11px">${c.rule}</div></div>
+<div style="display:flex;flex-direction:column;gap:6px"><button class="btn sm ${c.last===ago(0)?'done':''}" onclick="logDone('${h.id}','${c.k}')">${c.last===ago(0)?'✓ Done':'Log done'}</button>${h.owner&&c.d<=14?`<button class="btn ghost sm" onclick="go('remind',{id:'${h.id}',care:'${c.k}'})">Remind</button>`:''}</div></div>`).join('')}</div>${savedLine()}</div>`},
+remind(){const h=S.horses.find(x=>x.id===route.id)||boarded()[0];const care=careFor(h);const c=care.find(x=>x.k===route.care)||care[0];
+ const key=h.id+(route.kind||c.k);
+ if(!(key in draft))draft[key]=route.kind==='bill'?`Hi ${first(h.owner)}, just a friendly note that ${h.name}'s board of $${h.bill.board} is ${h.bill.daysLate} days past due. You can pay through the QuickBooks link anytime. Thank you! 🌿 — Willow Creek`:
+  `Hi ${first(h.owner)}, ${h.name}'s ${c.n.toLowerCase()} is ${c.d<0?'overdue by '+(-c.d)+' days':c.d===0?'due today':'due in '+c.d+' days'} (${fmt(c.due)}). Want me to put ${h.name} on the list? Reply YES 🐴 — Willow Creek`;
+ const sent=S.sent.filter(s=>s.to===h.owner).slice(-3);
+ return hdr('💬 Reminder preview')+`<div class="wrap"><button class="back" onclick="go('horse',{id:'${h.id}'})">‹ ${h.name}</button>
+<div class="card"><div class="row"><div class="mini">${face(h,'')}</div><div><b>To: ${h.owner}</b><div class="own">${h.phone} · plain SMS, no app needed</div></div></div>
+${sent.map(s=>`<div class="bubble" style="opacity:.6">${esc(s.text)}</div><div class="own" style="text-align:right">Pretend-sent ${s.at}</div>`).join('')}
+<div class="bubble" id="pv">${esc(draft[key])}</div>
+<label class="own" for="msg">Edit message</label><textarea id="msg" oninput="draft['${key}']=this.value;document.getElementById('pv').textContent=this.value">${esc(draft[key])}</textarea>
+<div class="proto">🧪 Prototype — “Send” is simulated. Nothing is actually sent.</div>
+<button class="btn full" onclick="fakeSend('${h.id}','${key}')">Send text</button></div>
+<div class="own" style="text-align:center">Auto-reminders would go out on their own 5 days before anything is due — no awkward “heyyy he needs his feet done.”</div></div>`},
+posts(){const B=boarded();return hdr('📣 Announcements','<div class="sync">One-way posts to boarders — not a group chat</div>')+`<div class="wrap"><h3>New post</h3><div class="card">
+<textarea id="newpost" placeholder="e.g. Vet visiting Thursday — reply YES for shots"></textarea>
+<label class="row" style="margin:10px 0;font-weight:700;font-size:14px;min-height:44px"><input type="checkbox" id="ask" checked style="width:24px;height:24px"> Ask boarders to reply YES</label>
+<div class="proto">🧪 Prototype — posts are saved on this phone only; nothing is texted.</div>
+<button class="btn full" onclick="addPost()">Post to ${B.length} boarders</button></div>
+<h3>Recent</h3>${S.posts.map(p=>{const yes=B.filter(h=>p.yes.includes(first(h.owner).toLowerCase()));const no=B.filter(h=>!yes.includes(h));
+ return`<div class="card"><div class="own">${fmt(p.when)}${p.when===ago(0)?' · today':''}</div><div style="font-size:15.5px;font-weight:700;margin:4px 0 8px">${esc(p.text)}</div>
+${p.ask?`<div class="own"><b>${yes.length} said YES</b></div><div>${yes.map(h=>`<span class="pill yes">✓ ${first(h.owner)} (${h.name})</span>`).join('')}</div>
+<div class="own" style="margin-top:8px"><b>${no.length} haven't replied</b></div><div>${no.map(h=>`<span class="pill wait">${first(h.owner)} (${h.name})</span>`).join('')}</div>
+<div class="own" style="margin-top:6px">Tap a name to mark a reply (sample)</div>`:'<div class="own">FYI post · no replies needed</div>'}</div>`}).join('')}${savedLine()}</div>`},
+billing(){const B=billing();const pct=B.col/B.tot*100;return hdr('💵 Billing',`<div class="sync"><b>●</b> Synced from QuickBooks (sample) · mock values</div>`)+`<div class="wrap" style="margin-top:14px">
+<div class="card"><div class="own">Board collected this month</div><div class="big">$${B.col.toLocaleString()} <span style="font-size:18px;color:#9a8670">/ $${B.tot.toLocaleString()}</span></div>
+<div class="bar" style="height:12px"><i style="width:${pct}%"></i></div><div class="own" style="margin-top:6px">${Math.round(pct)}% · ${B.b.length-B.owed.length} of ${B.b.length} boarders paid</div></div>
+<h3>Overdue</h3><div class="card">${B.owed.length?B.owed.map(h=>{const s=S.sent.find(x=>x.to===h.owner&&x.kind==='bill');return`<div class="item"><div class="mini">${face(h,'')}</div><div class="t"><div class="n">${h.owner}</div><div class="s">${h.name} · $${h.bill.board} · ${h.bill.daysLate} days late</div>${s?`<div class="s">✓ Reminder pretend-sent ${s.at}</div>`:''}</div>
+<button class="btn warm sm" onclick="go('remind',{id:'${h.id}',kind:'bill'})">${s?'Again':'Send reminder'}</button></div>`}).join(''):'<div class="own">Everyone is paid up 🌿</div>'}</div>
+<h3>Everyone</h3><div class="card">${B.b.map(h=>`<button class="item" style="width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;text-align:left;cursor:pointer" onclick="go('horse',{id:'${h.id}'})"><div class="mini">${face(h,'')}</div><div class="t"><div class="n">${h.owner}</div><div class="s">${h.name} · $${h.bill.board}/mo</div></div>${badge(h)}</button>`).join('')}</div>
+<div class="own" style="text-align:center">Barn horses (${S.horses.length-B.b.length}) aren't billed.</div>
+<div style="margin:18px 0"><button class="btn ghost full" onclick="if(confirm('Reset all sample data?')){localStorage.removeItem('wcs-proto');S=sample();draft={};save();go('barn');toast('Sample data reset')}">↺ Reset sample data</button></div><p style="text-align:center;font-size:12px;opacity:.6;margin:8px 0 90px">© 2026 Kylie Yablonski. All rights reserved.<br>Prototype for demonstration only. Not for redistribution.</p></div>`}};
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+let undoFn=null,tt;
+function toast(m,undo){const t=document.getElementById('toast');document.getElementById('tmsg').textContent=m;const u=document.getElementById('tundo');u.style.display=undo?'':'none';undoFn=undo;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),4500)}
+document.getElementById('tundo').onclick=()=>{if(undoFn){undoFn();undoFn=null}document.getElementById('toast').classList.remove('show')};
+function logDone(id,k){const h=S.horses.find(x=>x.id===id),prev=h.last[k];if(prev===ago(0))return;h.last[k]=ago(0);save();render();
+ const c=CARE.find(x=>x.k===k);toast(`✓ ${c.n} logged · next ${fmt(c.next(ago(0)))}`,()=>{h.last[k]=prev;save();render();toast('Undone')})}
+function fakeSend(id,key){const h=S.horses.find(x=>x.id===id);S.sent.push({to:h.owner,text:draft[key],kind:route.kind||'care',at:new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})});const back=route.kind==='bill'?'billing':'horse';delete draft[key];save();go(back,{id});toast(`✓ Pretend-sent to ${first(h.owner)} (prototype)`)}
+function addPost(){const t=document.getElementById('newpost').value.trim();if(!t){document.getElementById('newpost').focus();return}
+ const p={id:Date.now(),when:ago(0),text:t,ask:document.getElementById('ask').checked,yes:[]};S.posts.unshift(p);save();render();toast('✓ Posted (on this phone only)',()=>{S.posts=S.posts.filter(x=>x!==p);save();render()})}
+document.addEventListener('click',e=>{const p=e.target.closest('.pill.wait,.pill.yes');if(!p)return;const card=[...document.querySelectorAll('.card')].indexOf(p.closest('.card'));
+ const nm=p.textContent.replace('✓ ','').split(' ')[0].toLowerCase();const post=S.posts[card-1];if(!post)return;post.yes.includes(nm)?post.yes=post.yes.filter(x=>x!==nm):post.yes.push(nm);save();render()});
+const TABS=[['barn','🏡','Barn'],['remind','💬','Reminders'],['posts','📣','Posts'],['billing','💵','Billing']];
+function render(){document.getElementById('app').innerHTML=V[route.v]();const tab=route.v==='horse'?'barn':route.v;
+ document.getElementById('nav').innerHTML=TABS.map(([v,e,l])=>`<button class="${tab===v?'on':''}" onclick="go('${v}')" aria-label="${l}"><span>${e}</span>${l}</button>`).join('')}
+render();
+</script></body></html>
