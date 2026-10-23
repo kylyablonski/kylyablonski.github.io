@@ -71,9 +71,17 @@ a{color:#5e7254;font-weight:800}
 .z-wash{background:repeating-conic-gradient(#cfe3ee 0 25%,#b7d3e3 0 50%) 0 0/20px 20px}
 .z-pasture{background:radial-gradient(#8fb87a 2px,transparent 3px) 0 0/16px 16px,#b7d79c;grid-column:span 2;border-style:dashed}
 .z-trail{background:linear-gradient(115deg,transparent 42%,#d9bf8f 43% 53%,transparent 54%),#93b97c;grid-column:span 2}
+.sheetbg{position:fixed;inset:0;background:rgba(74,53,40,.35);z-index:15;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fffaf0;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;border-radius:26px 26px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -4px 0 #e4d6bd}
+.grab{width:44px;height:5px;border-radius:3px;background:#d6c8ad;margin:2px auto 8px}
+.cc{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cc button{min-height:54px;text-align:left;font-size:14px}
+.cc button.on,.dd button.on{background:#4a3528;color:#fff7ea;box-shadow:none}
+.dd{display:flex;gap:6px}.dd button{flex:1}
+.also{display:flex;gap:6px;overflow-x:auto;padding:4px 0 6px}.also button{flex:none;width:62px;border:2px solid #e4d6bd;background:#fff;border-radius:14px;padding:2px 0 4px;font:inherit;font-size:10px;font-weight:800;color:inherit;cursor:pointer;min-height:44px}
+.also button.on{border-color:#4a3528;background:#fbe8bf}.also svg{width:52px;height:44px;display:block;margin:auto}
 .dragghost{position:fixed;pointer-events:none;z-index:20;opacity:.85;transform:translate(-50%,-60%)}.dragghost svg{width:70px;height:58px}
 </style></head><body><style id="themecss"></style><div class="app" id="app"></div>
-<nav id="nav"></nav><div class="toast" id="toast"><span id="tmsg"></span><button id="tundo">Undo</button></div>
+<nav id="nav"></nav><div id="sheet"></div><div class="toast" id="toast"><span id="tmsg"></span><button id="tundo">Undo</button></div>
 <script>
 const DAY=864e5, TODAY=new Date(); TODAY.setHours(12,0,0,0);
 const ago=d=>new Date(TODAY-d*DAY).toISOString().slice(0,10);
@@ -184,9 +192,9 @@ function go(v,p={}){route={v,...p};render();scrollTo(0,0)}
 const V={
 barn(){const B=billing();return hdr(`${S.cfg.icon} <span class="nm">${esc(S.cfg.name)}</span>`,`<div class="sync"><b>●</b> Synced from QuickBooks (sample) · 2 min ago</div>
 <div class="chips"><button class="chip" style="flex:1" onclick="go('billing')">Board collected $${B.col.toLocaleString()} / $${B.tot.toLocaleString()}<div class="bar"><i style="width:${B.col/B.tot*100}%"></i></div></button>${B.owed.length?`<button class="chip o" onclick="go('billing')">⚠ ${B.owed.length} overdue</button>`:''}</div>`)+
-`<div class="aisle">${S.horses.map(h=>{const[c,t]=careDot(h);return`<button class="stall" onclick="go('horse',{id:'${h.id}'})"><div class="door">${head(h)}</div><div class="plaque" style="${plateCss(h)}">${esc(h.name)}</div>
+`<div class="qb" style="margin:12px 0 -6px">Tap a stall to quick-log care</div><div class="aisle">${S.horses.map(h=>{const[c,t]=careDot(h);return`<button class="stall" data-stall="${h.id}" onclick="openQL('${h.id}')"><div class="door">${head(h)}</div><div class="plaque" style="${plateCss(h)}">${esc(h.name)}</div>
 <div class="own">${h.owner||'<i>Barn horse · no billing</i>'}</div>${badge(h)}<div class="care"><span class="dot ${c}"></span>${t}</div></button>`}).join('')}</div>
-${todaySum()}<div style="padding:0 14px"><button class="btn ghost full" onclick="go('custom')">🎨 Customize the barn</button></div><div class="qb" style="margin-top:10px">Billing badges are mock values “as if synced from QuickBooks” — no real connection.</div>${savedLine()}`},
+${todaySum()}<div style="padding:0 14px;display:flex;flex-direction:column;gap:10px"><button class="btn full" onclick="openQL()">⚡ Quick log care</button><button class="btn ghost full" onclick="go('custom')">🎨 Customize the barn</button></div><div class="qb" style="margin-top:10px">Billing badges are mock values “as if synced from QuickBooks” — no real connection.</div>${savedLine()}`},
 horse(){const h=S.horses.find(x=>x.id===route.id);const care=careFor(h);
  return `<div class="wrap"><button class="back" onclick="go('barn')">‹ Barn</button>
 <div class="card hero"><div class="door">${face(h)}</div><div><h2>${esc(h.name)}</h2><button class="btn sm" style="margin:4px 0" onclick="go('style',{id:'${h.id}'})">🎀 Style my pony</button><div class="own">${h.owner?'Boarded · owner '+h.owner:'Barn horse · no billing'}</div>${badge(h)}</div></div>
@@ -282,6 +290,33 @@ document.addEventListener('pointermove',e=>{if(!drag)return;if(!drag.g&&Math.hyp
 document.addEventListener('pointerup',e=>{if(!drag)return;const d=drag;drag=null;if(d.g){d.g.remove();const z=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-spot]');document.querySelectorAll('.zone').forEach(z=>z.classList.remove('hot'));if(z)addPlan(d.id,z.dataset.spot)}
  else{pick=pick===d.id?null:d.id;render()}});
 document.addEventListener('pointercancel',()=>{if(drag&&drag.g)drag.g.remove();drag=null});
+let QL=null;
+function openQL(id){QL={main:id||null,hs:id?[id]:[],care:null,date:ago(0),dmode:'today',note:''};renderSheet()}
+function closeQL(){QL=null;renderSheet()}
+function qlTog(id){QL.hs=QL.hs.includes(id)?QL.hs.filter(x=>x!==id):[...QL.hs,id];renderSheet()}
+function qlAll(){const all=S.horses.map(h=>h.id);QL.hs=QL.hs.length===all.length?(QL.main?[QL.main]:[]):all;renderSheet()}
+function qlSet(k,v){QL[k]=v;if(k==='dmode'){if(v==='today')QL.date=ago(0);if(v==='yday')QL.date=ago(1)}renderSheet()}
+function renderSheet(){const el=document.getElementById('sheet');if(!QL){el.innerHTML='';return}
+ const m=QL.main&&S.horses.find(h=>h.id===QL.main),c=CARE.find(x=>x.k===QL.care),n=QL.hs.length;
+ const others=S.horses.filter(h=>h.id!==QL.main);const allOn=QL.hs.length===S.horses.length;
+ const sc=el.querySelector('.sheet')?.scrollTop||0;
+ el.innerHTML=`<div class="sheetbg" onclick="if(event.target===this)closeQL()"><div class="sheet" role="dialog" aria-label="Quick log"><div class="grab"></div>
+${m?`<div class="row"><div class="mini" style="width:56px;height:56px">${head(m,'')}</div><div style="flex:1"><h2>${esc(m.name)}</h2><div class="own">${esc(m.owner||'Barn horse')}</div></div><button class="btn ghost sm" id="qlprofile" onclick="closeQL();go('horse',{id:'${m.id}'})">Open full profile ›</button></div>`:`<h2>⚡ Quick log</h2><div class="own">Pick the horses, what was done, and when.</div>`}
+<div class="lbl">What was done?</div><div class="cc">${CARE.map(x=>`<button class="btn ghost ${QL.care===x.k?'on':''}" data-care="${x.k}" onclick="qlSet('care','${x.k}')">${x.e} ${x.n}</button>`).join('')}</div>
+<div class="lbl">When?</div><div class="dd">${[['today','Today'],['yday','Yesterday'],['pick','Pick date']].map(([k,l])=>`<button class="btn ghost sm ${QL.dmode===k?'on':''}" data-dmode="${k}" onclick="qlSet('dmode','${k}')">${l}</button>`).join('')}</div>
+${QL.dmode==='pick'?`<input type="date" id="qldate" max="${ago(0)}" value="${QL.date}" style="margin-top:8px" onchange="if(this.value&&this.value<=ago(0)){QL.date=this.value}else{this.value=QL.date}renderSheet()">`:''}
+<div class="own" style="margin-top:4px">${fmtY(QL.date)}</div>
+<div class="lbl">Note (optional)</div><input id="qlnote" maxlength="80" placeholder="e.g. front shoes reset" value="${esc(QL.note)}" oninput="QL.note=this.value">
+<div class="row"><div class="lbl" style="flex:1">${m?'Also for…':'Which horses?'}</div><button class="btn ghost sm" id="qlall" onclick="qlAll()">${allOn?'Clear':'Select all'}</button></div>
+<div class="also">${(m?others:S.horses).map(h=>`<button class="${QL.hs.includes(h.id)?'on':''}" data-also="${h.id}" onclick="qlTog('${h.id}')">${head(h,'')}${esc(h.name)}</button>`).join('')}</div>
+<button class="btn full" id="qlsave" style="margin-top:10px" ${!c||!n?'disabled style="margin-top:10px;opacity:.55"':''} onclick="qlSave()">${!n?'Pick at least one horse':!c?'Pick what was done':`Log ${c.n.toLowerCase()} for ${n===1?esc(S.horses.find(h=>h.id===QL.hs[0]).name):n+' horses'}`}</button>
+<button class="back" style="width:100%" onclick="closeQL()">Cancel</button></div></div>`;
+ el.querySelector('.sheet').scrollTop=sc}
+function qlSave(){const c=CARE.find(x=>x.k===QL.care);if(!c||!QL.hs.length)return;const d=QL.date>ago(0)?ago(0):QL.date,note=QL.note.trim();
+ const prev=QL.hs.map(id=>{const h=S.horses.find(x=>x.id===id);const p={h,last:h.last[c.k],logLen:(h.log||[]).length};
+  h.log=h.log||[];h.log.push({k:c.k,date:d,note,at:Date.now()});if(!h.last[c.k]||d>h.last[c.k])h.last[c.k]=d;return p});
+ const n=prev.length;closeQL();save();render();
+ toast(`✓ ${c.n} logged for ${n===1?prev[0].h.name:n+' horses'} · ${d===ago(0)?'today':d===ago(1)?'yesterday':fmt(d)} · next ${fmt(c.next(d))}`,()=>{prev.forEach(p=>{p.h.last[c.k]=p.last;p.h.log.length=p.logLen});save();render();toast('Undone')})}
 const TABS=[['barn','🏡','Barn'],['map','🗺️','Map'],['remind','💬','Reminders'],['posts','📣','Posts'],['billing','💵','Billing']];
 function render(){document.getElementById('app').innerHTML=V[route.v]();const tab=['horse','style','custom'].includes(route.v)?'barn':route.v;themeCss();
  document.getElementById('nav').innerHTML=TABS.map(([v,e,l])=>`<button class="${tab===v?'on':''}" onclick="go('${v}')" aria-label="${l}"><span>${e}</span>${l}</button>`).join('')}
