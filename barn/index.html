@@ -96,26 +96,26 @@ function sample(){
  const H=(id,name,coat,blaze,mane,owner,phone,bill,last)=>({id,name,coat,blaze,mane,owner,phone,bill,last});
  const L=(f,v,c,d,fe,s,r)=>({farrier:ago(f),vax:ago(v),coggins:ago(c),dental:ago(d),fecal:ago(fe),saddle:ago(s),reflock:ago(r)});
  return {horses:[
-  H('biscuit','Biscuit','#8a5a3b','#fffaf0','#2b1d16','Maya Torres','(555) 201-4418',{board:350,status:'paid'},L(44,30,120,200,60,90,300)),
-  H('clem','Clementine','#c8743f','#fffaf0','#7a4a2e','Ruth Whitfield','(555) 304-9921',{board:450,status:'late',daysLate:12},L(44,40,100,150,70,40,500)),
-  H('honey','Honey','#e2b965','#fffaf0','#9b6440','Dana Okafor','(555) 772-1180',{board:300,status:'paid',next:nov1},L(20,35,200,350,50,60,200)),
-  H('midnight','Midnight','#3a2a22','#f4efe6','#1a110c','Jess Calloway','(555) 615-0043',{board:300,status:'paid'},L(10,25,90,100,30,20,400)),
-  H('juniper','Juniper','#9b6440','#f6ecd2','#2b1d16','Lena Brooks','(555) 418-7750',{board:300,status:'paid'},L(58,30,150,180,90,100,600)),
-  H('maple','Maple','#b5651d','#fffaf0','#5a3018','Priya Nandakumar','(555) 990-3312',{board:275,status:'paid',next:nov1},L(30,28,330,120,100,170,710)),
-  H('rosie','Rosie','#d9cfc4','#fffaf0','#8a7d70','Theo Marsh','(555) 247-6605',{board:275,status:'paid'},L(15,31,60,40,170,30,100)),
-  H('pebble','Pebble','#c9c6c0','#f4efe6','#7c7770',null,null,null,L(35,240,140,250,80,null,null)),
-  H('patches','Patches','#f4efe6','#fffaf0','#7a4a2e',null,null,null,L(25,30,60,80,40,null,null)),
-  H('sprout','Sprout','#d08a4e','#f6ecd2','#7a4a2e',null,null,null,L(40,28,200,90,178,null,null))],
+  H('biscuit','Valegro','#8a5a3b','#fffaf0','#2b1d16','Charlotte Dujardin','(555) 201-4418',{board:350,status:'paid'},L(44,30,120,200,60,90,300)),
+  H('clem','Weihegold','#c8743f','#fffaf0','#7a4a2e','Isabell Werth','(555) 304-9921',{board:450,status:'late',daysLate:12},L(44,40,100,150,70,40,500)),
+  H('honey','Ravel','#e2b965','#fffaf0','#9b6440','Steffen Peters','(555) 772-1180',{board:300,status:'paid',next:nov1},L(20,35,200,350,50,60,200)),
+  H('midnight','HH Azur','#3a2a22','#f4efe6','#1a110c','McLain Ward','(555) 615-0043',{board:300,status:'paid'},L(10,25,90,100,30,20,400)),
+  H('juniper',"Cortes 'C'",'#9b6440','#f6ecd2','#2b1d16','Beezie Madden','(555) 418-7750',{board:300,status:'paid'},L(58,30,150,180,90,100,600)),
+  H('maple','Cedric','#b5651d','#fffaf0','#5a3018','Laura Kraut','(555) 990-3312',{board:275,status:'paid',next:nov1},L(30,28,330,120,100,170,710)),
+  H('rosie','Gazelle','#d9cfc4','#fffaf0','#8a7d70','Kent Farrington','(555) 247-6605',{board:275,status:'paid'},L(15,31,60,40,170,30,100)),
+  H('pebble','Sam','#c9c6c0','#f4efe6','#7c7770','Michael Jung','(555) 330-2716',{board:325,status:'paid'},L(35,240,140,250,80,null,null)),
+  H('patches','SAP Hale Bob','#f4efe6','#fffaf0','#7a4a2e','Ingrid Klimke','(555) 481-0927',{board:325,status:'paid',next:nov1},L(25,30,60,80,40,null,null)),
+  H('sprout','Tsetserleg','#d08a4e','#f6ecd2','#7a4a2e','Boyd Martin','(555) 726-5534',{board:300,status:'paid'},L(40,28,200,90,178,null,null))],
  posts:[
-  {id:1,when:ago(1),text:'Farrier coming Tuesday 9am 🧲 Reply YES to sign up!',ask:true,yes:['maya','ruth','lena']},
+  {id:1,when:ago(1),text:'Farrier coming Tuesday 9am 🧲 Reply YES to sign up!',ask:true,yes:['charlotte','isabell','beezie']},
   {id:2,when:ago(5),text:'Arena footing is being dragged Saturday morning — please ride after 11. Thank you! 🌿',ask:false,yes:[]}],
  sent:[],cfg:defCfg(),plans:seedPlans()};
 }
-const LOOKS={biscuit:['bay','black','star','front','sage','none','walnut','classic'],clem:['chestnut','flax','blaze','hind','rose','rose','walnut','scallop'],
- honey:['palomino','cream','snip','none','sky','sky','sage','rounded'],midnight:['black','black','star','all','lavender','sunny','navy','classic'],
- juniper:['bay','black','none','hind','none','none','walnut','rounded'],maple:['chestnut','auburn','blaze','front','sunny','lavender','rose','scallop'],
- rosie:['gray','gray','none','none','rose','rose','rose','rounded'],pebble:['gray','gray','snip','none','none','none','sage','classic'],
- patches:['white','auburn','none','all','sky','none','sky','scallop'],sprout:['dun','black','star','none','sage','sunny','walnut','rounded']};
+const LOOKS={biscuit:['bay','black','star','front','sage','none','walnut','classic'],clem:['black','flax','blaze','hind','rose','rose','walnut','scallop'],
+ honey:['bay','black','snip','none','sky','sky','sage','rounded'],midnight:['bay','black','star','all','lavender','sunny','navy','classic'],
+ juniper:['chestnut','auburn','none','hind','none','none','walnut','rounded'],maple:['chestnut','auburn','blaze','front','sunny','lavender','rose','scallop'],
+ rosie:['gray','gray','none','none','rose','rose','rose','rounded'],pebble:['bay','black','snip','none','none','none','sage','classic'],
+ patches:['bay','black','none','all','sky','none','sky','scallop'],sprout:['bay','black','star','none','sage','sunny','walnut','rounded']};
 const KEYS=['coat','mane','mark','socks','blanket','bow','plate','plateStyle'];
 const COATS={bay:'#8a5a3b',chestnut:'#c8743f',black:'#3a2a22',gray:'#c9c6c0',palomino:'#e2b965',white:'#f4efe6',buckskin:'#c9a66b',dun:'#d08a4e',roan:'#b7a49a'};
 const MANES={black:'#2b1d16',flax:'#f3e2b3',cream:'#fff3d6',auburn:'#7a4a2e',gray:'#8a8580',pink:'#f3a5c0',lavender:'#b9a3e0'};
@@ -138,9 +138,9 @@ function defLook(h){const L=LOOKS[h.id];if(L)return Object.fromEntries(KEYS.map(
  const c=Object.keys(COATS).find(k=>COATS[k]===h.coat)||'bay';return{coat:c,mane:'black',mark:'none',socks:'none',blanket:'none',bow:'none',plate:'walnut',plateStyle:'classic'}}
 function migrate(){S.cfg=Object.assign(defCfg(),S.cfg||{});if(!Array.isArray(S.plans))S.plans=seedPlans();
  S.horses.forEach(h=>{h.look=Object.assign(defLook(h),h.look||{})});if(!Array.isArray(S.sent))S.sent=[];if(!Array.isArray(S.posts))S.posts=[]}
-let S; try{S=JSON.parse(localStorage.getItem('wcs-proto'))}catch(e){} if(!S||!S.horses)S=sample(); migrate(); localStorage.setItem("wcs-proto",JSON.stringify(S));
+localStorage.removeItem('wcs-proto'); let S; try{S=JSON.parse(localStorage.getItem('wcs-proto-v2'))}catch(e){} if(!S||!S.horses)S=sample(); migrate(); localStorage.setItem("wcs-proto-v2",JSON.stringify(S));
 let savedAt=Date.now();
-const save=()=>{localStorage.setItem('wcs-proto',JSON.stringify(S));savedAt=Date.now()};
+const save=()=>{localStorage.setItem('wcs-proto-v2',JSON.stringify(S));savedAt=Date.now()};
 const boarded=()=>S.horses.filter(h=>h.owner);
 const first=n=>n.split(' ')[0];
 function careFor(h){return CARE.filter(c=>h.last[c.k]).map(c=>{const due=c.next(h.last[c.k]);return {...c,last:h.last[c.k],due,d:daysTo(due)}}).sort((a,b)=>a.d-b.d)}
@@ -251,7 +251,7 @@ billing(){const B=billing();const pct=B.col/B.tot*100;return hdr('💵 Billing',
 <button class="btn warm sm" onclick="go('remind',{id:'${h.id}',kind:'bill'})">${s?'Again':'Send reminder'}</button></div>`}).join(''):'<div class="own">Everyone is paid up 🌿</div>'}</div>
 <h3>Everyone</h3><div class="card">${B.b.map(h=>`<button class="item" style="width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;text-align:left;cursor:pointer" onclick="go('horse',{id:'${h.id}'})"><div class="mini">${head(h,'')}</div><div class="t"><div class="n">${h.owner}</div><div class="s">${h.name} · $${h.bill.board}/mo</div></div>${badge(h)}</button>`).join('')}</div>
 <div class="own" style="text-align:center">Barn horses (${S.horses.length-B.b.length}) aren't billed.</div>
-<div style="margin:18px 0"><button class="btn ghost full" onclick="if(confirm('Reset all sample data?')){localStorage.removeItem('wcs-proto');S=sample();migrate();draft={};mapDay=0;pick=null;save();go('barn');toast('Sample data reset')}">↺ Reset sample data</button></div><p style="text-align:center;font-size:12px;opacity:.6;margin:8px 0 90px">© 2026 Kylie Yablonski. All rights reserved.<br>Prototype for demonstration only. Not for redistribution.</p></div>`}};
+<div style="margin:18px 0"><button class="btn ghost full" onclick="if(confirm('Reset all sample data?')){localStorage.removeItem('wcs-proto-v2');S=sample();migrate();draft={};mapDay=0;pick=null;save();go('barn');toast('Sample data reset')}">↺ Reset sample data</button></div><p style="text-align:center;font-size:12px;opacity:.6;margin:8px 0 90px">© 2026 Kylie Yablonski. All rights reserved.<br>Prototype for demonstration only. Not for redistribution.</p></div>`}};
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 let undoFn=null,tt;
 function toast(m,undo){const t=document.getElementById('toast');document.getElementById('tmsg').textContent=m;const u=document.getElementById('tundo');u.style.display=undo?'':'none';undoFn=undo;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),4500)}
