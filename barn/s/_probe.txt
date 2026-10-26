@@ -1,0 +1,1 @@
+A1:&|A2:&|A3:&amp;|A4:&amp;amp;|Q1:"|Q2:"|Q3:&amp;quot;|Q4:&amp;amp;quot;|L1:<|L2:&lt;|L3:&amp;lt;|G1:>|G2:&gt;|G3:&amp;gt;|N1:&#38;quot;|N2:&#x26;quot;|N3:&#38;lt;|N4:&#38;gt;|N5:&#38;amp;|P1:&amp|P2:&amp
