@@ -1,6 +1,0 @@
-A:"
-B:&38;quot;
-C:&#x26;quot;
-D:"
-E:&amp;quot;
-F:&38amp;quot;
