@@ -79,6 +79,23 @@ footer a{color:var(--mut)}
 details.sec{margin-top:10px}details.sec summary{font-family:var(--hfont);font-weight:700;color:var(--acc);font-size:15px;cursor:pointer;padding:6px 0}
 .pickh{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}.pickh button{border:2px solid var(--line);background:#fff;border-radius:18px;padding:4px;cursor:pointer;flex:none;font:inherit;font-size:11px;color:var(--ink)}.pickh button.on{border-color:var(--acc)}
 .pickh .phead{display:block;margin:0 auto 2px}
+
+.plan{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:56px;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:6px}
+.area{border:1.5px solid #9AA39D;background:#F3F4F2;border-radius:4px;padding:4px 5px;cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;font-family:inherit;text-align:left;color:var(--ink)}
+.area .an{font-size:10.5px;font-weight:700;line-height:1.15}.area .ac{font-size:9.5px;color:var(--mut)}
+.area.sel{border-color:var(--acc);background:var(--accl);box-shadow:inset 0 0 0 1px var(--acc)}
+.area.busy::after{content:"";position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--amb)}
+.area .hc{display:flex;gap:2px;flex-wrap:wrap}.area .hc img,.area .hc .phead{width:20px;height:20px;border-radius:50%;object-fit:cover;border:1.5px solid #fff}
+body.plp .plan{background:#fff;border:2px solid var(--line)}
+body.plp .area{border:2px solid #F1DDE8;background:#FFF7FB;border-radius:16px}
+body.plp .area:nth-child(3n){background:#F3F0FF}body.plp .area:nth-child(3n+1){background:#EEF9F4}
+body.plp .area.sel{border-color:var(--acc);background:var(--accl)}
+.slot{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}.slot:last-child{border:0}
+.slot .t{width:52px;font-weight:650;flex:none}.slot .bk{flex:1;display:flex;flex-wrap:wrap;gap:4px}
+.pill{font-size:11px;background:var(--accl);color:var(--acc);border-radius:99px;padding:3px 4px 3px 8px;font-weight:650;display:inline-flex;align-items:center;gap:4px}
+.pill button{border:0;background:rgba(0,0,0,.08);border-radius:50%;width:16px;height:16px;font-size:10px;cursor:pointer;color:inherit;line-height:16px}
+select.sel{padding:8px;border-radius:var(--rb);border:1px solid var(--line);font:inherit;font-size:13px;background:var(--card);color:var(--ink);flex:1;min-width:0}
+.legend{font-size:11px;color:var(--mut);margin-top:6px}
 </style></head><body>
 <div class="phone">
 
@@ -100,6 +117,17 @@ details.sec{margin-top:10px}details.sec summary{font-family:var(--hfont);font-we
 <section class="screen" id="style">
 <header><div class="eyebrow">Style my pony <span class="sample">SAMPLE DATA</span></div><h1>Pretty little pony</h1><button class="themebtn" onclick="location.hash='#/profile'">Done</button></header>
 <div class="main"><div class="pickh" id="spick"></div><div class="sbody" id="sprev"></div><div id="sctl"></div><footer class="foot"></footer></div></section>
+<section class="screen" id="map">
+<header><div class="eyebrow">Willow Creek Stables · floor plan <span class="sample">SAMPLE DATA</span></div><h1>Barn map</h1><button class="themebtn" data-toggle>✿ PLP</button></header>
+<div class="main">
+ <div class="chips" id="mdays" style="margin-top:0;flex-wrap:nowrap;overflow-x:auto"></div>
+ <div class="plan" id="plan"></div>
+ <div class="legend">Tap an area for details &amp; time slots · <span style="color:var(--amb)">●</span> booked on selected day · chips = horses there now</div>
+ <div id="adetail"></div>
+ <h2>Today at the barn · Mon Oct 26</h2>
+ <div class="card" style="padding:2px 12px" id="today"></div>
+ <footer class="foot"></footer>
+</div></section>
 <section class="screen" id="care">
 <header><div class="eyebrow">Oct 26 – Nov 1 <span class="sample">SAMPLE DATA</span></div><h1>Care due this week</h1><button class="themebtn" data-toggle>✿ PLP</button></header>
 <div class="main"><div id="carelist"></div><footer class="foot"></footer></div></section>
@@ -120,6 +148,7 @@ details.sec{margin-top:10px}details.sec summary{font-family:var(--hfont);font-we
  <a href="#/overview" data-t="overview"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg>Barn</a>
  <a href="#/profile" data-t="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Horses</a>
  <a href="#/care" data-t="care"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M8 13l3 3 5-5"/></svg>Care</a>
+ <a href="#/map" data-t="map"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Map</a>
  <a href="#/billing" data-t="billing"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Billing</a>
 </nav>
 <div class="toast" id="toast"></div>
@@ -252,17 +281,17 @@ react/cjs/react-jsx-runtime.production.js:
 const KEY='wcs-v2-theme',DKEY='wcs-v2-done';
 // [id,horse,photo,owner,phone,board,status,amount,note,breed,age,color]
 const H=[
-['valegro','Valegro','1','Charlotte Dujardin','5552014418','Full board','ok',600,'Paid Oct 3','Quarter Horse','14 · Gelding','Bay · star'],
-['maple','Maple','2','','','Lesson horse','na',0,'','Mongolian','17 · Mare','Chestnut'],
-['azur','HH Azur','3','McLain Ward','5556150043','Partial board','late',450,'12 days late · INV-1042','Arabian','12 · Mare','Black'],
-['willow','Willow','4','','','Lesson horse','na',0,'','Selle Français','19 · Mare','Grey'],
-['halebob','SAP Hale Bob','5','Ingrid Klimke','5554810927','Full board','due',600,'Due Nov 1 · INV-1051','Paint','13 · Gelding','Pinto'],
-['sam','Sam','6','Michael Jung','5553302716','Self-care','ok',200,'Paid Oct 5','Appaloosa','10 · Gelding','Blanket appaloosa'],
-['ravel','Ravel','7','Steffen Peters','5557721180','Full board','ok',400,'Paid Oct 1','Quarter Horse','11 · Mare','Palomino · star, 2 socks'],
-['rusty','Rusty','8','','','Retired','na',0,'','Trotter','24 · Gelding','Chestnut']];
+['valegro','Valegro','1','Charlotte Dujardin','5552014418','Full board','ok',600,'Paid Oct 3','KWPN (Dutch Warmblood)','24 · Gelding','Bay · star'],
+['bigben','Big Ben','2','','','Lesson horse · Ian Millar\'s partner','na',0,'','Belgian Warmblood','Legend · Gelding','Chestnut'],
+['azur','HH Azur','3','McLain Ward','5556150043','Partial board','late',450,'12 days late · INV-1042','KWPN (Dutch Warmblood)','25 · Mare','Black'],
+['milton','Milton','4','','','Lesson horse · John Whitaker\'s partner','na',0,'','Dutch Warmblood','Legend · Gelding','Grey'],
+['halebob','SAP Hale Bob','5','Ingrid Klimke','5554810927','Full board','due',600,'Due Nov 1 · INV-1051','Oldenburg','22 · Gelding','Pinto'],
+['sam','Sam','6','Michael Jung','5553302716','Self-care','ok',200,'Paid Oct 5','German Sport Horse','26 · Gelding','Blanket appaloosa'],
+['ravel','Ravel','7','Steffen Peters','5557721180','Full board','ok',400,'Paid Oct 1','KWPN (Dutch Warmblood)','28 · Gelding','Palomino · star, 2 socks'],
+['secretariat','Secretariat','8','','','Retired · Ron Turcotte\'s partner','na',0,'','Thoroughbred','Legend · Stallion','Chestnut']];
 const byId=Object.fromEntries(H.map(h=>[h[0],h]));
-const C=[['c1','azur','Coggins renewal','Overdue · was Oct 22','late'],['c2','valegro','Farrier · trim','Wed Oct 28 · Tom Hale','due'],['c3','ravel','Farrier · front shoes','Thu Oct 29 · Tom Hale','due'],['c4','maple','Deworming','Fri Oct 30','na'],['c5','halebob','Vaccines · fall boosters','Sat Oct 31 · Dr. Lee','na'],['c6','rusty','Deworming','Sun Nov 1','na']];
-const LOG={ravel:['Oct 21 · Fly spray + hoof pick — Kylie','Oct 14 · Vet check, sound — Dr. Lee']};
+const C=[['c1','azur','Coggins renewal','Overdue · was Oct 22','late'],['c2','valegro','Farrier · trim','Wed Oct 28 · farrier','due'],['c3','ravel','Farrier · front shoes','Thu Oct 29 · farrier','due'],['c4','bigben','Deworming','Fri Oct 30','na'],['c5','halebob','Vaccines · fall boosters','Sat Oct 31 · vet','na'],['c6','secretariat','Deworming','Sun Nov 1','na']];
+const LOG={ravel:['Oct 21 · Fly spray + hoof pick — Kylie','Oct 14 · Vet check, sound — vet']};
 let done=JSON.parse(localStorage.getItem(DKEY)||'{}'),filter='all',cur='ravel';
 const $=id=>document.getElementById(id),money=n=>'$'+n.toLocaleString();
 function badge(h){return h[6]=='ok'?'Paid up':h[6]=='late'?'Owes '+money(h[7]):h[6]=='due'?'Invoice due Nov 1':'Barn-owned'}
@@ -286,6 +315,7 @@ function renderProfile(){
   <div class="card" style="padding:6px"><img class="body" src="img/b${h[2]}.jpg" alt="${h[1]} full body"><div class="small" style="padding:4px 2px 0">Full body · side view</div></div>
   <div class="card" style="display:grid;gap:6px;font-size:13px"><div><span class="small" style="display:block">Breed</span>${h[9]}</div><div><span class="small" style="display:block">Age · Sex</span>${h[10]}</div><div><span class="small" style="display:block">Color</span>${h[11]}</div></div></div>
  <div class="card" style="margin-top:10px;display:flex;align-items:center;gap:10px"><div class="grow"><div class="small">Owner</div><div style="font-weight:650">${h[3]||'Willow Creek (barn-owned)'}</div>${h[4]?`<div class="small">(${h[4].slice(0,3)}) ${h[4].slice(3,6)}-${h[4].slice(6)}</div>`:''}</div>${h[4]?`<a class="btn btn-s" href="sms:+1${h[4]}">Text</a>`:''}<span class="badge b-${h[6]}">${badge(h)}</span></div>
+ <div class="card" style="margin-top:10px;display:flex;align-items:center;gap:10px"><div class="grow"><div class="small">Location now</div><div style="font-weight:650">${areaName(LOC[h[0]])}</div><div class="small">${nextBooking(h[0])}</div></div><a class="btn btn-s" href="#/map" onclick="selArea=LOC.${h[0]}||selArea">Map</a></div>
  <h2>Care this week</h2><div class="card" style="padding:2px 12px">${cs.length?cs.map(c=>`<div class="row ${done[c[0]]?'done':''}"><div class="grow"><div class="name" style="font-size:14px">${c[2]}</div><div class="meta">${c[3]}</div></div><span class="badge b-${done[c[0]]?'ok':c[4]=='late'?'late':'due'}">${done[c[0]]?'Done':c[4]=='late'?'Overdue':'Due'}</span></div>`).join(''):'<div class="row small">Nothing due this week</div>'}</div>
  <h2>Recent log</h2><div class="card small" style="line-height:1.7">${(LOG[h[0]]||['Oct 20 · Turnout + groom — Kylie']).join('<br>')}</div>
  <footer class="foot"></footer>`;
@@ -304,11 +334,11 @@ function renderBilling(){
 
 let _uid=0;function uniq(svg){const n='u'+(++_uid)+'_';const ids=[...svg.matchAll(/ id="([^"]+)"/g)].map(m=>m[1]);for(const id of new Set(ids)){const e=id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');svg=svg.replace(new RegExp('(id="|#)'+e+'(?=["\\)])','g'),'$1'+n+id.replace(/[^\w-]/g,''))}return svg}
 const _h=PLP.head,_b=PLP.body;PLP.head=(l,n)=>uniq(_h(l,n));PLP.body=(l,n)=>uniq(_b(l,n));
-const LKEY='wcs-v2-looks';
-const BASE={valegro:{coat:'bay',mark:'star',halter:'navy'},maple:{coat:'chestnut',mark:'blaze',halter:'sage'},azur:{coat:'black',mark:'snip',halter:'red'},
- willow:{coat:'gray',patterns:['fleabit'],patternColor:'charcoal',mane:'silver',halter:'lavender'},halebob:{coat:'bay',patterns:['tobiano'],patternColor:'white',mark:'blaze',halter:'sky'},
+const LKEY='wcs-v2-looks2';
+const BASE={valegro:{coat:'bay',mark:'star',halter:'navy'},bigben:{coat:'chestnut',mark:'blaze',halter:'sage'},azur:{coat:'black',mark:'snip',halter:'red'},
+ milton:{coat:'gray',patterns:['fleabit'],patternColor:'charcoal',mane:'silver',halter:'lavender'},halebob:{coat:'bay',patterns:['tobiano'],patternColor:'white',mark:'blaze',halter:'sky'},
  sam:{coat:'bay',patterns:['blanket'],mark:'blaze',halter:'rose'},ravel:{coat:'palomino',mane:'flax',mark:'star',legs:['sock','sock','none','none'],halter:'red'},
- rusty:{coat:'chestnut',mane:'auburn',mark:'stripe',halter:'walnut',build:'pony'}};
+ secretariat:{coat:'chestnut',mane:'auburn',mark:'stripe',halter:'walnut',build:'pony'}};
 let LOOKS=JSON.parse(localStorage.getItem(LKEY)||'{}');
 function look(id){return PLP.M.normalizeLook({...PLP.M.defaultLook,...BASE[id],...(LOOKS[id]||{})})}
 function setLook(id,patch){LOOKS[id]={...look(id),...patch,lookV:2};localStorage.setItem(LKEY,JSON.stringify(LOOKS));renderStyle();renderOverview();renderCare()}
@@ -354,6 +384,54 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-pick],[dat
  else if(t.hasAttribute('data-reset')){delete LOOKS[cur];localStorage.setItem(LKEY,JSON.stringify(LOOKS));renderStyle();renderOverview();renderCare()}
  document.querySelectorAll('#sctl details').forEach((d,i)=>d.open=open[i]);if(t.dataset.pick)renderProfile&&0;});
 
+
+const MKEY='wcs-v2-map2';
+const AREAS=[
+ {id:'indoor',n:'Indoor arena',cap:4,d:'Enclosed 70×140 ft, lit. Lessons Tue/Thu evenings.',g:'1/1/3/4'},
+ {id:'outdoor',n:'Outdoor arena',cap:5,d:'100×200 ft sand, jump course set.',g:'1/4/3/7'},
+ {id:'stalls',n:'Stalls / aisle',cap:12,d:'12 box stalls, center aisle. Home base.',g:'3/1/5/5'},
+ {id:'tack',n:'Tack room',cap:3,d:'Saddles, bridles, blankets. Lock code in office.',g:'3/5/4/7'},
+ {id:'groom',n:'Grooming / cross-ties',cap:3,d:'3 cross-tie bays next to tack room.',g:'4/5/5/7'},
+ {id:'wash',n:'Wash rack',cap:1,d:'Hot & cold water, one horse at a time.',g:'5/1/6/3'},
+ {id:'round',n:'Round pen',cap:1,d:'60 ft round pen for lunging.',g:'5/3/6/5'},
+ {id:'north',n:'North paddock',cap:4,d:'Grass turnout, auto waterer.',g:'5/5/7/7'},
+ {id:'south',n:'South paddock',cap:4,d:'Dry lot turnout, run-in shed.',g:'6/1/7/5'}];
+const AB=Object.fromEntries(AREAS.map(a=>[a.id,a]));
+const DAYS=['Mon Oct 26','Tue Oct 27','Wed Oct 28','Thu Oct 29','Fri Oct 30','Sat Oct 31','Sun Nov 1'];
+const SLOTS=['7:00','8:00','9:00','10:00','11:00','12:00','1:00','2:00','3:00','4:00','5:00','6:00'];
+function seedMap(){return{loc:{valegro:'outdoor',bigben:'indoor',azur:'stalls',milton:'north',halebob:'groom',sam:'south',ravel:'stalls',secretariat:'north'},
+ bk:[['b1','indoor',0,'9:00','valegro'],['b2','indoor',0,'9:00','halebob'],['b3','outdoor',0,'4:00','ravel'],['b4','wash',0,'11:00','sam'],['b5','round',0,'3:00','azur'],['b6','indoor',1,'5:00','bigben'],['b7','outdoor',2,'10:00','valegro'],['b8','wash',2,'12:00','halebob'],['b9','indoor',4,'4:00','sam'],['b10','outdoor',5,'9:00','ravel']].map(b=>({id:b[0],a:b[1],d:b[2],t:b[3],h:b[4]}))}}
+let MS=JSON.parse(localStorage.getItem(MKEY)||'null')||seedMap(),LOC=MS.loc,selArea='indoor',selDay=0;
+function saveMap(){localStorage.setItem(MKEY,JSON.stringify(MS))}
+function areaName(id){return id?AB[id].n:'Not set'}
+function nextBooking(hid){const b=MS.bk.filter(b=>b.h==hid).sort((x,y)=>x.d-y.d||SLOTS.indexOf(x.t)-SLOTS.indexOf(y.t))[0];return b?`Next booking: ${AB[b.a].n} · ${DAYS[b.d].slice(0,3)} ${b.t}`:'No bookings this week'}
+function chip(hid){const h=byId[hid];return `<img class="rp" src="img/p${h[2]}.jpg" alt="${h[1]}" title="${h[1]}"><span class="phead ph" title="${h[1]}">${PLP.head(look(hid),h[1])}</span>`}
+function renderMap(){
+ $('mdays').innerHTML=DAYS.map((d,i)=>`<button class="chip ${i==selDay?'on':''}" data-mday="${i}" style="flex:none">${i==0?'Today':d.slice(0,3)+' '+d.split(' ')[2]}</button>`).join('');
+ $('plan').innerHTML=AREAS.map(a=>{const here=H.filter(h=>LOC[h[0]]==a.id).map(h=>h[0]);const busy=MS.bk.some(b=>b.a==a.id&&b.d==selDay);
+  return `<button class="area ${a.id==selArea?'sel':''} ${busy?'busy':''}" style="grid-area:${a.g}" data-area="${a.id}"><div><div class="an">${a.n}</div><div class="ac">${here.length}/${a.cap} now</div></div><div class="hc">${here.slice(0,6).map(chip).join('')}</div></button>`}).join('');
+ const a=AB[selArea],here=H.filter(h=>LOC[h[0]]==a.id);
+ const opts=H.map(h=>`<option value="${h[0]}">${h[1]}${h[3]?' — '+h[3]:''}</option>`).join('');
+ $('adetail').innerHTML=`<div class="card" style="margin-top:10px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div class="name">${a.n}</div><span class="badge b-na">Capacity ${a.cap}</span></div><div class="small" style="margin-top:3px">${a.d}</div>
+ <div class="olab" style="margin-top:10px">Here now (${here.length})</div><div class="small" style="margin:4px 0">${here.map(h=>h[1]).join(', ')||'Empty'}</div>
+ <div style="display:flex;gap:6px;margin-top:6px"><select class="sel" id="mvh">${opts}</select><button class="btn btn-s" id="mvbtn">Move here now</button></div>
+ <h2 style="margin-top:14px">Sign up · ${DAYS[selDay]}</h2>
+ <div style="display:flex;gap:6px"><select class="sel" id="bks" style="flex:.6">${SLOTS.map(t=>`<option>${t}</option>`).join('')}</select><select class="sel" id="bkh">${opts}</select><button class="btn btn-p" id="bkbtn">Book</button></div>
+ <div style="margin-top:8px">${SLOTS.map(t=>{const bs=MS.bk.filter(b=>b.a==a.id&&b.d==selDay&&b.t==t);return `<div class="slot"><span class="t">${t}</span><span class="bk">${bs.map(b=>`<span class="pill">${byId[b.h][1]}<button data-cancel="${b.id}" title="Cancel">✕</button></span>`).join('')||'<span class="small">Open</span>'}</span><span class="small">${bs.length}/${a.cap}</span></div>`}).join('')}</div></div>`;
+ const T=MS.bk.filter(b=>b.d==0).sort((x,y)=>SLOTS.indexOf(x.t)-SLOTS.indexOf(y.t));
+ $('today').innerHTML=T.map(b=>{const h=byId[b.h];return `<div class="row">${thumb(h)}<div class="grow"><div class="name" style="font-size:14px">${b.t} · ${AB[b.a].n}</div><div class="meta">${h[1]} · ${h[3]||'Barn-owned'}</div></div>${h[4]?`<a class="btn btn-g" style="padding:6px 9px;font-size:12px" href="sms:+1${h[4]}">Text</a>`:''}</div>`}).join('')||'<div class="row small">No bookings today</div>';
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-area],[data-mday],[data-cancel],#mvbtn,#bkbtn');if(!t)return;
+ if(t.dataset.area){selArea=t.dataset.area}
+ else if(t.dataset.mday){selDay=+t.dataset.mday}
+ else if(t.dataset.cancel){MS.bk=MS.bk.filter(b=>b.id!=t.dataset.cancel);saveMap();toast('Booking cancelled')}
+ else if(t.id=='mvbtn'){const hid=$('mvh').value,a=AB[selArea],n=H.filter(h=>LOC[h[0]]==a.id&&h[0]!=hid).length;if(n>=a.cap){toast(a.n+' is full');return}LOC[hid]=a.id;saveMap();toast(byId[hid][1]+' moved to '+a.n)}
+ else if(t.id=='bkbtn'){const tm=$('bks').value,hid=$('bkh').value,a=AB[selArea],bs=MS.bk.filter(b=>b.a==a.id&&b.d==selDay&&b.t==tm);
+  if(bs.some(b=>b.h==hid)){toast('Already booked');return}if(bs.length>=a.cap){toast('That slot is full');return}
+  if(MS.bk.some(b=>b.h==hid&&b.d==selDay&&b.t==tm)){toast(byId[hid][1]+' is booked elsewhere then');return}
+  MS.bk.push({id:'b'+Date.now(),a:a.id,d:selDay,t:tm,h:hid});saveMap();toast('Booked '+byId[hid][1]+' · '+tm)}
+ renderMap()});
+
 function foot(){document.querySelectorAll('.foot').forEach(f=>f.innerHTML='Photos: Wikimedia Commons (free licenses) · see CREDITS.txt<br>© 2026 Kylie Yablonski. All rights reserved.')}
 function setTheme(t){document.body.classList.toggle('plp',t=='plp');localStorage.setItem(KEY,t);document.querySelectorAll('#themeseg button').forEach(b=>b.classList.toggle('on',b.dataset.th==t));document.querySelectorAll('[data-toggle]').forEach(b=>b.textContent=t=='plp'?'Classic':'✿ PLP')}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-f],[data-h],[data-done],[data-th],[data-toggle],#syncbtn');if(!t)return;
@@ -363,6 +441,6 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-f],[data-h
  else if(t.dataset.th)setTheme(t.dataset.th);
  else if(t.hasAttribute('data-toggle'))setTheme(document.body.classList.contains('plp')?'classic':'plp');
  else toast('Sample only — not really syncing')});
-function go(){const t=(location.hash||'#/overview').replace(/^#\/?/,'')||'overview';if(t=='profile')renderProfile();if(t=='style'){if(!document.body.classList.contains('plp')){location.hash='#/profile';return}renderStyle()}document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id==t));document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.t==t||(t=='style'&&a.dataset.t=='profile')));scrollTo(0,0)}
+function go(){const t=(location.hash||'#/overview').replace(/^#\/?/,'')||'overview';if(t=='profile')renderProfile();if(t=='map')renderMap();if(t=='style'){if(!document.body.classList.contains('plp')){location.hash='#/profile';return}renderStyle()}document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id==t));document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.t==t||(t=='style'&&a.dataset.t=='profile')));scrollTo(0,0)}
 setTheme(localStorage.getItem(KEY)||'classic');renderOverview();renderCare();renderBilling();foot();onhashchange=go;go();
 </script></body></html>
